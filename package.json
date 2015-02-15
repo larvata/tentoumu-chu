@@ -17,5 +17,9 @@
     "request": "^2.42.0",
     "restify": "^2.8.1",
     "underscore": "^1.7.0"
+  },
+  "devDependencies": {
+    "cheerio": "^0.18.0",
+    "iconv-lite": "^0.4.7"
   }
 }

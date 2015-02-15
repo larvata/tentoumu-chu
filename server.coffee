@@ -16,3 +16,6 @@ mako.startServer()
 naachan = new Okada(miki)
 naachan.startMonitor()
 
+# programme grabber
+meru = new Meru(miki)
+meru.startMonitor()
