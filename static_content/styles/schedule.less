@@ -1,0 +1,83 @@
+html{
+	height: 100%;
+}
+
+body{
+	height: 100%;
+	&.bg-miki{
+		background-image: url(../images/mikimiki.jpg)
+	}
+	&.bg-hkt48{
+		background-image: url(../images/hkt48.jpg)
+	}
+}
+
+table .time{
+	width:140px;
+}
+table .time.small{
+	width:100px;
+}
+
+.jumbotron{
+	background-repeat: no-repeat;
+	background-position: right bottom;
+
+	h1 a{
+		color: white;
+		text-shadow: 1px 3px 5px rgba(150, 150, 150, 1);
+		font-size: 56px;
+		&:hover{
+			text-decoration: none;
+		}
+	}
+
+	&.haruppi{
+		background-image: url(../images/haruppi.jpg);
+		background-color: rgb(136,254,193);
+	}
+	&.haruppi2{
+		background-image: url(../images/haruppi2.jpg);
+		background-color: rgb(243,234,223);
+	}
+
+	&.mio{
+		background-image: url(../images/mio.jpg);
+		background-color: rgb(255,124,190);
+	}
+
+	&.sakura{
+		background-image: url(../images/sakura.jpg);
+		background-color: rgb(246,207,224);
+	}
+
+	&.single4th{
+		background-image: url(../images/single4th.jpg);
+		background-color: rgb(251,246,82);
+		background-position: top right;
+	}
+}
+
+.container{
+	height: 100%;
+	padding-top:5px;
+	padding-bottom: 5px;
+	background: rgba(255,255,255,0.3);
+}
+
+.inner{
+	padding:10px;
+	background: white;
+	height: 100%;
+	border-radius: 5px;
+	position:relative;
+	&>.row{
+		padding: 30px;
+	}
+}
+
+.contact{
+	position: absolute;
+	right: 10px;
+	bottom: 0;
+}

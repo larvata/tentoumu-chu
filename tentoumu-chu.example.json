@@ -1,0 +1,20 @@
+{
+	"managePath":"manage.html",
+	"token":"token",
+	"host":"127.0.0.1",
+	"port":3434,
+	"redis_port":6379,
+
+	// for phantomjs
+	"headless":"headless",
+
+	// for redis
+	"scheduleKey":"schedule",
+
+	"douyuRoomAPI":"http://www.douyutv.com/api/client/room/",
+	"douyuAvatarAPI":"http://uc.douyutv.com/avatar.php",
+	"douyuWebPicUrl":"http://staticlive.douyutv.com/upload/web_pic",
+
+	"roomIds":[2246,2319,6186,141261,83376,67299],
+	"roomCheckInterval":120000
+}

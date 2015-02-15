@@ -1,0 +1,36 @@
+doctype html
+html(lang="en")
+	head
+		meta(charset='utf-8')
+		title
+		link(rel='stylesheet', href="bootstrap/css/bootstrap.min.css")
+		link(rel='stylesheet', href="styles/schedule.css")
+		//- scrip(src="Bootstrap/js/bootstrap.min.js")
+
+	body.bg-hkt48
+		.container
+			.inner
+				.jumbotron.head.single4th
+					h1
+						a(href='http://www.douyutv.com/2246') 48系番组直播间
+					p.lead &nbsp;
+				.row
+					.col-md-9
+						table.table
+							thead
+								tr
+									th.time 日期
+									th.time 时间
+									th 节目
+							tbody
+								each item in schedules
+									tr
+										td #{item.begin}
+										td #{item.end}
+										td !{item.description}
+					.col-md-3
+				p.text-right.contact
+					a(href='mailto:alzzlnewtype@gmail.com') Bug报告/意见反馈
+
+
+

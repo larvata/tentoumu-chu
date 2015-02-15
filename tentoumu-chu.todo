@@ -1,0 +1,3 @@
+ ☐ project name: schedule -> sanjuushi
+ ☐ integrate node-gen to miki
+ ☐ extract config(manage-page-url, token, redis-keys,etc) to seperate json file

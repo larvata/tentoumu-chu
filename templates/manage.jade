@@ -1,0 +1,55 @@
+doctype html
+html(lang="en")
+	head
+		meta(charset='utf-8')
+		title
+		link(rel='stylesheet', href="bootstrap/css/bootstrap.min.css")
+		link(rel='stylesheet', href="styles/schedule.css")
+		script#item-template(type='text/template')
+			td
+				input.form-control.view.begin(type='text',value!='<%=begin%>')
+			td
+				input.form-control.view.end(type='text',value!='<%=end%>')
+			td
+				input.form-control.view.description(type='text',value!='<%=description%>')
+
+	body
+
+
+		.container
+			.jumbotron.first
+				p
+					form.form-inline(role='form')
+						.form-group
+							label.sr-only(for='token') token
+							input#token.form-control(type='text',placeholder='Enter Token')
+						button#saveToken.btn.btn-default Auth
+
+			.jumbotron.head(style='display:none')
+
+			.row
+				#scheduleApp.col-md-9
+					table#main.table
+						thead
+							tr
+								th 日期
+								th 时间
+								th 节目
+						tbody#schedule-list
+							tr#new-schedule.new
+								td
+									input.form-control.begin(type='text',size='5')
+								td
+									input.form-control.end(type='text',size='5')
+								td
+									input.form-control.edit.description(type='text',size='30')
+
+
+				.col-md-3
+
+		script(src='scripts/jquery.min.js')
+		script(src='scripts/jquery.cookie.js')
+		script(src='scripts/underscore.js')
+		script(src='scripts/backbone.js')
+		script(src='scripts/schedule.js')
+

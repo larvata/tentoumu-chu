@@ -1,0 +1,21 @@
+{
+  "name": "schedule",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jade": "^1.5.0",
+    "moment": "^2.8.3",
+    "phantom": "^0.7.2",
+    "redis": "^0.12.1",
+    "request": "^2.42.0",
+    "restify": "^2.8.1",
+    "underscore": "^1.7.0"
+  }
+}
