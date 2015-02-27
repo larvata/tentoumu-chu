@@ -1,3 +1,6 @@
- ☐ project name: schedule -> sanjuushi
+ ☐ new bangumi schedule manager
+ ☐ add browser extension download url to schedule list page
+ ✔ project name: schedule -> sanjuushi -> tentoumu-chu @done (15-02-27 15:55)
  ☐ integrate node-gen to miki
- ☐ extract config(manage-page-url, token, redis-keys,etc) to seperate json file
+   ??
+ ✔ extract config(manage-page-url, token, redis-keys,etc) to seperate json file @done (15-02-27 15:56)
