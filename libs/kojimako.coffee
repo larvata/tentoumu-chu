@@ -1,7 +1,7 @@
 restify=require 'restify'
 jade = require 'jade'
 request=require 'request'
-
+_ = require 'underscore'
 
 class Kojimako
   constructor: (@miki) ->
@@ -33,17 +33,17 @@ class Kojimako
       res.end(JSON.stringify(respList))
 
     @getRooms= (req,res,next)=>
-      roomList=@miki.getRooms().map (m)->
-        # console.log m
-        room_id:m.room_id
-        show_status:m.show_status
-        # duration:m.duration()
-        show_details:m.show_details
-        show_time:m.show_time
-        room_name:m.room_name
-        room_src:m.room_src
-        owner_uid:m.owner_uid
-        fans:m.fans
+      roomList=_.chain @miki.getRooms()
+        .filter (r)->
+          console.log r
+          if r.always_show is true or r.show_status is 1
+            true
+        .map (r)->
+          _.pick(r,'room_id','show_status',
+          'show_details','show_time',
+          'room_name','room_src',
+          'owner_uid','fans')
+        .value()
 
       res.setHeader 'Access-Control-Allow-Origin','*'
       res.setHeader 'Content-Type','application/json; charset=utf-8'
