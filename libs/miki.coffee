@@ -11,8 +11,8 @@ class Miki
   constructor: (@config) ->
 
     # start redis client
-    console.log "connect local redis server: #{@config.redis_port}"
-    redis=redisModule.createClient(@config.redis_port)
+    console.log "redis server: #{@config.redis_host}:#{@config.redis_port}"
+    redis=redisModule.createClient(@config.redis_port,@config.redis_host)
 
     # load schedules from redis
     redis.lrange [@config.scheduleKey,0,-1],(err,replies)->

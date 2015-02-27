@@ -17,5 +17,5 @@ naachan = new Okada(miki)
 naachan.startMonitor()
 
 # programme grabber
-meru = new Meru(miki)
-meru.startMonitor()
+# meru = new Meru(miki)
+# meru.startMonitor()

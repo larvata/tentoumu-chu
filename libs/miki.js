@@ -16,8 +16,8 @@ redis = {};
 Miki = (function() {
   function Miki(config) {
     this.config = config;
-    console.log("connect local redis server: " + this.config.redis_port);
-    redis = redisModule.createClient(this.config.redis_port);
+    console.log("redis server: " + this.config.redis_host + ":" + this.config.redis_port);
+    redis = redisModule.createClient(this.config.redis_port, this.config.redis_host);
     redis.lrange([this.config.scheduleKey, 0, -1], function(err, replies) {
       var r, s, _i, _len, _results;
       _results = [];
