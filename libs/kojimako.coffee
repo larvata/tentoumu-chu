@@ -35,9 +35,10 @@ class Kojimako
     @getRooms= (req,res,next)=>
       roomList=_.chain @miki.getRooms()
         .filter (r)->
-          console.log r
-          if r.always_show is true or r.show_status is 1
-            true
+          if r.disabled is false
+            if (r.always_show is true or r.show_status is 1)
+              true
+        .sortBy (r)-> -r.fans
         .map (r)->
           _.pick(r,'room_id','show_status',
           'show_details','show_time',

@@ -2,8 +2,9 @@ Nishino = require './libs/miki'
 Kojima = require './libs/kojimako'
 Okada = require './libs/naachan'
 
-
-config = require './tentoumu-chu.json'
+CSON = require 'cson'
+config = CSON.load('./tentoumu-chu.cson')
+# config = require './tentoumu-chu.json'
 
 # storage api
 miki = new Nishino(config)

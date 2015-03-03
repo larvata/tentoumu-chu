@@ -10,7 +10,7 @@ moment = require('moment');
 roomsData = [];
 
 Room = (function() {
-  function Room(room_id, show_status, room_name, show_time, room_src, url, owner_uid, show_details, fans, always_show) {
+  function Room(room_id, show_status, room_name, show_time, room_src, url, owner_uid, show_details, fans, always_show, disabled) {
     this.room_id = room_id;
     this.show_status = show_status;
     this.room_name = room_name;
@@ -21,6 +21,7 @@ Room = (function() {
     this.show_details = show_details;
     this.fans = fans;
     this.always_show = always_show;
+    this.disabled = disabled;
   }
 
   Room.prototype.duration = function() {
@@ -71,7 +72,7 @@ Okada = (function() {
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       r = _ref[_i];
       url = this.miki.config.douyuRoomAPI + r.room_id;
-      room = new Room(r.room_id, 0, '', 0, '', url, '', '', 0, r.always_show);
+      room = new Room(r.room_id, 0, '', 0, '', url, '', '', 0, r.always_show, r.disabled);
       _results.push(checker(room));
     }
     return _results;

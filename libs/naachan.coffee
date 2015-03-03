@@ -8,7 +8,7 @@ roomsData=[]
 class Room
   constructor: (@room_id,@show_status,@room_name,
     @show_time,@room_src,@url,@owner_uid,
-    @show_details,@fans,@always_show)->
+    @show_details,@fans,@always_show,@disabled)->
 
   duration:()->
     timestamp=parseInt(@show_time)
@@ -48,7 +48,7 @@ class Okada
 
     for r in @miki.config.roomInfo
       url=@miki.config.douyuRoomAPI+r.room_id
-      room=new Room(r.room_id,0,'',0,'',url,'','',0,r.always_show)
+      room=new Room(r.room_id,0,'',0,'',url,'','',0,r.always_show,r.disabled)
 
       checker(room)
 

@@ -1,6 +1,6 @@
 tentoumu-chu.json
 static_content/*.html
-
+tmp/
 
 # Logs
 logs

@@ -46,10 +46,13 @@ Kojimako = (function() {
       return function(req, res, next) {
         var roomList;
         roomList = _.chain(_this.miki.getRooms()).filter(function(r) {
-          console.log(r);
-          if (r.always_show === true || r.show_status === 1) {
-            return true;
+          if (r.disabled === false) {
+            if (r.always_show === true || r.show_status === 1) {
+              return true;
+            }
           }
+        }).sortBy(function(r) {
+          return -r.fans;
         }).map(function(r) {
           return _.pick(r, 'room_id', 'show_status', 'show_details', 'show_time', 'room_name', 'room_src', 'owner_uid', 'fans');
         }).value();
