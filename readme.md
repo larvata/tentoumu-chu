@@ -13,12 +13,12 @@ A website for checkout/manage 48-group TV programme schedule.An online version y
 npm install
 
 # copy config from example
-cp tentoumu-chu.example.json tentoumu-chu.json
+cp tentoumu-chu.example.cson tentoumu-chu.cson
 
 # modify the configuration to fit your environment
-vi tentoumu-chu.json
+vi tentoumu-chu.cson
 
-# rename the manage page you defined in tentoumu-chu.json:managePath
+# rename the manage page you defined in tentoumu-chu.cson:managePath
 mv static_content/manage.html.example #{your_assert}
 
 # start service
