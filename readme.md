@@ -22,5 +22,5 @@ vi tentoumu-chu.cson
 mv static_content/manage.html.example #{your_assert}
 
 # start service
-node server.js
+npm start
 ```
