@@ -24,9 +24,9 @@ class Miki
 
     @generater=()=>
       headlessUrl="http://#{@config.host}:#{@config.port}/#{@config.headless}"
-
       phantom.create (ph)->
         ph.createPage (page)->
+
           page.open headlessUrl,(status)->
             page.render('static_content/schedule.png')
             console.log "Output on "+ new Date()
