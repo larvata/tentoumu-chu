@@ -40,12 +40,16 @@ class Kojimako
               true
         .sortBy (r)-> -r.fans
         .map (r)->
-          r.room_name="#{r.room_name} (#{r.online})"
-          _.pick(r,'room_id','show_status',
+          # r.room_name="#{r.room_name} (#{r.online})"
+          picked=_.pick(r,'room_id','show_status',
           'show_details','show_time',
           'room_name','room_src',
-          'owner_uid','fans')
+          'owner_uid','fans','online')
+          picked.room_name="#{r.room_name} (#{r.online})"
+          return picked
         .value()
+
+
 
       res.setHeader 'Access-Control-Allow-Origin','*'
       res.setHeader 'Content-Type','application/json; charset=utf-8'
