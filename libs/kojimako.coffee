@@ -40,6 +40,7 @@ class Kojimako
               true
         .sortBy (r)-> -r.fans
         .map (r)->
+          r.room_name="#{r.room_name} (#{r.online})"
           _.pick(r,'room_id','show_status',
           'show_details','show_time',
           'room_name','room_src',

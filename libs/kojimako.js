@@ -54,6 +54,7 @@ Kojimako = (function() {
         }).sortBy(function(r) {
           return -r.fans;
         }).map(function(r) {
+          r.room_name = r.room_name + " (" + r.online + ")";
           return _.pick(r, 'room_id', 'show_status', 'show_details', 'show_time', 'room_name', 'room_src', 'owner_uid', 'fans');
         }).value();
         res.setHeader('Access-Control-Allow-Origin', '*');

@@ -33,6 +33,7 @@ class Okada
           room.owner_uid=obj.owner_uid
           room.show_details=obj.show_details
           room.fans=obj.fans
+          room.online=obj.online
 
           miki.updateRoom(room)
 
