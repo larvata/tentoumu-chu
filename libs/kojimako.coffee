@@ -50,7 +50,7 @@ class Kojimako
       res.setHeader 'Content-Type','application/json; charset=utf-8'
       res.end(JSON.stringify(roomList))
 
-    @getSnapImage =(req,res,next)->
+    @getSnapImage =(req,res,next)=>
 
       douyuUrl=@miki.config.douyuWebPicUrl+req.url.replace("snap/","")
 
