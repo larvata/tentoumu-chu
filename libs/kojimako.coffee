@@ -68,7 +68,7 @@ class Kojimako
       res.setHeader 'Access-Control-Allow-Origin','*'
       request.get(douyuUrl).pipe(res)
 
-    @getAvatarImage =(req,res,next)->
+    @getAvatarImage =(req,res,next)=>
 
       avatarUrl="#{@miki.config.douyuAvatarAPI}?uid=#{req.params.uid}&size=big"
 

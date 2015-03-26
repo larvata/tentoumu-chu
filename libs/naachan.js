@@ -58,7 +58,7 @@ Okada = (function() {
           miki.updateRoom(room);
         } catch (_error) {
           e = _error;
-          console.log(body);
+          console.log(room.url);
           console.log("------------");
         }
         return setTimeout((function() {

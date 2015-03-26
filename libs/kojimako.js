@@ -78,18 +78,20 @@ Kojimako = (function() {
         return request.get(douyuUrl).pipe(res);
       };
     })(this);
-    this.getAvatarImage = function(req, res, next) {
-      var avatarUrl, options;
-      avatarUrl = this.miki.config.douyuAvatarAPI + "?uid=" + req.params.uid + "&size=big";
-      options = {
-        hostname: 'uc.douyutv.com',
-        port: 80,
-        path: avatarUrl,
-        method: 'GET'
+    this.getAvatarImage = (function(_this) {
+      return function(req, res, next) {
+        var avatarUrl, options;
+        avatarUrl = _this.miki.config.douyuAvatarAPI + "?uid=" + req.params.uid + "&size=big";
+        options = {
+          hostname: 'uc.douyutv.com',
+          port: 80,
+          path: avatarUrl,
+          method: 'GET'
+        };
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        return request.get(avatarUrl).pipe(res);
       };
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      return request.get(avatarUrl).pipe(res);
-    };
+    })(this);
     this.renderIndex = (function(_this) {
       return function(req, res, next) {
         var html, schedules;

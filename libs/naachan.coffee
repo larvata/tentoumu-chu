@@ -38,7 +38,7 @@ class Okada
           miki.updateRoom(room)
 
         catch e
-          console.log body
+          console.log room.url
           console.log "------------"
 
         setTimeout do->
