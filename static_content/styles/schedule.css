@@ -4,12 +4,6 @@ html {
 body {
   height: 100%;
 }
-body.bg-miki {
-  background-image: url(../images/bg-tiles/mikimiki.jpg);
-}
-body.bg-hkt48 {
-  background-image: url(../images/bg-tiles/hkt48.jpg);
-}
 body.bg-hkt48 {
   background-image: url("../images/bg-tiles/hkt48.jpg");
 }
