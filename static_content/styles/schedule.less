@@ -1,15 +1,47 @@
+@bg-tiles: 
+hkt48
+miki01
+haruppi01 haruppi02 haruppi03 haruppi04 haruppi05 haruppi06
+meru01
+mio01
+nako01 nako02
+sakura01 sakura02 sakura03
+sashi01 sashi02 sashi03 sashi04 sashi05 sashi06
+;
+
+@bg-tiles-len: length(@bg-tiles);
+
+
+.create-bg-tile(@n,@i:1) when (@i=<@n){
+	@tile: extract(@bg-tiles,@i);
+	@img-base: "../images/bg-tiles/";
+	@img-url: "@{img-base}@{tile}.jpg";
+	&.bg-@{tile}{
+		background-image: url(@img-url)
+	}
+	.create-bg-tile(@n,(@i+1));
+}
+
+
 html{
 	height: 100%;
 }
 
+
+
+
+
+
 body{
 	height: 100%;
 	&.bg-miki{
-		background-image: url(../images/mikimiki.jpg)
+		background-image: url(../images/bg-tiles/mikimiki.jpg)
 	}
 	&.bg-hkt48{
-		background-image: url(../images/hkt48.jpg)
+		background-image: url(../images/bg-tiles/hkt48.jpg)
 	}
+	.create-bg-tile(@bg-tiles-len);
+
 }
 
 table .time{
@@ -23,6 +55,9 @@ table .time.small{
 	background-repeat: no-repeat;
 	background-position: right bottom;
 
+	padding-top: 200px;
+	padding-bottom: 100px;
+
 	h1 a{
 		color: white;
 		text-shadow: 1px 3px 5px rgba(150, 150, 150, 1);
@@ -33,29 +68,36 @@ table .time.small{
 	}
 
 	&.haruppi{
-		background-image: url(../images/haruppi.jpg);
+		background-image: url(../images/top-banners/haruppi.jpg);
 		background-color: rgb(136,254,193);
 	}
 	&.haruppi2{
-		background-image: url(../images/haruppi2.jpg);
+		background-image: url(../images/top-banners/haruppi2.jpg);
 		background-color: rgb(243,234,223);
 	}
 
 	&.mio{
-		background-image: url(../images/mio.jpg);
+		background-image: url(../images/top-banners/mio.jpg);
 		background-color: rgb(255,124,190);
 	}
 
 	&.sakura{
-		background-image: url(../images/sakura.jpg);
+		background-image: url(../images/top-banners/sakura.jpg);
 		background-color: rgb(246,207,224);
 	}
 
 	&.single4th{
-		background-image: url(../images/single4th.jpg);
+		background-image: url(../images/top-banners/single4th.jpg);
 		background-color: rgb(251,246,82);
 		background-position: top right;
 	}
+
+	&.single5th{
+		background-image: url(../images/top-banners/single5th.png);
+		background-color: rgb(251,246,82);
+		background-position: right;
+	}
+
 }
 
 .container{
@@ -73,6 +115,7 @@ table .time.small{
 	position:relative;
 	&>.row{
 		padding: 30px;
+		margin-top: -170px;
 	}
 }
 
@@ -80,4 +123,43 @@ table .time.small{
 	position: absolute;
 	right: 10px;
 	bottom: 0;
+}
+
+.table{
+	text-shadow:1px 3px 5px #969696;
+}
+.app-box{
+	position: absolute;
+	bottom: 0;
+
+	background-color: white;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.12);
+	overflow: hidden;
+	margin: 150px 100px 20px 100px;
+	padding-left: 10px;
+	padding-top: 20px;
+	padding-bottom: 15px;
+
+	&>.item{
+		display: block;
+		float: left;
+ 		padding: 20px 0px;
+ 		margin: 0px 30px;
+ 		height: 160px;
+ 		width: 120px;
+ 		font-size: 18px;
+ 		color: #232a2a;
+ 		text-decoration: none;
+ 		text-align: center;
+ 		opacity: .75;
+ 		-webkit-transition: all 0.25s ease-in-out;
+ 		-moz-transition: all 0.25s ease-in-out;
+ 		-o-transition: all 0.25s ease-in-out;
+ 		transition: all 0.25s ease-in-out;
+ 		-webkit-backface-visibility: hidden;
+
+ 		&>p{
+ 			padding-top:10px;
+ 		}
+	}
 }

@@ -1,4 +1,6 @@
 tentoumu-chu.cson
+*.rdb
+tentoumu-chu.js
 static_content/*.html
 tmp/
 

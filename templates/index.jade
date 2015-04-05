@@ -5,12 +5,13 @@ html(lang="en")
 		title
 		link(rel='stylesheet', href="bootstrap/css/bootstrap.min.css")
 		link(rel='stylesheet', href="styles/schedule.css")
+		//- script(src="script")
 		//- scrip(src="Bootstrap/js/bootstrap.min.js")
 
 	body.bg-hkt48
 		.container
 			.inner
-				.jumbotron.head.single4th
+				.jumbotron.head.single5th
 					h1
 						a(href='http://www.douyutv.com/2246') 48系番组直播间
 					p.lead &nbsp;
@@ -29,8 +30,42 @@ html(lang="en")
 										td #{item.end}
 										td !{item.description}
 					.col-md-3
+
+
+
+
+
 				p.text-right.contact
 					a(href='mailto:alzzlnewtype@gmail.com') Bug报告/意见反馈
 
+					.row
+						.col-md-12
+
+			div.app-box
+				div 直播通知插件
+				a.item(href='https://chrome.google.com/webstore/detail/miichan/ghnfiadioahomhmocmhgjhpmhcmcggjg') 
+					img(src='images/browser-icons/app-webstore.png') 
+					p WebStore
+				a.item(href='extensions/miichan-0.5.1.crx') 
+					img(src='images/browser-icons/app-chrome.png') 
+					p Chrome
+				a.item(href='extensions/miichan-ff.zip') 
+					img(src='images/browser-icons/app-firefox.png') 
+					p Firefox
+
+					
 
 
+		script.
+			var bg_tiles=[
+			"hkt48",
+			"haruppi01","haruppi02","haruppi03","haruppi04","haruppi05","haruppi06",
+			"meru01",
+			"mio01",
+			"nako01","nako02",
+			"sakura01","sakura02","sakura03",
+			"sashi01","sashi02","sashi03","sashi04","sashi05","sashi06"
+			];
+			var tile_id=Math.floor(Math.random() * bg_tiles.length)
+			document.body.className="bg-"+bg_tiles[tile_id];
+			console.log("1212")
