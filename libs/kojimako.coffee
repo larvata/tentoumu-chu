@@ -2,6 +2,7 @@ restify=require 'restify'
 jade = require 'jade'
 request=require 'request'
 _ = require 'underscore'
+moment = require 'moment'
 
 class Kojimako
   constructor: (@miki) ->
@@ -38,13 +39,14 @@ class Kojimako
           if r.disabled is false
             if (r.always_show is true or r.show_status is 1)
               true
+        # .sortBy (r)-> r.live_provider
         .sortBy (r)-> -r.fans
         .map (r)->
           # r.room_name="#{r.room_name} (#{r.online})"
           picked=_.pick(r,'room_id','show_status',
           'show_details','show_time',
-          'room_name','room_src',
-          'owner_uid','fans','online')
+          'room_name','live_snapshot',
+          'owner_avatar','fans','online','live_provider','room_url')
           picked.room_name="#{r.room_name} (#{r.online})"
           return picked
         .value()
@@ -55,28 +57,57 @@ class Kojimako
       res.setHeader 'Content-Type','application/json; charset=utf-8'
       res.end(JSON.stringify(roomList))
 
-    @getSnapImage =(req,res,next)=>
+    @getDouyuSnapImage =(req,res,next)=>
 
-      douyuUrl=@miki.config.douyuWebPicUrl+req.url.replace("snap/","")
-
-      options=
-        hostname:'staticlive.douyutv.com'
-        port:80
-        path:douyuUrl
-        method:'GET'
+      # console.log "snap provider douyu"
+      douyuUrl=@miki.config.douyuWebPicUrl+req.url.replace('snap/douyu/','')
+      # console.log douyuUrl
+      # options=
+      #   hostname:'staticlive.douyutv.com'
+      #   port:80
+      #   path:douyuUrl
+      #   method:'GET'
 
       res.setHeader 'Access-Control-Allow-Origin','*'
       request.get(douyuUrl).pipe(res)
 
-    @getAvatarImage =(req,res,next)=>
+    @getZhanqiSnapImage =(req,res,next)=>
 
-      avatarUrl="#{@miki.config.douyuAvatarAPI}?uid=#{req.params.uid}&size=big"
+      # console.log "snap provider #{req.params.provider}"
+      zhanqiUrl=@miki.config.zhanqiWebPicUrl+req.url.replace('snap/zhanqi/','')
+      # console.log zhanqiUrl
+      # options=
+      #   hostname:'staticlive.douyutv.com'
+      #   port:80
+      #   path:douyuUrl
+      #   method:'GET'
+# "http://dlpic.cdn.zhanqi.tv/live/20150419/33967_5hpHI_2015-04-19-19-59-35_big.jpg"
+      res.setHeader 'Access-Control-Allow-Origin','*'
+      request.get(zhanqiUrl).pipe(res)
 
-      options=
-        hostname:'uc.douyutv.com'
-        port:80
-        path:avatarUrl
-        method:'GET'
+    @getDouyuAvatarImage =(req,res,next)=>
+      # console.log req.url
+      # console.log req.url.replace('avatar/douyu/','')
+      avatarUrl=@miki.config.douyuAvatarAPI+req.url.replace('/avatar/douyu/','')
+      # options=
+      #   hostname:'uc.douyutv.com'
+      #   port:80
+      #   path:avatarUrl
+      #   method:'GET
+      # console.log avatarUrl
+
+      res.setHeader 'Access-Control-Allow-Origin','*'
+      request.get(avatarUrl).pipe(res)
+
+    @getZhanqiAvatarImage =(req,res,next)=>
+
+      avatarUrl=@miki.config.zhanqiAvatarAPI+req.url.replace('avatar/zhanqi/','')+"-big"
+      # options=
+      #   hostname:'uc.douyutv.com'
+      #   port:80
+      #   path:avatarUrl
+      #   method:'GET'
+      # console.log avatarUrl
 
       res.setHeader 'Access-Control-Allow-Origin','*'
       request.get(avatarUrl).pipe(res)
@@ -134,8 +165,11 @@ class Kojimako
 
     #
     # console.log "snap loaded"
-    server.get('/snap/.*',@getSnapImage)
-    server.get('/avatar/:uid',@getAvatarImage)
+    server.get('/snap/douyu/.*',@getDouyuSnapImage)
+    server.get('/snap/zhanqi/.*',@getZhanqiSnapImage)
+    server.get('/avatar/douyu/.*',@getDouyuAvatarImage)
+    server.get('/avatar/zhanqi/.*',@getZhanqiAvatarImage)
+
 
     server.get('/'+@miki.config.managePath,@renderManage)
     server.get('/',@renderIndex)
