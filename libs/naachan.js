@@ -90,6 +90,10 @@ Okada = (function() {
     miki = this.miki;
     checker = function(room) {
       return request(room.url, function(err, res, body) {
+        if (err != null) {
+          console.log(room.url);
+          console.log(err);
+        }
         switch (room.live_provider) {
           case "douyu":
             parseDouyuRoomInfo(body, room);

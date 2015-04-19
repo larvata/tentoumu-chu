@@ -78,6 +78,9 @@ class Okada
 
     checker=(room)->
       request room.url,(err,res,body)->
+        if err?
+          console.log room.url
+          console.log err   
 
         switch room.live_provider
           when "douyu"
