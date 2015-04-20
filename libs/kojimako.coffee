@@ -7,6 +7,23 @@ moment = require 'moment'
 class Kojimako
   constructor: (@miki) ->
 
+    @createRequestOptions=(host,url)->
+      headers=
+        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+        'Accept-Encoding':'gzip, deflate, sdch'
+        'Accept-Language':'en-US,en;q=0.8'
+        'Cache-Control':'no-cache'
+        'Connection':'keep-alive'
+        'Host':host
+        'Pragma':'no-cache'
+        'User-Agent':'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.2 Safari/537.36'
+
+      options=
+        url:url
+        headers:headers
+
+      return options
+
     # update schedule entity
     @updateSchedule=(req,res,next)=>
 
@@ -62,28 +79,48 @@ class Kojimako
       # console.log "snap provider douyu"
       douyuUrl=@miki.config.douyuWebPicUrl+req.url.replace('snap/douyu/','')
       # console.log douyuUrl
+      # headers=
+      #   'Accept':'application/json, text/plain, */*'
+      #   'Accept-Encoding':'gzip, deflate, sdch'
+      #   'Accept-Language':'en-US,en;q=0.8'
+      #   'Cache-Control':'no-cache'
+      #   'Connection':'keep-alive'
+      #   'Host':'staticlive.douyutv.com'
+      #   'Pragma':'no-cache'
+      #   'User-Agent':'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.2 Safari/537.36'
+
       # options=
-      #   hostname:'staticlive.douyutv.com'
-      #   port:80
-      #   path:douyuUrl
-      #   method:'GET'
+      #   url:douyuUrl
+      #   headers:headers
+
+      options=@createRequestOptions(douyuUrl,'staticlive.douyutv.com')
 
       res.setHeader 'Access-Control-Allow-Origin','*'
-      request.get(douyuUrl).pipe(res)
+
+      request(options).pipe(res)
 
     @getZhanqiSnapImage =(req,res,next)=>
 
       # console.log "snap provider #{req.params.provider}"
       zhanqiUrl=@miki.config.zhanqiWebPicUrl+req.url.replace('snap/zhanqi/','')
       # console.log zhanqiUrl
+      # headers=
+      #   'Accept':'application/json, text/plain, */*'
+      #   'Accept-Encoding':'gzip, deflate, sdch'
+      #   'Accept-Language':'en-US,en;q=0.8'
+      #   'Cache-Control':'no-cache'
+      #   'Connection':'keep-alive'
+      #   'Host':'dlpic.cdn.zhanqi.tv'
+      #   'Pragma':'no-cache'
+      #   'User-Agent':'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.2 Safari/537.36'
+
       # options=
-      #   hostname:'staticlive.douyutv.com'
-      #   port:80
-      #   path:douyuUrl
-      #   method:'GET'
+      #   url:zhanqiUrl
+      #   headers:headers
+      options=@createRequestOptions(zhanqiUrl,'dlpic.cdn.zhanqi.tv')
 # "http://dlpic.cdn.zhanqi.tv/live/20150419/33967_5hpHI_2015-04-19-19-59-35_big.jpg"
       res.setHeader 'Access-Control-Allow-Origin','*'
-      request.get(zhanqiUrl).pipe(res)
+      request(options).pipe(res)
 
     @getDouyuAvatarImage =(req,res,next)=>
       # console.log req.url
@@ -96,8 +133,25 @@ class Kojimako
       #   method:'GET
       # console.log avatarUrl
 
+      # headers=
+      #   'Accept':'application/json, text/plain, */*'
+      #   'Accept-Encoding':'gzip, deflate, sdch'
+      #   'Accept-Language':'en-US,en;q=0.8'
+      #   'Cache-Control':'no-cache'
+      #   'Connection':'keep-alive'
+      #   'Host':'uc.douyutv.com'
+      #   'Pragma':'no-cache'
+      #   'User-Agent':'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.2 Safari/537.36'
+
+      # options=
+      #   url:avatarUrl
+      #   headers:headers
+
+      options=@createRequestOptions(avatarUrl,'uc.douyutv.com')
+
+
       res.setHeader 'Access-Control-Allow-Origin','*'
-      request.get(avatarUrl).pipe(res)
+      request(options).pipe(res)
 
     @getZhanqiAvatarImage =(req,res,next)=>
 
@@ -109,8 +163,24 @@ class Kojimako
       #   method:'GET'
       # console.log avatarUrl
 
+      # headers=
+      #   'Accept':'application/json, text/plain, */*'
+      #   'Accept-Encoding':'gzip, deflate, sdch'
+      #   'Accept-Language':'en-US,en;q=0.8'
+      #   'Cache-Control':'no-cache'
+      #   'Connection':'keep-alive'
+      #   'Host':'pic.cdn.zhanqi.tv'
+      #   'Pragma':'no-cache'
+      #   'User-Agent':'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.2 Safari/537.36'
+
+      # options=
+      #   url:avatarUrl
+      #   headers:headers
+
+      options=@createRequestOptions(avatarUrl,'pic.cdn.zhanqi.tv')
+
       res.setHeader 'Access-Control-Allow-Origin','*'
-      request.get(avatarUrl).pipe(res)
+      request(avatarUrl).pipe(res)
 
 
     @renderIndex =(req,res,next)=>

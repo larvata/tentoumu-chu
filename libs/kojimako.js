@@ -14,6 +14,24 @@ moment = require('moment');
 Kojimako = (function() {
   function Kojimako(miki) {
     this.miki = miki;
+    this.createRequestOptions = function(host, url) {
+      var headers, options;
+      headers = {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, sdch',
+        'Accept-Language': 'en-US,en;q=0.8',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Host': host,
+        'Pragma': 'no-cache',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.2 Safari/537.36'
+      };
+      options = {
+        url: url,
+        headers: headers
+      };
+      return options;
+    };
     this.updateSchedule = (function(_this) {
       return function(req, res, next) {
         if (req.params.token !== _this.miki.config.token) {
@@ -68,34 +86,38 @@ Kojimako = (function() {
     })(this);
     this.getDouyuSnapImage = (function(_this) {
       return function(req, res, next) {
-        var douyuUrl;
+        var douyuUrl, options;
         douyuUrl = _this.miki.config.douyuWebPicUrl + req.url.replace('snap/douyu/', '');
+        options = _this.createRequestOptions(douyuUrl, 'staticlive.douyutv.com');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        return request.get(douyuUrl).pipe(res);
+        return request(options).pipe(res);
       };
     })(this);
     this.getZhanqiSnapImage = (function(_this) {
       return function(req, res, next) {
-        var zhanqiUrl;
+        var options, zhanqiUrl;
         zhanqiUrl = _this.miki.config.zhanqiWebPicUrl + req.url.replace('snap/zhanqi/', '');
+        options = _this.createRequestOptions(zhanqiUrl, 'dlpic.cdn.zhanqi.tv');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        return request.get(zhanqiUrl).pipe(res);
+        return request(options).pipe(res);
       };
     })(this);
     this.getDouyuAvatarImage = (function(_this) {
       return function(req, res, next) {
-        var avatarUrl;
+        var avatarUrl, options;
         avatarUrl = _this.miki.config.douyuAvatarAPI + req.url.replace('/avatar/douyu/', '');
+        options = _this.createRequestOptions(avatarUrl, 'uc.douyutv.com');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        return request.get(avatarUrl).pipe(res);
+        return request(options).pipe(res);
       };
     })(this);
     this.getZhanqiAvatarImage = (function(_this) {
       return function(req, res, next) {
-        var avatarUrl;
+        var avatarUrl, options;
         avatarUrl = _this.miki.config.zhanqiAvatarAPI + req.url.replace('avatar/zhanqi/', '') + "-big";
+        options = _this.createRequestOptions(avatarUrl, 'pic.cdn.zhanqi.tv');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        return request.get(avatarUrl).pipe(res);
+        return request(avatarUrl).pipe(res);
       };
     })(this);
     this.renderIndex = (function(_this) {
