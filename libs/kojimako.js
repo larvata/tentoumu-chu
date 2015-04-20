@@ -14,25 +14,6 @@ moment = require('moment');
 Kojimako = (function() {
   function Kojimako(miki) {
     this.miki = miki;
-    this.createRequestOptions = function(url, host) {
-      var headers, options;
-      headers = {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Encoding': 'gzip, deflate, sdch',
-        'Accept-Language': 'en-US,en;q=0.8',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-        'Host': host,
-        'Pragma': 'no-cache',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.2 Safari/537.36'
-      };
-      options = {
-        url: url,
-        headers: headers
-      };
-      console.log(url);
-      return options;
-    };
     this.updateSchedule = (function(_this) {
       return function(req, res, next) {
         if (req.params.token !== _this.miki.config.token) {
@@ -89,7 +70,7 @@ Kojimako = (function() {
       return function(req, res, next) {
         var douyuUrl, options;
         douyuUrl = _this.miki.config.douyuWebPicUrl + req.url.replace('snap/douyu/', '');
-        options = _this.createRequestOptions(douyuUrl, 'staticlive.douyutv.com');
+        options = _this.miki.createRequestOptions(douyuUrl, 'staticlive.douyutv.com');
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
         req.on('response', function(resp) {
@@ -103,7 +84,7 @@ Kojimako = (function() {
       return function(req, res, next) {
         var options, zhanqiUrl;
         zhanqiUrl = _this.miki.config.zhanqiWebPicUrl + req.url.replace('snap/zhanqi/', '');
-        options = _this.createRequestOptions(zhanqiUrl, 'dlpic.cdn.zhanqi.tv');
+        options = _this.miki.createRequestOptions(zhanqiUrl, 'dlpic.cdn.zhanqi.tv');
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
         req.on('response', function(resp) {
@@ -117,7 +98,7 @@ Kojimako = (function() {
       return function(req, res, next) {
         var avatarUrl, options;
         avatarUrl = _this.miki.config.douyuAvatarAPI + req.url.replace('/avatar/douyu/', '');
-        options = _this.createRequestOptions(avatarUrl, 'uc.douyutv.com');
+        options = _this.miki.createRequestOptions(avatarUrl, 'uc.douyutv.com');
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
         req.on('response', function(resp) {
@@ -131,7 +112,7 @@ Kojimako = (function() {
       return function(req, res, next) {
         var avatarUrl, options;
         avatarUrl = _this.miki.config.zhanqiAvatarAPI + req.url.replace('avatar/zhanqi/', '') + "-big";
-        options = _this.createRequestOptions(avatarUrl, 'pic.cdn.zhanqi.tv');
+        options = _this.miki.createRequestOptions(avatarUrl, 'pic.cdn.zhanqi.tv');
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
         req.on('response', function(resp) {

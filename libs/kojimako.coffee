@@ -7,25 +7,6 @@ moment = require 'moment'
 class Kojimako
   constructor: (@miki) ->
 
-    @createRequestOptions=(url,host)->
-      headers=
-        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
-        'Accept-Encoding':'gzip, deflate, sdch'
-        'Accept-Language':'en-US,en;q=0.8'
-        'Cache-Control':'no-cache'
-        'Connection':'keep-alive'
-        'Host':host
-        'Pragma':'no-cache'
-        'User-Agent':'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.2 Safari/537.36'
-
-      options=
-        url:url
-        headers:headers
-
-      console.log url
-
-      return options
-
     # update schedule entity
     @updateSchedule=(req,res,next)=>
 
@@ -95,7 +76,7 @@ class Kojimako
       #   url:douyuUrl
       #   headers:headers
 
-      options=@createRequestOptions(douyuUrl,'staticlive.douyutv.com')
+      options=@miki.createRequestOptions(douyuUrl,'staticlive.douyutv.com')
 
       res.setHeader 'Access-Control-Allow-Origin','*'
 
@@ -123,7 +104,7 @@ class Kojimako
       # options=
       #   url:zhanqiUrl
       #   headers:headers
-      options=@createRequestOptions(zhanqiUrl,'dlpic.cdn.zhanqi.tv')
+      options=@miki.createRequestOptions(zhanqiUrl,'dlpic.cdn.zhanqi.tv')
 # "http://dlpic.cdn.zhanqi.tv/live/20150419/33967_5hpHI_2015-04-19-19-59-35_big.jpg"
       res.setHeader 'Access-Control-Allow-Origin','*'
       req=request(options)
@@ -157,7 +138,7 @@ class Kojimako
       #   url:avatarUrl
       #   headers:headers
 
-      options=@createRequestOptions(avatarUrl,'uc.douyutv.com')
+      options=@miki.createRequestOptions(avatarUrl,'uc.douyutv.com')
 
 
       res.setHeader 'Access-Control-Allow-Origin','*'
@@ -191,7 +172,7 @@ class Kojimako
       #   url:avatarUrl
       #   headers:headers
 
-      options=@createRequestOptions(avatarUrl,'pic.cdn.zhanqi.tv')
+      options=@miki.createRequestOptions(avatarUrl,'pic.cdn.zhanqi.tv')
 
       res.setHeader 'Access-Control-Allow-Origin','*'
       req=request(options)

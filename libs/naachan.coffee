@@ -19,7 +19,7 @@ class Room
     {@room_id,@always_show,@disabled,@live_provider}=roomInfo
 
 
-      
+
   duration:()->
     timestamp=parseInt(@show_time)
     return moment.unix(timestamp).locale('zh-cn').fromNow(true)
@@ -38,12 +38,12 @@ parseDouyuRoomInfo=(jsonText,room)->
     room.online=obj.online
     room.room_url=obj.url
 
-    
+
 
   catch e
     console.log "ERROR: parse room info"
     console.log room.url
-    console.log e
+    console.log jsonText
     console.log "------------"
 
 parseZhanqiRoomInfo=(jsonText,room)->
@@ -53,7 +53,7 @@ parseZhanqiRoomInfo=(jsonText,room)->
     room.show_status=parseInt(obj.status)
     if room.show_status isnt 2
       room.show_status=1
-    
+
     room.room_name = obj.title
     room.show_time=obj.liveTime
     room.live_snapshot=obj.bpic
@@ -66,9 +66,9 @@ parseZhanqiRoomInfo=(jsonText,room)->
   catch e
     console.log "ERROR: parse room info"
     console.log room.url
-    console.log e
+    console.log jsonText
     console.log  "------------"
-    
+
 
 class Okada
   constructor: (@miki) ->
@@ -77,10 +77,17 @@ class Okada
     miki=@miki
 
     checker=(room)->
-      request room.url,(err,res,body)->
+      switch room.live_provider
+        when 'douyu'
+          hostname='www.douyutv.com'
+        when 'zhanqi'
+          hostname='www.zhanqi.tv'
+      options=miki.createRequestOptions(room.url,hostname)
+      # console.log "rurl:#{room.url}"
+      request options,(err,res,body)->
         if err?
           console.log room.url
-          console.log err   
+          console.log err
 
         switch room.live_provider
           when "douyu"
@@ -107,7 +114,7 @@ class Okada
 
     for r in @miki.config.roomInfo
       continue if r.disabled
-      
+
       switch r.live_provider
         when "douyu"
           url=@miki.config.douyuRoomAPI+r.room_id

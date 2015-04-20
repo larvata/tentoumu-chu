@@ -51,7 +51,7 @@ parseDouyuRoomInfo = function(jsonText, room) {
     e = _error;
     console.log("ERROR: parse room info");
     console.log(room.url);
-    console.log(e);
+    console.log(jsonText);
     return console.log("------------");
   }
 };
@@ -75,7 +75,7 @@ parseZhanqiRoomInfo = function(jsonText, room) {
     e = _error;
     console.log("ERROR: parse room info");
     console.log(room.url);
-    console.log(e);
+    console.log(jsonText);
     return console.log("------------");
   }
 };
@@ -89,7 +89,16 @@ Okada = (function() {
     var checker, i, len, miki, r, ref, results, room, url;
     miki = this.miki;
     checker = function(room) {
-      return request(room.url, function(err, res, body) {
+      var hostname, options;
+      switch (room.live_provider) {
+        case 'douyu':
+          hostname = 'www.douyutv.com';
+          break;
+        case 'zhanqi':
+          hostname = 'www.zhanqi.tv';
+      }
+      options = miki.createRequestOptions(room.url, hostname);
+      return request(options, function(err, res, body) {
         if (err != null) {
           console.log(room.url);
           console.log(err);
