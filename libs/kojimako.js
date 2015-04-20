@@ -14,7 +14,7 @@ moment = require('moment');
 Kojimako = (function() {
   function Kojimako(miki) {
     this.miki = miki;
-    this.createRequestOptions = function(host, url) {
+    this.createRequestOptions = function(url, host) {
       var headers, options;
       headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
