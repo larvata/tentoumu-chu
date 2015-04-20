@@ -74,8 +74,10 @@ Kojimako = (function() {
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
         req.on('response', function(resp) {
-          console.log(options.url);
-          return console.log(resp.statusCode);
+          if (resp.statusCode !== 200) {
+            console.log(options.url);
+            return console.log(resp.statusCode);
+          }
         });
         return req.pipe(res);
       };
@@ -88,8 +90,10 @@ Kojimako = (function() {
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
         req.on('response', function(resp) {
-          console.log(options.url);
-          return console.log(resp.statusCode);
+          if (resp.statusCode !== 200) {
+            console.log(options.url);
+            return console.log(resp.statusCode);
+          }
         });
         return req.pipe(res);
       };
@@ -102,8 +106,10 @@ Kojimako = (function() {
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
         req.on('response', function(resp) {
-          console.log(options.url);
-          return console.log(resp.statusCode);
+          if (resp.statusCode !== 200) {
+            console.log(options.url);
+            return console.log(resp.statusCode);
+          }
         });
         return req.pipe(res);
       };
@@ -116,8 +122,10 @@ Kojimako = (function() {
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
         req.on('response', function(resp) {
-          console.log(options.url);
-          return console.log(resp.statusCode);
+          if (resp.statusCode !== 200) {
+            console.log(options.url);
+            return console.log(resp.statusCode);
+          }
         });
         return req.pipe(res);
       };

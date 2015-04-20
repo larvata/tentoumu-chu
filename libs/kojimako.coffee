@@ -82,8 +82,9 @@ class Kojimako
 
       req=request(options)
       req.on 'response',(resp)->
-        console.log options.url
-        console.log resp.statusCode
+        if resp.statusCode isnt 200
+          console.log options.url
+          console.log resp.statusCode
       req.pipe(res)
 
     @getZhanqiSnapImage =(req,res,next)=>
@@ -109,8 +110,9 @@ class Kojimako
       res.setHeader 'Access-Control-Allow-Origin','*'
       req=request(options)
       req.on 'response',(resp)->
-        console.log options.url
-        console.log resp.statusCode
+        if resp.statusCode isnt 200
+          console.log options.url
+          console.log resp.statusCode
       req.pipe(res)
 
     @getDouyuAvatarImage =(req,res,next)=>
@@ -144,8 +146,9 @@ class Kojimako
       res.setHeader 'Access-Control-Allow-Origin','*'
       req=request(options)
       req.on 'response',(resp)->
-        console.log options.url
-        console.log resp.statusCode
+        if resp.statusCode isnt 200
+          console.log options.url
+          console.log resp.statusCode
       req.pipe(res)
 
     @getZhanqiAvatarImage =(req,res,next)=>
@@ -177,8 +180,9 @@ class Kojimako
       res.setHeader 'Access-Control-Allow-Origin','*'
       req=request(options)
       req.on 'response',(resp)->
-        console.log options.url
-        console.log resp.statusCode
+        if resp.statusCode isnt 200
+          console.log options.url
+          console.log resp.statusCode
       req.pipe(res)
 
 
