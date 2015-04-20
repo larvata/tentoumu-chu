@@ -22,6 +22,8 @@ class Kojimako
         url:url
         headers:headers
 
+      console.log url
+
       return options
 
     # update schedule entity
@@ -97,7 +99,11 @@ class Kojimako
 
       res.setHeader 'Access-Control-Allow-Origin','*'
 
-      request(options).pipe(res)
+      req=request(options)
+      req.on 'response',(resp)->
+        console.log options.url
+        console.log resp.statusCode
+      req.pipe(res)
 
     @getZhanqiSnapImage =(req,res,next)=>
 
@@ -120,7 +126,11 @@ class Kojimako
       options=@createRequestOptions(zhanqiUrl,'dlpic.cdn.zhanqi.tv')
 # "http://dlpic.cdn.zhanqi.tv/live/20150419/33967_5hpHI_2015-04-19-19-59-35_big.jpg"
       res.setHeader 'Access-Control-Allow-Origin','*'
-      request(options).pipe(res)
+      req=request(options)
+      req.on 'response',(resp)->
+        console.log options.url
+        console.log resp.statusCode
+      req.pipe(res)
 
     @getDouyuAvatarImage =(req,res,next)=>
       # console.log req.url
@@ -151,7 +161,11 @@ class Kojimako
 
 
       res.setHeader 'Access-Control-Allow-Origin','*'
-      request(options).pipe(res)
+      req=request(options)
+      req.on 'response',(resp)->
+        console.log options.url
+        console.log resp.statusCode
+      req.pipe(res)
 
     @getZhanqiAvatarImage =(req,res,next)=>
 
@@ -180,7 +194,11 @@ class Kojimako
       options=@createRequestOptions(avatarUrl,'pic.cdn.zhanqi.tv')
 
       res.setHeader 'Access-Control-Allow-Origin','*'
-      request(avatarUrl).pipe(res)
+      req=request(options)
+      req.on 'response',(resp)->
+        console.log options.url
+        console.log resp.statusCode
+      req.pipe(res)
 
 
     @renderIndex =(req,res,next)=>

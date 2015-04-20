@@ -30,6 +30,7 @@ Kojimako = (function() {
         url: url,
         headers: headers
       };
+      console.log(url);
       return options;
     };
     this.updateSchedule = (function(_this) {
@@ -90,7 +91,12 @@ Kojimako = (function() {
         douyuUrl = _this.miki.config.douyuWebPicUrl + req.url.replace('snap/douyu/', '');
         options = _this.createRequestOptions(douyuUrl, 'staticlive.douyutv.com');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        return request(options).pipe(res);
+        req = request(options);
+        req.on('response', function(resp) {
+          console.log(options.url);
+          return console.log(resp.statusCode);
+        });
+        return req.pipe(res);
       };
     })(this);
     this.getZhanqiSnapImage = (function(_this) {
@@ -99,7 +105,12 @@ Kojimako = (function() {
         zhanqiUrl = _this.miki.config.zhanqiWebPicUrl + req.url.replace('snap/zhanqi/', '');
         options = _this.createRequestOptions(zhanqiUrl, 'dlpic.cdn.zhanqi.tv');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        return request(options).pipe(res);
+        req = request(options);
+        req.on('response', function(resp) {
+          console.log(options.url);
+          return console.log(resp.statusCode);
+        });
+        return req.pipe(res);
       };
     })(this);
     this.getDouyuAvatarImage = (function(_this) {
@@ -108,7 +119,12 @@ Kojimako = (function() {
         avatarUrl = _this.miki.config.douyuAvatarAPI + req.url.replace('/avatar/douyu/', '');
         options = _this.createRequestOptions(avatarUrl, 'uc.douyutv.com');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        return request(options).pipe(res);
+        req = request(options);
+        req.on('response', function(resp) {
+          console.log(options.url);
+          return console.log(resp.statusCode);
+        });
+        return req.pipe(res);
       };
     })(this);
     this.getZhanqiAvatarImage = (function(_this) {
@@ -117,7 +133,12 @@ Kojimako = (function() {
         avatarUrl = _this.miki.config.zhanqiAvatarAPI + req.url.replace('avatar/zhanqi/', '') + "-big";
         options = _this.createRequestOptions(avatarUrl, 'pic.cdn.zhanqi.tv');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        return request(avatarUrl).pipe(res);
+        req = request(options);
+        req.on('response', function(resp) {
+          console.log(options.url);
+          return console.log(resp.statusCode);
+        });
+        return req.pipe(res);
       };
     })(this);
     this.renderIndex = (function(_this) {
