@@ -85,7 +85,7 @@ class Kojimako
         if resp.statusCode isnt 200
           console.log options.url
           console.log resp.statusCode
-      req.pipe(res)
+      req.pipe(res,{end:true})
 
     @getZhanqiSnapImage =(req,res,next)=>
 
@@ -108,12 +108,13 @@ class Kojimako
       options=@miki.createRequestOptions(zhanqiUrl,'dlpic.cdn.zhanqi.tv')
 # "http://dlpic.cdn.zhanqi.tv/live/20150419/33967_5hpHI_2015-04-19-19-59-35_big.jpg"
       res.setHeader 'Access-Control-Allow-Origin','*'
+
       req=request(options)
       req.on 'response',(resp)->
         if resp.statusCode isnt 200
           console.log options.url
           console.log resp.statusCode
-      req.pipe(res)
+      req.pipe(res,{end:true})
 
     @getDouyuAvatarImage =(req,res,next)=>
       # console.log req.url

@@ -103,6 +103,9 @@ class Miki
       url:url
       headers:headers
       gzip:true
+      agent:false
+
+
 
     console.log "REQUEST: #{url}"
 

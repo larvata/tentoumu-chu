@@ -122,7 +122,8 @@ Miki = (function() {
     options = {
       url: url,
       headers: headers,
-      gzip: true
+      gzip: true,
+      agent: false
     };
     console.log("REQUEST: " + url);
     return options;

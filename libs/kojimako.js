@@ -79,7 +79,9 @@ Kojimako = (function() {
             return console.log(resp.statusCode);
           }
         });
-        return req.pipe(res);
+        return req.pipe(res, {
+          end: true
+        });
       };
     })(this);
     this.getZhanqiSnapImage = (function(_this) {
@@ -95,7 +97,9 @@ Kojimako = (function() {
             return console.log(resp.statusCode);
           }
         });
-        return req.pipe(res);
+        return req.pipe(res, {
+          end: true
+        });
       };
     })(this);
     this.getDouyuAvatarImage = (function(_this) {
