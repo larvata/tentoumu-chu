@@ -47,7 +47,7 @@ class Kojimako
           'show_details','show_time',
           'room_name','live_snapshot',
           'owner_avatar','fans','online','live_provider','room_url')
-          picked.room_name="#{r.room_name} (#{r.online})"
+          picked.room_name="#{r.room_name}"
           return picked
         .value()
 
