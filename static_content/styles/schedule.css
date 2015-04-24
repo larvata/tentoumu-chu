@@ -115,6 +115,8 @@ table .time.small {
 }
 .container {
   height: 100%;
+  min-height: 1050px;
+  position: relative;
   padding-top: 5px;
   padding-bottom: 5px;
   background: rgba(255, 255, 255, 0.3);
@@ -124,7 +126,6 @@ table .time.small {
   background: white;
   height: 100%;
   border-radius: 5px;
-  position: relative;
 }
 .inner > .row {
   padding: 30px;
@@ -132,7 +133,7 @@ table .time.small {
 }
 .contact {
   position: absolute;
-  right: 10px;
+  right: 30px;
   bottom: 0;
 }
 .table {

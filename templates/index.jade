@@ -2,7 +2,7 @@ doctype html
 html(lang="en")
 	head
 		meta(charset='utf-8')
-		title
+		title 节目表 - 48系番组直播间
 		link(rel='stylesheet', href="bootstrap/css/bootstrap.min.css")
 		link(rel='stylesheet', href="styles/schedule.css")
 		//- script(src="script")
@@ -13,7 +13,7 @@ html(lang="en")
 			.inner
 				.jumbotron.head.single5th
 					h1
-						a(href='http://www.douyutv.com/2246') 48系番组直播间
+						a(href='http://www.zhanqi.tv/akb49' title='战旗AKB49') 48系番组直播间
 					p.lead &nbsp;
 				.row
 					.col-md-9
@@ -43,13 +43,13 @@ html(lang="en")
 
 			div.app-box
 				div 直播通知插件
-				a.item(href='https://chrome.google.com/webstore/detail/miichan/ghnfiadioahomhmocmhgjhpmhcmcggjg') 
+				a.item(title='当前版本 v0.6.1' href='https://chrome.google.com/webstore/detail/miichan/ghnfiadioahomhmocmhgjhpmhcmcggjg') 
 					img(src='images/browser-icons/app-webstore.png') 
 					p WebStore
-				a.item(href='extensions/miichan-0.6.1.crx') 
+				a.item(href='extensions/miichan-0.6.1.crx' title='当前版本 v0.6.1') 
 					img(src='images/browser-icons/app-chrome.png') 
 					p Chrome
-				a.item(href='extensions/miichan-ff.zip') 
+				a.item(href='extensions/miichan-ff.zip' title='当前版本 v0.2') 
 					img(src='images/browser-icons/app-firefox.png') 
 					p Firefox
 
@@ -64,7 +64,7 @@ html(lang="en")
 			"mio01",
 			"nako01","nako02",
 			"sakura01","sakura02","sakura03",
-			"sashi01","sashi02","sashi03","sashi04","sashi05","sashi06"
+			"sashi01","sashi02","sashi03","sashi04","sashi05","sashi06","sashi07"
 			];
 			var tile_id=Math.floor(Math.random() * bg_tiles.length)
 			document.body.className="bg-"+bg_tiles[tile_id];
