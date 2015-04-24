@@ -61,7 +61,9 @@ parseZhanqiRoomInfo = function(jsonText, room) {
   try {
     obj = JSON.parse(jsonText).data;
     room.show_status = parseInt(obj.status);
-    if (room.show_status !== 2) {
+    if (room.show_status === 0) {
+      room.show_status = 2;
+    } else {
       room.show_status = 1;
     }
     room.room_name = obj.title;
