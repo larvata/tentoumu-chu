@@ -2,11 +2,11 @@
 hkt48
 miki01
 haruppi01 haruppi02 haruppi03 haruppi04 haruppi05 haruppi06
-meru01
+meru01 meru02
 mio01
 nako01 nako02
 sakura01 sakura02 sakura03
-sashi01 sashi02 sashi03 sashi04 sashi05 sashi06
+sashi01 sashi02 sashi03 sashi04 sashi05 sashi06 sashi07
 ;
 
 @bg-tiles-len: length(@bg-tiles);
@@ -149,8 +149,22 @@ table .time.small{
  		transition: all 0.25s ease-in-out;
  		-webkit-backface-visibility: hidden;
 
+ 		position: relative;
+
  		&>p{
  			padding-top:10px;
  		}
+	}
+
+
+	.badget{
+		position: absolute;
+		right: 0;
+		top:14px;
+		background-color: #00b5ad;
+		color:white;
+		border-radius: 3px;
+		font-size: 12px;
+		padding:1px 5px;
 	}
 }

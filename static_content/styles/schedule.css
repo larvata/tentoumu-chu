@@ -31,6 +31,9 @@ body.bg-haruppi06 {
 body.bg-meru01 {
   background-image: url("../images/bg-tiles/meru01.jpg");
 }
+body.bg-meru02 {
+  background-image: url("../images/bg-tiles/meru02.jpg");
+}
 body.bg-mio01 {
   background-image: url("../images/bg-tiles/mio01.jpg");
 }
@@ -66,6 +69,9 @@ body.bg-sashi05 {
 }
 body.bg-sashi06 {
   background-image: url("../images/bg-tiles/sashi06.jpg");
+}
+body.bg-sashi07 {
+  background-image: url("../images/bg-tiles/sashi07.jpg");
 }
 table .time {
   width: 150px;
@@ -167,7 +173,18 @@ table .time.small {
   -o-transition: all 0.25s ease-in-out;
   transition: all 0.25s ease-in-out;
   -webkit-backface-visibility: hidden;
+  position: relative;
 }
 .app-box > .item > p {
   padding-top: 10px;
+}
+.app-box .badget {
+  position: absolute;
+  right: 0;
+  top: 14px;
+  background-color: #00b5ad;
+  color: white;
+  border-radius: 3px;
+  font-size: 12px;
+  padding: 1px 5px;
 }
