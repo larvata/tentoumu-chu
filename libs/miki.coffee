@@ -104,6 +104,7 @@ class Miki
       headers:headers
       gzip:true
       agent:false
+      timeout:7000
 
 
 

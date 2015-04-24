@@ -123,7 +123,8 @@ Miki = (function() {
       url: url,
       headers: headers,
       gzip: true,
-      agent: false
+      agent: false,
+      timeout: 7000
     };
     console.log("REQUEST: " + url);
     return options;
