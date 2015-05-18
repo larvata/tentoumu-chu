@@ -69,7 +69,13 @@ Kojimako = (function() {
     this.getDouyuSnapImage = (function(_this) {
       return function(req, res, next) {
         var douyuUrl, options;
-        douyuUrl = _this.miki.config.douyuWebPicUrl + req.url.replace('snap/douyu/', '');
+        if (req.url != null) {
+          douyuUrl = _this.miki.config.douyuWebPicUrl + req.url.replace('snap/douyu/', '');
+        } else {
+          console.log("empty req.url in douyu snap");
+          res.end();
+          return;
+        }
         options = _this.miki.createRequestOptions(douyuUrl, 'staticlive.douyutv.com');
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
@@ -87,7 +93,13 @@ Kojimako = (function() {
     this.getZhanqiSnapImage = (function(_this) {
       return function(req, res, next) {
         var options, zhanqiUrl;
-        zhanqiUrl = _this.miki.config.zhanqiWebPicUrl + req.url.replace('snap/zhanqi/', '');
+        if (req.url != null) {
+          zhanqiUrl = _this.miki.config.zhanqiWebPicUrl + req.url.replace('snap/zhanqi/', '');
+        } else {
+          console.log("empty req.url in zhanqi snap");
+          res.end();
+          return;
+        }
         options = _this.miki.createRequestOptions(zhanqiUrl, 'dlpic.cdn.zhanqi.tv');
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
@@ -105,7 +117,13 @@ Kojimako = (function() {
     this.getDouyuAvatarImage = (function(_this) {
       return function(req, res, next) {
         var avatarUrl, options;
-        avatarUrl = _this.miki.config.douyuAvatarAPI + req.url.replace('/avatar/douyu/', '');
+        if (req.url != null) {
+          avatarUrl = _this.miki.config.douyuAvatarAPI + req.url.replace('/avatar/douyu/', '');
+        } else {
+          console.log("empty req.url in douyu avatar");
+          res.end();
+          return;
+        }
         options = _this.miki.createRequestOptions(avatarUrl, 'uc.douyutv.com');
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);
@@ -121,7 +139,13 @@ Kojimako = (function() {
     this.getZhanqiAvatarImage = (function(_this) {
       return function(req, res, next) {
         var avatarUrl, options;
-        avatarUrl = _this.miki.config.zhanqiAvatarAPI + req.url.replace('avatar/zhanqi/', '') + "-big";
+        if (req.url != null) {
+          avatarUrl = _this.miki.config.zhanqiAvatarAPI + req.url.replace('avatar/zhanqi/', '') + "-big";
+        } else {
+          console.log("empty req.url in zhanqi avatar");
+          res.end();
+          return;
+        }
         options = _this.miki.createRequestOptions(avatarUrl, 'pic.cdn.zhanqi.tv');
         res.setHeader('Access-Control-Allow-Origin', '*');
         req = request(options);

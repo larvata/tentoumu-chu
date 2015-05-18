@@ -60,7 +60,12 @@ class Kojimako
     @getDouyuSnapImage =(req,res,next)=>
 
       # console.log "snap provider douyu"
-      douyuUrl=@miki.config.douyuWebPicUrl+req.url.replace('snap/douyu/','')
+      if req.url?
+        douyuUrl=@miki.config.douyuWebPicUrl+req.url.replace('snap/douyu/','')
+      else
+        console.log "empty req.url in douyu snap"
+        res.end()
+        return
       # console.log douyuUrl
       # headers=
       #   'Accept':'application/json, text/plain, */*'
@@ -90,7 +95,12 @@ class Kojimako
     @getZhanqiSnapImage =(req,res,next)=>
 
       # console.log "snap provider #{req.params.provider}"
-      zhanqiUrl=@miki.config.zhanqiWebPicUrl+req.url.replace('snap/zhanqi/','')
+      if req.url?
+        zhanqiUrl=@miki.config.zhanqiWebPicUrl+req.url.replace('snap/zhanqi/','')
+      else
+        console.log "empty req.url in zhanqi snap"
+        res.end()
+        return
       # console.log zhanqiUrl
       # headers=
       #   'Accept':'application/json, text/plain, */*'
@@ -119,7 +129,15 @@ class Kojimako
     @getDouyuAvatarImage =(req,res,next)=>
       # console.log req.url
       # console.log req.url.replace('avatar/douyu/','')
-      avatarUrl=@miki.config.douyuAvatarAPI+req.url.replace('/avatar/douyu/','')
+
+      # check empty avatar from extension
+      if req.url?
+        avatarUrl=@miki.config.douyuAvatarAPI+req.url.replace('/avatar/douyu/','')
+      else
+        console.log "empty req.url in douyu avatar"
+        res.end()
+        return
+
       # options=
       #   hostname:'uc.douyutv.com'
       #   port:80
@@ -154,7 +172,12 @@ class Kojimako
 
     @getZhanqiAvatarImage =(req,res,next)=>
 
-      avatarUrl=@miki.config.zhanqiAvatarAPI+req.url.replace('avatar/zhanqi/','')+"-big"
+      if req.url?
+        avatarUrl=@miki.config.zhanqiAvatarAPI+req.url.replace('avatar/zhanqi/','')+"-big"
+      else
+        console.log "empty req.url in zhanqi avatar"
+        res.end()
+        return
       # options=
       #   hostname:'uc.douyutv.com'
       #   port:80
