@@ -19,10 +19,11 @@ class Tashima
 
         getTopArticle=()->
             article=@read()
-            console.log item.title
+            console.log article.title
             console.log '------'
-            miki.updateSchedule(article)
             feedparser.removeListener 'readable',getTopArticle
+            miki.updateSchedule(article)
+
 
         req.on 'response',(res)->
             if res.statusCode isnt 200

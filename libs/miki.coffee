@@ -1,6 +1,9 @@
 redisModule = require('redis')
 phantom=require 'phantom'
 _ = require 'underscore'
+cheerio = require 'cheerio'
+fs = require 'fs'
+moment = require 'moment'
 
 schedules=[]
 rooms=[]
@@ -20,6 +23,10 @@ class Miki
         s= JSON.parse(r)
         schedules.push s
 
+
+    ###
+      generate schedule pic
+    ###
     @generaterTimer=undefined
 
     @generater=()=>
@@ -31,6 +38,13 @@ class Miki
             page.render('static_content/schedule.png')
             console.log "Output on "+ new Date()
             ph.exit()
+
+  generatePic:()->
+    clearTimeout @generaterTimer
+    @generaterTimer= setTimeout(@generater,5000)
+
+
+
 
   # obsolete: new schedule structure with auto expire feature
   getSchedules:()->
@@ -72,9 +86,7 @@ class Miki
 
     return schedules
 
-  generatePic:()->
-    clearTimeout @generaterTimer
-    @generaterTimer= setTimeout(@generater,5000)
+
 
   getRooms:()->
     return rooms
@@ -112,6 +124,138 @@ class Miki
     console.log "REQUEST: #{url}"
 
     return options
+
+  parseProgramme:(text,template)->
+    ret={
+      type:'failed'
+      year:template.year
+      month:-1
+      day:-1
+      start:''
+      end:''
+      channel:''
+      title:''
+      episode:''
+      members:''
+    }
+
+    match=text.match(/(\d+)月(\d+)日（\S）/)
+    if match?
+      ret.type='date'
+      ret.month=match[1]
+      ret.day=match[2]
+      return ret
+
+    match=text.match(/(\S+)～(\S+)\s(.*)\s『(.*)』(\s#\d+)?(\s.*)?/)
+    if match?
+      ret.month=template.month
+      ret.day=template.day
+      ret.type='programme'
+      ret.start=match[1]
+      ret.end=match[2]
+      ret.channel=match[3]
+      ret.title=match[4]
+      ret.episode=(match[5]||'').trim()
+      ret.members=(match[6]||'').trim()
+      return ret
+
+    return ret
+
+    console.log "failed try parse: #{text}"
+
+  parseSchedule:(article)->
+    $= cheerio.load(article.description,{decodeEntities: false})
+    text =  $('p').html().split('<br>')
+    lastTemplate={}
+
+
+    m=moment(article.pubdate)
+
+    lastTemplate={
+      year:m.year()
+    }
+
+
+    # dateBag={}
+    dayCount=0
+    schedule=[]
+    for t in text
+      break if dayCount is 2
+      ret=@parseProgramme(t,lastTemplate)
+      if ret.type is 'date'
+        dayCount++
+        lastTemplate=ret
+      else if ret.type is 'programme'
+        schedule.push ret
+    return schedule
+
+  getProgrammeKey:(programme)->
+    key="programme:"
+    key+=programme.month
+    key+=":"
+    key+=programme.day
+    key+=":"
+    key+=programme.start
+    key+=":"
+    key+=programme.title
+    return key
+
+
+  getExpireSeconds:(programme)->
+
+    # delay 1hour for delete
+    offset=3600
+
+    # todo
+    hour = programme.end.split(':')[1]
+    if hour>=24
+      hour-=24
+      programme.month++
+
+    if programme.month is 13
+      programme.month=1
+
+      # ...
+
+
+    timeString="2015 #{programme.month} #{programme.day} #{programme.end} +0900"
+    endMoment=moment(timeString,'YYYY MM DD HH mm Z')
+
+    currentMoment=moment()
+    countdown=endMoment.diff(currentMoment,'second')+offset
+
+    return countdown
+
+
+  updateSchedule:(article)->
+    console.log "in updateSchedule"
+    console.log article.pubdate
+    schedule=@parseSchedule(article)
+    fs.writeFileSync './out.json',JSON.stringify(schedule,null,2)
+    return
+
+
+
+    for p in schedule
+      console.log JSON.stringify(p)
+      key=@getProgrammeKey(p)
+      countdown=@getExpireSeconds(p)
+
+      console.log "key: #{key}"
+      console.log "countdown: #{countdown}"
+      redis.hmset "month",p
+      redis.expire key,countdown
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = Miki
 

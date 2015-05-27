@@ -21,10 +21,10 @@ Tashima = (function() {
     getTopArticle = function() {
       var article;
       article = this.read();
-      console.log(item.title);
+      console.log(article.title);
       console.log('------');
-      miki.updateSchedule(article);
-      return feedparser.removeListener('readable', getTopArticle);
+      feedparser.removeListener('readable', getTopArticle);
+      return miki.updateSchedule(article);
     };
     req.on('response', function(res) {
       if (res.statusCode !== 200) {
