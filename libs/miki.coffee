@@ -32,10 +32,11 @@ class Miki
             console.log "Output on "+ new Date()
             ph.exit()
 
+  # obsolete: new schedule structure with auto expire feature
   getSchedules:()->
     return schedules
 
-
+  # obsolete: new schedule structure with auto expire feature
   setSchedule:(schedule)->
     found=false
     for i in [0...schedules.length]
