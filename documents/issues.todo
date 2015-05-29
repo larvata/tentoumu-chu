@@ -1,0 +1,45 @@
+ ☐ api版本指定
+   /api/v1/*
+   v1版本api列表
+     获取schedule列表
+
+     [get]
+     [refresh:600s]
+     [in:version:版本不一致追加更新提示]
+     /api/v1/schedule
+
+     [put]
+     /api/v1/programme
+
+     [get]
+     [refresh:180s]
+     [in:version:版本不一致追加更新提示]
+     /api/v1/rooms
+
+     [get]
+     [in:version:版本不一致追加更新提示]
+     /api/v1/all -> 返回聚合信息
+
+     -----
+     弃用旧接口 返回更新提示
+     [get]/api/list -> 返回空数组[]
+     [get]/api/room -> 返回版本更新提示
+
+
+ ☐ 从服务端获取配置信息
+   接口刷新时间
+
+
+
+
+
+ ☐ new bangumi schedule manager
+ ☐ add browser extension download url to schedule list page
+ ☐ integrate node-gen to miki
+   ??
+
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ ✔ project name: schedule -> sanjuushi -> tentoumu-chu @done (15-02-27 15:55)
+ ✔ extract config(manage-page-url, token, redis-keys,etc) to seperate json file @done (15-02-27 15:56)
