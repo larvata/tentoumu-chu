@@ -20,6 +20,8 @@ rooms = [];
 redis = {};
 
 Miki = (function() {
+  var channels;
+
   function Miki(config) {
     this.config = config;
     console.log("redis server: " + this.config.redis_host + ":" + this.config.redis_port);
@@ -66,7 +68,7 @@ Miki = (function() {
   };
 
   Miki.prototype.setSchedule = function(schedule) {
-    var found, i, j, k, ref, ref1, ret, s;
+    var found, i, j, l, ref, ref1, ret, s;
     found = false;
     for (i = j = 0, ref = schedules.length; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
       s = schedules[i];
@@ -83,7 +85,7 @@ Miki = (function() {
     }
     ret = [];
     redis.del(this.config.scheduleKey);
-    for (i = k = 0, ref1 = schedules.length; 0 <= ref1 ? k < ref1 : k > ref1; i = 0 <= ref1 ? ++k : --k) {
+    for (i = l = 0, ref1 = schedules.length; 0 <= ref1 ? l < ref1 : l > ref1; i = 0 <= ref1 ? ++l : --l) {
       s = schedules[i];
       if (s.begin.length === 0 && s.end.length === 0 && s.description.length === 0) {
 
@@ -97,6 +99,25 @@ Miki = (function() {
     schedules = ret;
     this.generatePic();
     return schedules;
+  };
+
+  Miki.prototype.getSchedule = function(callback) {
+    console.log("in get schedule");
+    return redis.keys('programme:*', function(err, replies) {
+      var remains, schedule;
+      remains = replies.length;
+      schedule = [];
+      return replies.map(function(key) {
+        return redis.hgetall(key, function(err, replies) {
+          console.log(replies);
+          schedule.push(replies);
+          console.log("remains: " + remains + "  key: " + key);
+          if (--remains === 0) {
+            return callback(schedule);
+          }
+        });
+      });
+    });
   };
 
   Miki.prototype.getRooms = function() {
@@ -140,16 +161,38 @@ Miki = (function() {
     return options;
   };
 
+  channels = {
+    'tbs': 'TBS',
+    'tbs-bs': 'BS-TBS',
+    'tbs-1': 'TBSチャンネル1',
+    'ntv': '日本テレビ',
+    'ntv-bs': 'BS日テレ',
+    'ntv-plus': '日テレプラス',
+    'nhk-variety': 'NHK総合',
+    'nhk-e-1': 'NHK Eテレ1',
+    'nhk-bs-perm': 'NHK BSプレミアム',
+    'assashi': 'テレビ朝日',
+    'asashi-bs': 'BS朝日',
+    'tokyo': 'テレビ東京',
+    'tokyo-mx-1': 'TOKYO MX1',
+    'fuji': 'フジテレビ',
+    'j-sports-3': 'J SPORTS 3',
+    'fami-geki': 'ファミリー劇場',
+    'chiba': 'チバテレ',
+    'green': 'グリーンチャンネル'
+  };
+
   Miki.prototype.parseProgramme = function(text, template) {
-    var match, ret;
+    var channelFound, k, match, ret, v;
     ret = {
-      type: 'failed',
+      type: 'unknow',
       year: template.year,
       month: -1,
       day: -1,
       start: '',
       end: '',
       channel: '',
+      channelId: '',
       title: '',
       episode: '',
       members: ''
@@ -172,10 +215,21 @@ Miki = (function() {
       ret.title = match[4];
       ret.episode = (match[5] || '').trim();
       ret.members = (match[6] || '').trim();
+      channelFound = false;
+      for (k in channels) {
+        v = channels[k];
+        if (ret.channel === v) {
+          ret.channelId = k;
+          channelFound = true;
+          break;
+        }
+      }
+      if (!channelFound) {
+        console.log("ChannelId Not Found: " + ret.channel);
+      }
       return ret;
     }
     return ret;
-    return console.log("failed try parse: " + text);
   };
 
   Miki.prototype.parseSchedule = function(article) {
@@ -183,8 +237,7 @@ Miki = (function() {
     $ = cheerio.load(article.description, {
       decodeEntities: false
     });
-    text = $('p').html().split('<br>');
-    lastTemplate = {};
+    text = $.html().split('<br>');
     m = moment(article.pubdate);
     lastTemplate = {
       year: m.year()
@@ -193,7 +246,7 @@ Miki = (function() {
     schedule = [];
     for (j = 0, len = text.length; j < len; j++) {
       t = text[j];
-      if (dayCount === 2) {
+      if (dayCount === 3) {
         break;
       }
       ret = this.parseProgramme(t, lastTemplate);
@@ -216,7 +269,7 @@ Miki = (function() {
     key += ":";
     key += programme.start;
     key += ":";
-    key += programme.title;
+    key += programme.channelId;
     return key;
   };
 
@@ -231,7 +284,7 @@ Miki = (function() {
     if (programme.month === 13) {
       programme.month = 1;
     }
-    timeString = "2015 " + programme.month + " " + programme.day + " " + programme.end + " +0900";
+    timeString = programme.year + " " + programme.month + " " + programme.day + " " + programme.end + " +0900";
     endMoment = moment(timeString, 'YYYY MM DD HH mm Z');
     currentMoment = moment();
     countdown = endMoment.diff(currentMoment, 'second') + offset;
@@ -241,10 +294,9 @@ Miki = (function() {
   Miki.prototype.updateSchedule = function(article) {
     var countdown, j, key, len, p, results, schedule;
     console.log("in updateSchedule");
-    console.log(article.pubdate);
     schedule = this.parseSchedule(article);
     fs.writeFileSync('./out.json', JSON.stringify(schedule, null, 2));
-    return;
+    console.log("schedule parse done");
     results = [];
     for (j = 0, len = schedule.length; j < len; j++) {
       p = schedule[j];
@@ -252,8 +304,9 @@ Miki = (function() {
       key = this.getProgrammeKey(p);
       countdown = this.getExpireSeconds(p);
       console.log("key: " + key);
+      console.log(p);
       console.log("countdown: " + countdown);
-      redis.hmset("month", p);
+      redis.hmset(key, p);
       results.push(redis.expire(key, countdown));
     }
     return results;

@@ -87,6 +87,32 @@ class Miki
     return schedules
 
 
+  # replace old getSchedules()
+  getSchedule:(callback)->
+    console.log "in get schedule"
+
+    redis.keys 'programme:*',(err,replies)->
+      remains=replies.length
+      schedule=[]
+
+      replies.map (key)->
+        # console.log "current key: #{key}"
+
+        redis.hgetall key,(err,replies)->
+          console.log replies
+
+          schedule.push replies
+          console.log "remains: #{remains}  key: #{key}"
+          if --remains is 0
+
+            callback(schedule)
+
+
+
+
+
+
+
 
   getRooms:()->
     return rooms
@@ -125,15 +151,47 @@ class Miki
 
     return options
 
+  # formats: station-channel-id
+  channels={
+    'tbs':'TBS'
+    'tbs-bs':'BS-TBS'
+    'tbs-1':'TBSチャンネル1'
+
+    'ntv':'日本テレビ'
+    'ntv-bs':'BS日テレ'
+    'ntv-plus':'日テレプラス'
+
+    'nhk-variety':'NHK総合'
+    'nhk-e-1':'NHK Eテレ1'
+    'nhk-bs-perm':'NHK BSプレミアム'
+
+    'assashi':'テレビ朝日'
+    'asashi-bs':'BS朝日'
+
+    'tokyo':'テレビ東京'
+    'tokyo-mx-1':'TOKYO MX1'
+
+    'fuji':'フジテレビ'
+
+    'j-sports-3':'J SPORTS 3'
+
+    'fami-geki':'ファミリー劇場'
+
+    'chiba':'チバテレ'
+
+    'green':'グリーンチャンネル'
+
+  }
   parseProgramme:(text,template)->
     ret={
-      type:'failed'
+      type:'unknow'
       year:template.year
       month:-1
       day:-1
       start:''
       end:''
       channel:''
+      channelId:''
       title:''
       episode:''
       members:''
@@ -157,36 +215,66 @@ class Miki
       ret.title=match[4]
       ret.episode=(match[5]||'').trim()
       ret.members=(match[6]||'').trim()
+
+      channelFound=false
+      for k, v of channels
+        if ret.channel is v
+          ret.channelId = k
+          channelFound=true
+          break
+
+      if !channelFound
+        console.log "ChannelId Not Found: #{ret.channel}"
+
       return ret
 
+    # console.log "failed try parse: #{text}"
     return ret
 
-    console.log "failed try parse: #{text}"
+
 
   parseSchedule:(article)->
     $= cheerio.load(article.description,{decodeEntities: false})
-    text =  $('p').html().split('<br>')
-    lastTemplate={}
+
+    # console.log article.description
+
+    # console.log "endof-------------------article.description"
+
+    # try
+    #   text =  $('p').html().split('<br>')
+    # catch e
+    #   console.log $('p').html()
+      # throw new Error("1212121212121212")
+
+    text =  $.html().split('<br>')
+
+    # console.log text
+
 
 
     m=moment(article.pubdate)
-
     lastTemplate={
       year:m.year()
     }
 
 
+    # console.log "length: #{text.length}"
     # dateBag={}
     dayCount=0
     schedule=[]
     for t in text
-      break if dayCount is 2
+      break if dayCount is 3
       ret=@parseProgramme(t,lastTemplate)
+      # console.log ret
       if ret.type is 'date'
         dayCount++
         lastTemplate=ret
       else if ret.type is 'programme'
         schedule.push ret
+
+      # console.log "dayCount: #{dayCount}"
+
+    # console.log "endof for"
     return schedule
 
   getProgrammeKey:(programme)->
@@ -197,28 +285,29 @@ class Miki
     key+=":"
     key+=programme.start
     key+=":"
-    key+=programme.title
+    key+=programme.channelId
     return key
 
 
   getExpireSeconds:(programme)->
 
-    # delay 1hour for delete
+    # delay 1hour for key expire
     offset=3600
 
     # todo
     hour = programme.end.split(':')[1]
     if hour>=24
       hour-=24
-      programme.month++
+      programme.day++
+
+    if day
+      # ...
+
 
     if programme.month is 13
       programme.month=1
 
-      # ...
-
-
-    timeString="2015 #{programme.month} #{programme.day} #{programme.end} +0900"
+    timeString="#{programme.year} #{programme.month} #{programme.day} #{programme.end} +0900"
     endMoment=moment(timeString,'YYYY MM DD HH mm Z')
 
     currentMoment=moment()
@@ -229,10 +318,16 @@ class Miki
 
   updateSchedule:(article)->
     console.log "in updateSchedule"
-    console.log article.pubdate
+    # console.log article.pubdate
     schedule=@parseSchedule(article)
     fs.writeFileSync './out.json',JSON.stringify(schedule,null,2)
-    return
+    console.log "schedule parse done"
+
+    # @getSchedule (schedule)->
+    #   console.log "load schedule done"
+    #   console.log schedule
+
+    # return
 
 
 
@@ -242,8 +337,10 @@ class Miki
       countdown=@getExpireSeconds(p)
 
       console.log "key: #{key}"
+      console.log p
       console.log "countdown: #{countdown}"
-      redis.hmset "month",p
+
+      redis.hmset key,p
       redis.expire key,countdown
 
 

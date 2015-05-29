@@ -11,8 +11,8 @@ config = CSON.load('./tentoumu-chu.cson')
 miki = new Nishino(config)
 
 # main server
-# mako = new Kojima(miki)
-# mako.startServer()
+mako = new Kojima(miki)
+mako.startServer()
 
 # room data fetch task
 # naachan = new Okada(miki)

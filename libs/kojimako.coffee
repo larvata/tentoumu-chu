@@ -6,6 +6,7 @@ moment = require 'moment'
 
 class Kojimako
   constructor: (@miki) ->
+    miki=@miki
 
     # update schedule entity
     @updateSchedule=(req,res,next)=>
@@ -19,7 +20,8 @@ class Kojimako
       res.setHeader 'Content-Type','application/json; charset=utf-8'
       res.end("errcode:0")
 
-    @getSchedules =(req,res,next)=>
+    # obsolete:
+    @getSchedules =(req,res,next)->
       respList=@miki.getSchedules().map (s)->
         begin:s.begin
         end:s.end
@@ -28,10 +30,16 @@ class Kojimako
         detail:s.detail
         order:s.order
 
-
       res.setHeader 'Access-Control-Allow-Origin','*'
       res.setHeader 'Content-Type','application/json; charset=utf-8'
       res.end(JSON.stringify(respList))
+
+    @getSchedule=(req,res,next)->
+      miki.getSchedule (schedule)->
+        res.setHeader 'Access-Control-Allow-Origin','*'
+        res.setHeader 'Content-Type','application/json; charset=utf-8'
+        # todo: stringify is necessary
+        res.end(JSON.stringify(schedule))
 
     @getRooms= (req,res,next)=>
       roomList=_.chain @miki.getRooms()
@@ -234,6 +242,8 @@ class Kojimako
 
     server.get('/api/list',@getSchedules)
     server.get('/api/room',@getRooms)
+
+    server.get("/api/#{@miki.config.apiVersions.v1}/schedule",@getSchedule)
 
     server.get('/headless',@renderHeaderless)
 

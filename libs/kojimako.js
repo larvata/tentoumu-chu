@@ -12,8 +12,10 @@ _ = require('underscore');
 moment = require('moment');
 
 Kojimako = (function() {
-  function Kojimako(miki) {
-    this.miki = miki;
+  function Kojimako(miki1) {
+    var miki;
+    this.miki = miki1;
+    miki = this.miki;
     this.updateSchedule = (function(_this) {
       return function(req, res, next) {
         if (req.params.token !== _this.miki.config.token) {
@@ -26,24 +28,29 @@ Kojimako = (function() {
         return res.end("errcode:0");
       };
     })(this);
-    this.getSchedules = (function(_this) {
-      return function(req, res, next) {
-        var respList;
-        respList = _this.miki.getSchedules().map(function(s) {
-          return {
-            begin: s.begin,
-            end: s.end,
-            description: s.description,
-            duration: s.duration,
-            detail: s.detail,
-            order: s.order
-          };
-        });
+    this.getSchedules = function(req, res, next) {
+      var respList;
+      respList = this.miki.getSchedules().map(function(s) {
+        return {
+          begin: s.begin,
+          end: s.end,
+          description: s.description,
+          duration: s.duration,
+          detail: s.detail,
+          order: s.order
+        };
+      });
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      return res.end(JSON.stringify(respList));
+    };
+    this.getSchedule = function(req, res, next) {
+      return miki.getSchedule(function(schedule) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        return res.end(JSON.stringify(respList));
-      };
-    })(this);
+        return res.end(JSON.stringify(schedule));
+      });
+    };
     this.getRooms = (function(_this) {
       return function(req, res, next) {
         var roomList;
@@ -199,6 +206,7 @@ Kojimako = (function() {
     server.get('/api/list/:token', this.getSchedules);
     server.get('/api/list', this.getSchedules);
     server.get('/api/room', this.getRooms);
+    server.get("/api/" + this.miki.config.apiVersions.v1 + "/schedule", this.getSchedule);
     server.get('/headless', this.renderHeaderless);
     server.get('/snap/douyu/.*', this.getDouyuSnapImage);
     server.get('/snap/zhanqi/.*', this.getZhanqiSnapImage);
