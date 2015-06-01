@@ -109,11 +109,13 @@ Miki = (function() {
       schedule = [];
       return replies.map(function(key) {
         return redis.hgetall(key, function(err, replies) {
-          console.log(replies);
+          var ret;
           schedule.push(replies);
           console.log("remains: " + remains + "  key: " + key);
           if (--remains === 0) {
-            return callback(schedule);
+            ret = _.sortBy(schedule, 'start').toArray();
+            console.log(ret);
+            return callback(ret);
           }
         });
       });
@@ -274,18 +276,24 @@ Miki = (function() {
   };
 
   Miki.prototype.getExpireSeconds = function(programme) {
-    var countdown, currentMoment, endMoment, hour, offset, timeString;
+    var countdown, currentMoment, endMoment, hour, hourOverflow, minute, offset, timeParts, timeString;
     offset = 3600;
-    hour = programme.end.split(':')[1];
+    timeParts = programme.end.split(':');
+    hour = timeParts[0];
+    minute = timeParts[1];
     if (hour >= 24) {
+      hourOverflow = true;
       hour -= 24;
-      programme.month++;
+    } else {
+      hourOverflow = false;
     }
-    if (programme.month === 13) {
-      programme.month = 1;
-    }
-    timeString = programme.year + " " + programme.month + " " + programme.day + " " + programme.end + " +0900";
+    timeString = programme.year + " " + programme.month + " " + programme.day + " " + hour + " " + minute + " +0900";
+    console.log("source* " + timeString);
     endMoment = moment(timeString, 'YYYY MM DD HH mm Z');
+    if (hourOverflow) {
+      endMoment.add(1, 'day');
+    }
+    console.log("end* " + endMoment.format('YYYY M D H m Z'));
     currentMoment = moment();
     countdown = endMoment.diff(currentMoment, 'second') + offset;
     return countdown;

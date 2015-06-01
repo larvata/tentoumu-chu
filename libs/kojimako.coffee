@@ -35,6 +35,7 @@ class Kojimako
       res.end(JSON.stringify(respList))
 
     @getSchedule=(req,res,next)->
+      console.log "in getscheddule"
       miki.getSchedule (schedule)->
         res.setHeader 'Access-Control-Allow-Origin','*'
         res.setHeader 'Content-Type','application/json; charset=utf-8'
@@ -242,6 +243,8 @@ class Kojimako
 
     server.get('/api/list',@getSchedules)
     server.get('/api/room',@getRooms)
+
+    console.log "/api/#{@miki.config.apiVersions.v1}/schedule"
 
     server.get("/api/#{@miki.config.apiVersions.v1}/schedule",@getSchedule)
 

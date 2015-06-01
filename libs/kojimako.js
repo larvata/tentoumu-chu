@@ -45,6 +45,7 @@ Kojimako = (function() {
       return res.end(JSON.stringify(respList));
     };
     this.getSchedule = function(req, res, next) {
+      console.log("in getscheddule");
       return miki.getSchedule(function(schedule) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -206,6 +207,7 @@ Kojimako = (function() {
     server.get('/api/list/:token', this.getSchedules);
     server.get('/api/list', this.getSchedules);
     server.get('/api/room', this.getRooms);
+    console.log("/api/" + this.miki.config.apiVersions.v1 + "/schedule");
     server.get("/api/" + this.miki.config.apiVersions.v1 + "/schedule", this.getSchedule);
     server.get('/headless', this.renderHeaderless);
     server.get('/snap/douyu/.*', this.getDouyuSnapImage);

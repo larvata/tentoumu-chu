@@ -99,13 +99,16 @@ class Miki
         # console.log "current key: #{key}"
 
         redis.hgetall key,(err,replies)->
-          console.log replies
+          # console.log replies
 
           schedule.push replies
           console.log "remains: #{remains}  key: #{key}"
           if --remains is 0
 
-            callback(schedule)
+            ret=_.sortBy(schedule,'start').toArray()
+
+            console.log ret
+            callback(ret)
 
 
 
@@ -295,20 +298,26 @@ class Miki
     offset=3600
 
     # todo
-    hour = programme.end.split(':')[1]
-    if hour>=24
+    timeParts=programme.end.split(':')
+    hour = timeParts[0]
+    minute = timeParts[1]
+
+
+    if hour>=24 
+      hourOverflow=true
       hour-=24
-      programme.day++
+    else
+      hourOverflow=false
 
-    if day
-      # ...
+    timeString="#{programme.year} #{programme.month} #{programme.day} #{hour} #{minute} +0900"
+    console.log "source* #{timeString}"
 
-
-    if programme.month is 13
-      programme.month=1
-
-    timeString="#{programme.year} #{programme.month} #{programme.day} #{programme.end} +0900"
     endMoment=moment(timeString,'YYYY MM DD HH mm Z')
+    # endMoment.set('hour',hour)
+
+    endMoment.add(1,'day') if hourOverflow
+
+    console.log "end* " + endMoment.format('YYYY M D H m Z')
 
     currentMoment=moment()
     countdown=endMoment.diff(currentMoment,'second')+offset
