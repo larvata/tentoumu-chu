@@ -9,6 +9,8 @@ config = CSON.load('./tentoumu-chu.cson')
 
 # storage api
 miki = new Nishino(config)
+miki.warmup()
+
 
 # main server
 mako = new Kojima(miki)

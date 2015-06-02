@@ -1,41 +1,39 @@
 request = require 'request'
-
 moment = require 'moment'
-
 FeedParser = require 'feedparser'
 
 
 class Tashima
-    constructor: (@miki) ->
+  constructor: (@miki) ->
 
-    startMonitor:()->
-        miki=@miki
+  startMonitor:()->
+    miki=@miki
+    url=miki.config.scheduleFetchRssUrl
+    checker=()->
+      console.log "[meru] start checker"
 
-        url=miki.config.scheduleFetchRssUrl
+      req=request(url)
+      feedparser=new FeedParser()
 
-        req=request(url)
+      getTopArticle=()->
+        article=@read()
+        feedparser.removeListener 'readable',getTopArticle
+        miki.updateSchedule(article)
 
-        feedparser=new FeedParser()
-
-        getTopArticle=()->
-            article=@read()
-            console.log article.title
-            console.log '------'
-            feedparser.removeListener 'readable',getTopArticle
-            miki.updateSchedule(article)
-
-
-        req.on 'response',(res)->
-            if res.statusCode isnt 200
-                return @emit('error',new Error('Bad status code'))
-            @pipe(feedparser)
-
-        feedparser.on 'readable',getTopArticle
-
-        checker=(rss)->
+        console.log "[meru] feed loaded, schedule a new checker"
+        setTimeout checker,miki.config.scheduleCheckInterval
 
 
-            setTimeout checker,10000
+      req.on 'response',(res)->
+        if res.statusCode isnt 200
+          return @emit('error',new Error('Bad status code'))
+        @pipe(feedparser)
+
+      feedparser.on 'readable',getTopArticle
+
+
+
+    checker()
 
 
 module.exports = Tashima

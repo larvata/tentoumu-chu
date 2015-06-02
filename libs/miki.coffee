@@ -5,7 +5,9 @@ cheerio = require 'cheerio'
 fs = require 'fs'
 moment = require 'moment'
 
-schedules=[]
+# schedule in memory sync with redis
+schedule=[]
+
 rooms=[]
 
 redis={}
@@ -13,15 +15,67 @@ redis={}
 class Miki
   constructor: (@config) ->
 
+
+    # config init
+    @assertConfig()
+
     # start redis client
     console.log "redis server: #{@config.redis_host}:#{@config.redis_port}"
     redis=redisModule.createClient(@config.redis_port,@config.redis_host)
 
-    # load schedules from redis
-    redis.lrange [@config.scheduleKey,0,-1],(err,replies)->
-      for r in replies
-        s= JSON.parse(r)
-        schedules.push s
+  assertConfig:()->
+
+    # manage page name
+    @config.managePath ?= 'manage.html'
+
+    # manage page auth token
+    @config.token ?= 'token'
+
+    # http server binding address:port
+    @config.host ?= '127.0.0.1'
+    @config.port ?= 3434
+
+    # redis host
+    @config.redis_host ?= '127.0.0.1'
+    @config.redis_port ?= 6379
+
+    # headless page path
+    @config.headless ?= 'headless'
+
+    # douyu api get room detail
+    @config.douyuRoomAPI ?= "http://www.douyutv.com/api/client/room/"
+
+    # douyu api get user avatar
+    @config.douyuAvatarAPI ?= "http://uc.douyutv.com/avatar.php"
+
+    # douyu api get screenshot
+    @config.douyuWebPicUrl ?= "http://staticlive.douyutv.com/upload/web_pic"
+
+    # zhanqi api get room detail
+    @config.zhanqiRoomAPI ?= "http://www.zhanqi.tv/api/static/live.roomid/"
+
+    # zhanqi api get user avatar
+    @config.zhanqiAvatarAPI ?= "http://pic.cdn.zhanqi.tv/avatar"
+
+    # zhanqi api get screenshot
+    @config.zhanqiWebPicUrl ?= "http://dlpic.cdn.zhanqi.tv/live"
+
+    # room check interval
+    @config.roomCheckInterval ?= 120000
+
+    # schedule fetch configuration [meru]
+    @config.scheduleFetchRssUrl ?=
+      "http://feedblog.ameba.jp/rss/ameblo/akb48tvinfo/rss20.xml"
+    @config.scheduleTemplatesKey ?= "scheduleTemplates"
+    @config.scheduleCheckInterval ?= 120000
+
+
+    @config.apiVersions ?= {
+      'v1':'v1'
+    }
+
+    @config.expireOffset ?= 0
+
 
 
     ###
@@ -44,84 +98,34 @@ class Miki
     @generaterTimer= setTimeout(@generater,5000)
 
 
-
-
-  # obsolete: new schedule structure with auto expire feature
-  getSchedules:()->
-    return schedules
-
-  # obsolete: new schedule structure with auto expire feature
-  setSchedule:(schedule)->
-    found=false
-    for i in [0...schedules.length]
-      s=schedules[i]
-      if s.order is schedule.order
-        s.begin=schedule.begin
-        s.end=schedule.end
-        s.description=schedule.description
-
-        found=true
-        break
-
-    schedules.push schedule if !found
-
-    ret=[]
-    redis.del @config.scheduleKey
-    for i in [0...schedules.length]
-      s=schedules[i]
-
-      if s.begin.length is 0 and s.end.length is 0 and s.description.length is 0
-      else
-        s.order=i+1
-        ret.push s
-
-        # save to redis
-        redis.rpush @config.scheduleKey,JSON.stringify(s)
-
-    # trim and set list dirty
-    redis.ltrim @config.scheduleKey,0,ret.length-1
-    schedules=ret
-
-    @generatePic()
-
-    return schedules
+  # v2.0
+  # warmup service
+  # load schedule from redis
+  warmup:()->
+    @loadSchedule()
 
 
   # replace old getSchedules()
-  getSchedule:(callback)->
-    console.log "in get schedule"
-
+  loadSchedule:()->
+    schedule=[]
     redis.keys 'programme:*',(err,replies)->
       remains=replies.length
-      schedule=[]
 
       replies.map (key)->
-        # console.log "current key: #{key}"
-
         redis.hgetall key,(err,replies)->
-          # console.log replies
-
           schedule.push replies
-          console.log "remains: #{remains}  key: #{key}"
           if --remains is 0
+            console.log "[miki] finish load schedule"
+            schedule=_.sortBy(schedule,'orderKey')
 
-            ret=_.sortBy(schedule,'start').toArray()
-
-            console.log ret
-            callback(ret)
-
-
-
-
-
-
+  getSchedule:()->
+    return schedule
 
 
   getRooms:()->
     return rooms
 
   updateRoom:(room)->
-    # if _.any(rooms,(r)->r.room_id is room.room_id)
     roomExisted=_.find(rooms,(r)->r.room_id is room.room_id)
     if roomExisted?
       roomExisted.show_status=room.show_status
@@ -148,12 +152,11 @@ class Miki
       agent:false
       timeout:7000
 
-
-
     console.log "REQUEST: #{url}"
 
     return options
 
+  # v2.0
   # formats: station-channel-id
   channels={
     'tbs':'TBS'
@@ -168,7 +171,7 @@ class Miki
     'nhk-e-1':'NHK Eテレ1'
     'nhk-bs-perm':'NHK BSプレミアム'
 
-    'assashi':'テレビ朝日'
+    'asashi':'テレビ朝日'
     'asashi-bs':'BS朝日'
 
     'tokyo':'テレビ東京'
@@ -184,7 +187,11 @@ class Miki
 
     'green':'グリーンチャンネル'
 
+    'lala':'LaLa TV'
+
   }
+
+  # v2.0
   parseProgramme:(text,template)->
     ret={
       type:'unknow'
@@ -198,6 +205,11 @@ class Miki
       title:''
       episode:''
       members:''
+      orderKey:''
+
+      # format: provider_roomId(e.g. zhanqi_33968)
+      roomId:''
+      roomTitle:''
     }
 
     match=text.match(/(\d+)月(\d+)日（\S）/)
@@ -228,59 +240,62 @@ class Miki
 
       if !channelFound
         console.log "ChannelId Not Found: #{ret.channel}"
-
       return ret
 
-    # console.log "failed try parse: #{text}"
     return ret
 
 
 
+  # v2.0
   parseSchedule:(article)->
-    $= cheerio.load(article.description,{decodeEntities: false})
-
-    # console.log article.description
-
-    # console.log "endof-------------------article.description"
-
-    # try
-    #   text =  $('p').html().split('<br>')
-    # catch e
-    #   console.log $('p').html()
-      # throw new Error("1212121212121212")
-
+    $ = cheerio.load(article.description,{decodeEntities: false})
     text =  $.html().split('<br>')
-
-    # console.log text
-
-
 
     m=moment(article.pubdate)
     lastTemplate={
       year:m.year()
     }
 
-
-    # console.log "length: #{text.length}"
-    # dateBag={}
     dayCount=0
-    schedule=[]
+    # schedule=[]
+    programmeList=[]
     for t in text
       break if dayCount is 3
       ret=@parseProgramme(t,lastTemplate)
-      # console.log ret
       if ret.type is 'date'
         dayCount++
         lastTemplate=ret
       else if ret.type is 'programme'
-        schedule.push ret
+        @assertOrderKey(ret)
+        @assertProgrammeKey(ret)
+        programmeList.push ret
 
-      # console.log "dayCount: #{dayCount}"
+    return programmeList
 
-    # console.log "endof for"
-    return schedule
+  # v2.0
+  # getProgrammeKey:(programme)->
+  #   key="programme:"
+  #   key+=programme.month
+  #   key+=":"
+  #   key+=programme.day
+  #   key+=":"
+  #   key+=programme.start
+  #   key+=":"
+  #   key+=programme.channelId
+  #   return key
 
-  getProgrammeKey:(programme)->
+
+  # v2.0
+  assertOrderKey:(programme)->
+    orderKey=programme.year
+    orderKey+=(if programme.month.length is 2 then programme.month else "0#{programme.month}")
+    orderKey+=(if programme.day.length is 2 then programme.day else "0#{programme.day}")
+    orderKey+=programme.start
+
+    programme.orderKey=orderKey
+
+  # v2.0
+  assertProgrammeKey:(programme)->
     key="programme:"
     key+=programme.month
     key+=":"
@@ -289,77 +304,86 @@ class Miki
     key+=programme.start
     key+=":"
     key+=programme.channelId
-    return key
 
+    programme.key=key
 
+  # v2.0
   getExpireSeconds:(programme)->
 
-    # delay 1hour for key expire
-    offset=3600
+    # delay seconds for key expire
+    offset=@config.expireOffset
 
-    # todo
     timeParts=programme.end.split(':')
     hour = timeParts[0]
     minute = timeParts[1]
 
-
-    if hour>=24 
+    if hour>=24
       hourOverflow=true
       hour-=24
     else
       hourOverflow=false
 
     timeString="#{programme.year} #{programme.month} #{programme.day} #{hour} #{minute} +0900"
-    console.log "source* #{timeString}"
+    # console.log "source* #{timeString}"
 
     endMoment=moment(timeString,'YYYY MM DD HH mm Z')
-    # endMoment.set('hour',hour)
-
     endMoment.add(1,'day') if hourOverflow
 
-    console.log "end* " + endMoment.format('YYYY M D H m Z')
-
+    # console.log "end* " + endMoment.format('YYYY M D H m Z')
     currentMoment=moment()
+
+    # console.log "now* " + currentMoment.format('YYYY M D H m Z')
     countdown=endMoment.diff(currentMoment,'second')+offset
 
     return countdown
 
+  # v2.0
+  saveProgramme:(programme)->
+    # key=@getProgrammeKey(programme)
 
+    # cached=_.find schedule,(p)->
+    #   p.key is programme.key
+
+    countdown=@getExpireSeconds(programme)
+
+
+
+
+    console.log "save key: #{programme.key}"
+
+    redis.hmset programme.key,programme
+    redis.expire programme.key,countdown
+    # console.log "key: #{programme.key}"
+    # console.log "countdown: #{countdown}"
+
+  # v2.0
+  # do not update programme which is already exists in schedule (by key)
   updateSchedule:(article)->
-    console.log "in updateSchedule"
-    # console.log article.pubdate
-    schedule=@parseSchedule(article)
-    fs.writeFileSync './out.json',JSON.stringify(schedule,null,2)
-    console.log "schedule parse done"
-
-    # @getSchedule (schedule)->
-    #   console.log "load schedule done"
-    #   console.log schedule
-
-    # return
+    parsedSchedule=@parseSchedule(article)
+    # fs.writeFileSync './out.json',JSON.stringify(schedule,null,2)
+    # console.log "schedule parse done"
+    # console.log schedule
 
 
+    # filter programme with existed key
+    existedKeys=_.pluck schedule,'key'
+    # console.log "existedKeys: #{existedKeys}"
 
-    for p in schedule
-      console.log JSON.stringify(p)
-      key=@getProgrammeKey(p)
-      countdown=@getExpireSeconds(p)
+    filteredSchedule=_.filter parsedSchedule,(p)->
+      # console.log "filter:"
+      # console.log "p.key: #{p.key}"
+      ret = !_.contains existedKeys,p.key
+      # console.log "#{ret}"
+      return ret
+    # # only for debug
+    # filteredKeys=_.pluck filteredSchedule,'key'
+    # console.log "filteredKeys: #{filteredKeys}"
+    # console.log new Date()
 
-      console.log "key: #{key}"
-      console.log p
-      console.log "countdown: #{countdown}"
+    for p in filteredSchedule
+      @saveProgramme(p)
 
-      redis.hmset key,p
-      redis.expire key,countdown
-
-
-
-
-
-
-
-
-
+    @loadSchedule()
 
 
 

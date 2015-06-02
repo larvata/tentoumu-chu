@@ -15,6 +15,8 @@ config = CSON.load('./tentoumu-chu.cson');
 
 miki = new Nishino(config);
 
+miki.warmup();
+
 mako = new Kojima(miki);
 
 mako.startServer();

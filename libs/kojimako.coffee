@@ -22,25 +22,46 @@ class Kojimako
 
     # obsolete:
     @getSchedules =(req,res,next)->
-      respList=@miki.getSchedules().map (s)->
-        begin:s.begin
-        end:s.end
-        description:s.description
-        duration:s.duration
-        detail:s.detail
-        order:s.order
+      # respList=@miki.getSchedules().map (s)->
+      #   begin:s.begin
+      #   end:s.end
+      #   description:s.description
+      #   duration:s.duration
+      #   detail:s.detail
+      #   order:s.order
+
+      # res.setHeader 'Access-Control-Allow-Origin','*'
+      # res.setHeader 'Content-Type','application/json; charset=utf-8'
+      # res.end(JSON.stringify(respList))
+
+      console.log "in getSchedules(old)"
+      schedule = miki.getSchedule()
 
       res.setHeader 'Access-Control-Allow-Origin','*'
       res.setHeader 'Content-Type','application/json; charset=utf-8'
-      res.end(JSON.stringify(respList))
+      # todo: stringify is necessary
+      respList = _.chain schedule
+        .filter (p)->
+          if p.roomId is '' then false else true
+        .map (p)->
+          begin:"#{p.month}/#{p.day} #{p.roomTitle}"
+          end: "#{p.start}～#{p.end}"
+          description:p.title
+          detail:''
+          order:1
+        .value()
+
+        res.end(JSON.stringify(respList))
+
 
     @getSchedule=(req,res,next)->
-      console.log "in getscheddule"
-      miki.getSchedule (schedule)->
-        res.setHeader 'Access-Control-Allow-Origin','*'
-        res.setHeader 'Content-Type','application/json; charset=utf-8'
-        # todo: stringify is necessary
-        res.end(JSON.stringify(schedule))
+      console.log "in getSchedule"
+      schedule = miki.getSchedule()
+
+      res.setHeader 'Access-Control-Allow-Origin','*'
+      res.setHeader 'Content-Type','application/json; charset=utf-8'
+      # todo: stringify is necessary
+      res.end(JSON.stringify(schedule))
 
     @getRooms= (req,res,next)=>
       roomList=_.chain @miki.getRooms()
@@ -241,12 +262,12 @@ class Kojimako
     server.post('/api/list/:token',@updateSchedule)
     server.get('/api/list/:token',@getSchedules)
 
+    # OBSOLTE when new api statable
     server.get('/api/list',@getSchedules)
     server.get('/api/room',@getRooms)
 
-    console.log "/api/#{@miki.config.apiVersions.v1}/schedule"
-
     server.get("/api/#{@miki.config.apiVersions.v1}/schedule",@getSchedule)
+    server.get("/api/#{@miki.config.apiVersions.v1}/room",@getRooms)
 
     server.get('/headless',@renderHeaderless)
 
@@ -268,8 +289,8 @@ class Kojimako
       'maxAge': 43200
 
     server.listen @miki.config.port,()=>
-      console.log "server started:"
-      console.log "http://#{@miki.config.host}:#{@miki.config.port}/"
+      console.log "[kojimako] server started:"
+      console.log "[kojimako] http://#{@miki.config.host}:#{@miki.config.port}/"
 
 
 

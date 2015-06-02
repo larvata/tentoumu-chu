@@ -29,28 +29,35 @@ Kojimako = (function() {
       };
     })(this);
     this.getSchedules = function(req, res, next) {
-      var respList;
-      respList = this.miki.getSchedules().map(function(s) {
-        return {
-          begin: s.begin,
-          end: s.end,
-          description: s.description,
-          duration: s.duration,
-          detail: s.detail,
-          order: s.order
-        };
-      });
+      var respList, schedule;
+      console.log("in getSchedules(old)");
+      schedule = miki.getSchedule();
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      respList = _.chain(schedule).filter(function(p) {
+        if (p.roomId === '') {
+          return false;
+        } else {
+          return true;
+        }
+      }).map(function(p) {
+        return {
+          begin: p.month + "/" + p.day + " " + p.roomTitle,
+          end: p.start + "～" + p.end,
+          description: p.title,
+          detail: '',
+          order: 1
+        };
+      }).value();
       return res.end(JSON.stringify(respList));
     };
     this.getSchedule = function(req, res, next) {
-      console.log("in getscheddule");
-      return miki.getSchedule(function(schedule) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        return res.end(JSON.stringify(schedule));
-      });
+      var schedule;
+      console.log("in getSchedule");
+      schedule = miki.getSchedule();
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      return res.end(JSON.stringify(schedule));
     };
     this.getRooms = (function(_this) {
       return function(req, res, next) {
@@ -207,8 +214,8 @@ Kojimako = (function() {
     server.get('/api/list/:token', this.getSchedules);
     server.get('/api/list', this.getSchedules);
     server.get('/api/room', this.getRooms);
-    console.log("/api/" + this.miki.config.apiVersions.v1 + "/schedule");
     server.get("/api/" + this.miki.config.apiVersions.v1 + "/schedule", this.getSchedule);
+    server.get("/api/" + this.miki.config.apiVersions.v1 + "/room", this.getRooms);
     server.get('/headless', this.renderHeaderless);
     server.get('/snap/douyu/.*', this.getDouyuSnapImage);
     server.get('/snap/zhanqi/.*', this.getZhanqiSnapImage);
@@ -223,8 +230,8 @@ Kojimako = (function() {
     }));
     return server.listen(this.miki.config.port, (function(_this) {
       return function() {
-        console.log("server started:");
-        return console.log("http://" + _this.miki.config.host + ":" + _this.miki.config.port + "/");
+        console.log("[kojimako] server started:");
+        return console.log("[kojimako] http://" + _this.miki.config.host + ":" + _this.miki.config.port + "/");
       };
     })(this));
   };
