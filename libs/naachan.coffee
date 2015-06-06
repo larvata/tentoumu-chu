@@ -94,10 +94,15 @@ class Okada
         switch room.live_provider
           when "douyu"
             parseDouyuRoomInfo(body,room)
-            room.live_snapshot=room.live_snapshot.replace(miki.config.douyuWebPicUrl,'')
-            # console.log room
-            room.owner_avatar=room.owner_avatar.replace(miki.config.douyuAvatarAPI,'\/')
-            miki.updateRoom(room)
+            if room.live_snapshot?
+              room.live_snapshot=room.live_snapshot.replace(miki.config.douyuWebPicUrl,'')
+              # console.log room
+              room.owner_avatar=room.owner_avatar.replace(miki.config.douyuAvatarAPI,'\/')
+              miki.updateRoom(room)
+            else
+              console.log "douyu live_snapshot empty, dont save"
+              console.log JSON.stringify(room)
+
           when "zhanqi"
             parseZhanqiRoomInfo(body,room)
             room.live_snapshot=room.live_snapshot.replace(miki.config.zhanqiWebPicUrl,'')
