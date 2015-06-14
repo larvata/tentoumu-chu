@@ -1,27 +1,42 @@
 {
-  "name": "schedule",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "tentoumu-chu",
+  "version": "2.1.0",
+  "description": "A website for checkout/manage 48-group TV programme schedule.An online version you can found on [http://douyu.sashi-con.info/](http://douyu.sashi-con.info/). And also there is a browser extension  [miichan](https://github.com/larvata/miichan) powered by this service.",
+  "main": "src/start.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/larvata/tentoumu-chu.git"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "cson": "^2.0.0",
-    "feedparser": "^1.0.1",
-    "jade": "^1.5.0",
-    "moment": "^2.8.3",
-    "phantom": "^0.7.2",
-    "redis": "^0.12.1",
-    "request": "^2.42.0",
-    "restify": "^2.8.1",
-    "underscore": "^1.7.0"
+  "bugs": {
+    "url": "https://github.com/larvata/tentoumu-chu/issues"
   },
-  "devDependencies": {
-    "cheerio": "^0.18.0",
-    "iconv-lite": "^0.4.7"
+  "homepage": "https://github.com/larvata/tentoumu-chu",
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "co": "^4.5.4",
+    "co-request": "^0.2.1",
+    "cson": "^3.0.1",
+    "debug": "^2.2.0",
+    "express": "^4.12.4",
+    "flux-router-component": "^0.5.18",
+    "fluxible": "^0.4.10",
+    "fluxible-plugin-routr": "^0.3.0",
+    "ioredis": "^1.5.0",
+    "jade": "^1.11.0",
+    "koa": "^0.21.0",
+    "koa-route": "^2.4.1",
+    "moment": "^2.10.3",
+    "node-jsx": "^0.13.3",
+    "phantom": "^0.7.2",
+    "react": "^0.13.3",
+    "request": "^2.57.0",
+    "season": "^5.3.0",
+    "serialize-javascript": "^1.0.0",
+    "underscore": "^1.8.3"
   }
 }

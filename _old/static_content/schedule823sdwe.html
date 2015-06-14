@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="scripts/jquery.min.js"></script>
+	<!-- <link rel="stylesheet" href="styles/pure-min.css"> -->
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<style>
+
+		input.form-control {
+			border-width: 0 !important;
+			box-shadow: none;
+		}
+
+		.editing input.form-control, .new input.form-control{
+			border-width: 1px !important;
+		}
+
+		.jumbotron{
+			background-repeat: no-repeat;
+			background-position: right;
+			background-color: rgb(136,254,193);
+		}
+
+	</style>
+</head>
+<body>
+
+	<script id="item-template" type="text/template">
+
+		<td>
+			<input type='text' class="form-control view begin" value="<%=begin%>"/>
+		</td>
+		<td>
+			<input type='text' class="form-control view end" value="<%=end%>"/>
+		</td>
+		<td>
+			<input type="text" size="30" class="form-control view description" value="<%=description%>">
+		</td>
+
+	</script>
+
+
+<div class="container">
+		<div class="jumbotron first">
+			<h1>&nbsp;</h1>
+			<p class="lead"></p>
+			<p>
+
+				<form class="form-inline" role="form">
+					  <div class="form-group">
+						<label class="sr-only" for="token">token</label>
+						<input type="text" class="form-control" id="token" placeholder="Enter token">
+					  </div>
+					  <button type="button" id="saveToken" class="btn btn-default">auth</button>
+				</form>
+
+			</p>
+		</div>
+
+		<div class="jumbotron head" style="display:none;">
+			<h1>&nbsp;</h1>
+			<p class="lead"></p>
+		</div>
+	<div class="row">
+
+		<div class="col-md-9" id="scheduleApp">
+			<table class="table" id="main">
+				<thead>
+					<tr>
+						<th>日期</th>
+						<th>时间</th>
+						<th>节目</th>
+					</tr>
+				</thead>
+
+				<tbody id="schedule-list" >
+
+
+					<tr id="new-schedule" class="new">
+
+						<td>
+							<input type='text' class="form-control begin" size="5"/>
+						</td>
+						<td>
+							<input type='text' class="form-control end" size="5"/>
+						</td>
+						<td>
+							<input type="text" size="30" class="form-control edit description">
+						</td>
+					</tr>
+
+				</tbody>
+
+
+			</table>
+
+		</div>
+		<div class="col-md-3"></div>
+	</div>
+
+
+
+</div>
+
+
+	<script src="scripts/jquery.cookie.js"></script>
+	<script src="scripts/underscore.js"></script>
+	<script src="scripts/backbone.js"></script>
+	<script src="scripts/schedule.js"></script>
+
+</body>
+</html>
