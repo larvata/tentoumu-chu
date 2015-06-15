@@ -1,22 +1,17 @@
 'use strict';
 var React = require('react');
-var ApplicationStore = require('../stores/ApplicationStore');
-var Index = require('./Index.jsx');
-var Manage = require('./Manage.jsx');
-var FluxibleMixin = require('fluxible').Mixin;
- 
-var Application = React.createClass({
-  mixins: [FluxibleMixin],
+
+var Index = React.createClass({
   getInitialState: function () {
-    return this.getStore(ApplicationStore).getState();
+    return {};
   },
   render: function(){
     return (
       <div>
-        {'home' === this.state.currentPageName ? <Index/> : <Manage/>}
+        hello index
       </div>
     );
   }
 });
- 
-module.exports = Application;
+
+module.exports = Index;

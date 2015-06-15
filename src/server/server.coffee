@@ -11,16 +11,15 @@ FluxibleComponent = require('fluxible/addons/FluxibleComponent');
 
 HtmlComponent = React.createFactory(require('../components/Html.jsx'));
 
-# require('node-jsx').install({extension:'.jsx'})
 
-
-
-
-
-
-
+require('node-jsx').install()
 
 server = express()
+
+staticPath= __dirname+"/../../build"
+server.use('/build', express.static(staticPath));
+
+
 
 # # will be removed next version
 # server.use route.get('/api/list',api.getSchedule)
@@ -31,15 +30,21 @@ server = express()
 # server.use route.get("/api/#{config.apiVersion.v1}/manage/schedule",api.getManageSchedule)
 # server.use route.get("/api/#{config.apiVersion.v1}/list", api.getListSchedule)
 
+
+router = express.Router()
+
+router.route('/list').get((req,res)->
+  res.json({mesage:"this is api/list"})
+)
+
+server.use('/api',router)
+
+
 server.use (req, res, next) ->
-  console.log "req"
   context = app.createContext()
-  console.log "d"
   debug 'Executing navigate action'
   Router.run app.getComponent(), req.path, (Handler, state) ->
-    console.log "get components"
     context.executeAction navigateAction, state, ->
-      console.log "executeAction"
       debug 'Exposing context state'
       exposed = 'window.App=' + serialize(app.dehydrate(context)) + ';'
       debug 'Rendering Application component into html'

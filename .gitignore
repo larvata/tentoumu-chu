@@ -1,4 +1,5 @@
 tentoumu-chu.cson
+build/
 *.rdb
 tentoumu-chu.js
 tentoumu-chu.example.js

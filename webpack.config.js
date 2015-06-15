@@ -10,13 +10,16 @@ module.exports = {
   entry:'./src/client/client.js',
 
   output: {
-    path: './build/js'
     filename: 'client.js'
   },
 
   module: {
     loaders: [
-      { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: require.resolve('babel-loader')  },
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader:'jsx-loader?harmony'
+      },
     ],
   },
   plugins: [

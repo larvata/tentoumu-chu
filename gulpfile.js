@@ -12,10 +12,12 @@ gulp.task('clean', function () {
 });
 
 gulp.task('build', function () {
-  return gulp.src(webpackConfig.entry.demo[0])
+  return gulp.src(webpackConfig.entry)
     .pipe(webpack(webpackConfig))
     .pipe(gulp.dest('build/'));
 });
+
+
 
 gulp.task('serve', function () {
   connect.server({
@@ -26,4 +28,4 @@ gulp.task('serve', function () {
   });
 });
 
-gulp.task('default', ['clean','serve','build']);
+gulp.task('default', ['serve','build']);
