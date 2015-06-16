@@ -16,11 +16,10 @@ ApplicationStore = createStore({
 
     @emitChange()
 
-  getState: ()->
+  getState:()->
     return {
       route:@currentRoute
     }
-
   dehydrate:()->
     @getState()
 

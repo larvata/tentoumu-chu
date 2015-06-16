@@ -14,7 +14,13 @@ class Miki
 
 
   updateSchedule:(schedule)->
+    console.log "miki: updateSchedule"
     @ScheduleData=schedule
+    # console.log schedule
+    # console.log @context
+
+    # @context.executeAction
+
 
   getSchedule:()->
     return @ScheduleData

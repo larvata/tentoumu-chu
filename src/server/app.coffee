@@ -1,5 +1,5 @@
 Fluxible = require('fluxible')
-# require('node-jsx').install({extension:'.jsx'})
+require('node-jsx').install({extension:'.jsx'})
 fetchrPlugin = require('fluxible-plugin-fetchr')
 
 app = new Fluxible({

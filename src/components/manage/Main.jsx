@@ -5,6 +5,7 @@ var Toolbar = require('./Toolbar.jsx')
 var ProgrammeList = require('./ProgrammeList.jsx')
 
 module.exports = React.createClass({
+
   render: function(){
     return (
       <div>

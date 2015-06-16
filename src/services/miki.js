@@ -14,6 +14,7 @@ Miki = (function() {
   Miki.prototype.getRoomInfo = function() {};
 
   Miki.prototype.updateSchedule = function(schedule) {
+    console.log("miki: updateSchedule");
     return this.ScheduleData = schedule;
   };
 
