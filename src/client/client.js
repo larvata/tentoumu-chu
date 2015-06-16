@@ -3,7 +3,7 @@ var React, app, dehydratedState;
 
 React = require('react');
 
-app = require('../server/fluxibleApp');
+app = require('../server/app');
 
 dehydratedState = window.App;
 

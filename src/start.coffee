@@ -1,7 +1,8 @@
 miki = require './services/miki'
+server = require './server/server'
+
 Tashima = require './services/meru'
 
-server = require './server/server'
 
 # fetch schedule from rss feed
 meru=new Tashima(miki)

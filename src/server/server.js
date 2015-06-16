@@ -27,18 +27,33 @@ Server = (function() {
   function Server() {}
 
   Server.prototype.start = function() {
-    var server, staticPath;
+    var fetchrPlugin, server, staticPath;
     server = express();
     staticPath = __dirname + "/../../build";
     server.use('/build', express["static"](staticPath));
     server.use('/api', apiRouter);
+    fetchrPlugin = app.getPlugin('FetchrPlugin');
+    server.use(fetchrPlugin.getXhrPath(), fetchrPlugin.getMiddleware);
     server.use(function(req, res, next) {
       var context;
-      context = app.createContext();
+      context = app.createContext({
+        req: req,
+        xhrContext: {
+          _csrf: req.csrfToken()
+        }
+      });
       debug('Executing navigate action');
       Router.run(app.getComponent(), req.path, function(Handler, state) {
-        context.executeAction(navigateAction, state, function() {
+        context.executeAction(navigateAction, state, function(err) {
           var Component, exposed, html;
+          if (err) {
+            if (err.statusCode && err.statusCode === 404) {
+              next();
+            } else {
+              next(err);
+            }
+            return;
+          }
           debug('Exposing context state');
           exposed = 'window.App=' + serialize(app.dehydrate(context)) + ';';
           debug('Rendering Application component into html');

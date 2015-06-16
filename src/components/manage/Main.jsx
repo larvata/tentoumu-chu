@@ -17,9 +17,6 @@ module.exports = React.createClass({
             <ProgrammeList />
           </div>
           <div>
-            <ProgrammeList />
-          </div>
-          <div>
             <PreviewPanel />
           </div>
         </div>

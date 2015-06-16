@@ -3,9 +3,9 @@ var Tashima, meru, miki, server;
 
 miki = require('./services/miki');
 
-Tashima = require('./services/meru');
-
 server = require('./server/server');
+
+Tashima = require('./services/meru');
 
 meru = new Tashima(miki);
 

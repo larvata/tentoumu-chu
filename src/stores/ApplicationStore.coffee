@@ -1,5 +1,6 @@
 createStore = require('fluxible/addons').createStore
 
+
 ApplicationStore = createStore({
   storeName: 'ApplicationStore'
   handlers:

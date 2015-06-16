@@ -20,6 +20,8 @@ class Server
   start: ()->
     server = express()
 
+
+
     # serve static files
     staticPath= __dirname+"/../../build"
     server.use('/build', express.static(staticPath))
@@ -27,12 +29,30 @@ class Server
     # serve api
     server.use('/api',apiRouter)
 
+
+
+    fetchrPlugin = app.getPlugin('FetchrPlugin')
+    server.use(fetchrPlugin.getXhrPath(),fetchrPlugin.getMiddleware)
+
     # serve main
     server.use (req, res, next) ->
-      context = app.createContext()
+      context = app.createContext({
+        req:req
+        xhrContext:{
+          _csrf:req.csrfToken()
+        }
+      })
+
       debug 'Executing navigate action'
       Router.run app.getComponent(), req.path, (Handler, state) ->
-        context.executeAction navigateAction, state, ->
+        context.executeAction navigateAction, state, (err)->
+          if err
+            if err.statusCode and err.statusCode is 404
+              next()
+            else
+              next(err)
+            return
+
           debug 'Exposing context state'
           exposed = 'window.App=' + serialize(app.dehydrate(context)) + ';'
           debug 'Rendering Application component into html'

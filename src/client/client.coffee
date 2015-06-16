@@ -1,6 +1,6 @@
 React = require 'react'
 # debug = require 'debug'
-app = require '../server/fluxibleApp'
+app = require '../server/app'
 
 dehydratedState = window.App
 

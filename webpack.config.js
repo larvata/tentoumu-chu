@@ -1,36 +1,22 @@
+var path = require('path');
+var webpack = require('webpack');
 
-var webpack=require('webpack');
-var path= require('path');
-
-module.exports = {
-  resolve: {
-    extensions: ['', '.js', '.jsx']
-  },
-
-  entry:'./src/client/client.js',
-
+var config = {
+  entry: './src/client/client.js',
   output: {
+    path: path.join(__dirname, 'build'),
     filename: 'client.js'
   },
-
   module: {
     loaders: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        loader:'jsx-loader?harmony'
-      },
-    ],
+      {test: /\.jsx/, loader: 'jsx'}
+    ]
   },
   plugins: [
-    new webpack.NormalModuleReplacementPlugin(/^react?$/, require.resolve('react')),
-    new webpack.NormalModuleReplacementPlugin(/^react(\/addons)?$/, require.resolve('react/addons'))
-  ],
-  status: {
-    colors: true
-  },
-  devtool: 'source-map',
-  cache: true,
-  watch: true,
-  keepalive: true,
+    // See:
+    // https://github.com/yahoo/fluxible/issues/138
+    new webpack.IgnorePlugin(/vertx/)
+  ]
 };
+
+module.exports = config;
