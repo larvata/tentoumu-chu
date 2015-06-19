@@ -3,15 +3,9 @@ var Fluxible, app, fetchrPlugin;
 
 Fluxible = require('fluxible');
 
-require('node-jsx').install({
-  extension: '.jsx'
-});
-
 fetchrPlugin = require('fluxible-plugin-fetchr');
 
-app = new Fluxible({
-  component: require('../components/Routes.jsx')
-});
+app = new Fluxible();
 
 app.plug(fetchrPlugin({
   xhrPath: '/api'

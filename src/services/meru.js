@@ -36,13 +36,15 @@ Tashima = (function() {
     'tokyo': 'テレビ東京',
     'tokyo-mx-1': 'TOKYO MX1',
     'fuji': 'フジテレビ',
+    'fuji-one': 'フジテレビONE',
     'j-sports-3': 'J SPORTS 3',
     'fami-geki': 'ファミリー劇場',
     'chiba': 'チバテレ',
     'green': 'グリーンチャンネル',
     'lala': 'LaLa TV',
     'wowow-prime': 'WOWOWプライム',
-    'musicontv': 'MUSIC ON! TV'
+    'musicontv': 'MUSIC ON! TV',
+    'tvk': 'tvk'
   };
 
   Tashima.prototype.parseSchedule = function(article) {

@@ -5,6 +5,8 @@ cheerio = require 'cheerio'
 FeedParser = require 'feedparser'
 redisModule = require('redis')
 
+
+# todo prevent save programme expired
 class Tashima
   constructor: (@miki) ->
     @redis=redisModule.createClient(@miki.config.redis_port,@miki.config.redis_host)
@@ -14,7 +16,7 @@ class Tashima
     # warmup
     @loadSchedule()
 
-    # formats: station-channel-id
+  # formats: station-channel-id
   channels: {
     'tbs':'TBS'
     'tbs-bs':'BS-TBS'
@@ -35,6 +37,7 @@ class Tashima
     'tokyo-mx-1':'TOKYO MX1'
 
     'fuji':'フジテレビ'
+    'fuji-one':'フジテレビONE'
 
     'j-sports-3':'J SPORTS 3'
 
@@ -49,6 +52,8 @@ class Tashima
     'wowow-prime':'WOWOWプライム'
 
     'musicontv':'MUSIC ON! TV'
+
+    'tvk':'tvk'
   }
 
   parseSchedule:(article)->

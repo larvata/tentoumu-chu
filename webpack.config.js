@@ -9,7 +9,7 @@ var config = {
   },
   module: {
     loaders: [
-      {test: /\.jsx/, loader: 'jsx'}
+      {test: /\.jsx/, loader: 'jsx-loader'}
     ]
   },
   plugins: [

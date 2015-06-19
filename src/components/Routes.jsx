@@ -6,6 +6,7 @@ var Application = require('./Application.jsx');
 var Index = require('./Index.jsx');
 var Manage = require('./manage/Main.jsx');
 var Headless = require('./Headless.jsx');
+var provideContext = require('fluxible/addons/provideContext')
 
 var routes = (
   <Route name="app" path="/" handler={Application}>

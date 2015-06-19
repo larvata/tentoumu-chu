@@ -10,6 +10,7 @@ ScheduleStore = createStore({
     'RECEIVE_SCHEDULE': 'getSchedule'
   },
   initialize: function() {
+    console.log("ScheduleStore initialize");
     return this.schedule = [];
   },
   getSchedule: function() {

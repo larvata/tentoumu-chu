@@ -4,6 +4,7 @@ React = require 'react'
 Router = require 'react-router'
 navigateAction = require '../actions/navigate'
 showSchedule =require '../actions/showSchedule'
+require('node-jsx').install({extension:'.jsx'})
 app = require './app'
 serialize = require 'serialize-javascript'
 debug = require('debug')('Example')
@@ -14,10 +15,61 @@ csrf = require('csurf')
 HtmlComponent = React.createFactory(require('../components/Html.jsx'))
 
 miki = require '../services/miki'
+routes = require('../components/Routes.jsx')
 
+fetchData = require '../utils/fetchData'
 
 class Server
   constructor: () ->
+
+
+  renderApp: (context,location,cb)->
+    console.log "start renderapp"
+    router = Router.create(
+      routes: routes
+      location: location
+      transitionContext: context
+      onAbort:(redirect)->
+        cb({redirect:redirect})
+      onError: (err)->
+        cb(err)
+      )
+
+    router.run (Handler,routerState)->
+      if routerState.routes[0].name is 'not-found'
+        html = React.renderToStaticMarkup(React.createElement(Handler))
+        cb({notFound: true}, html)
+        return
+
+      fetchData context,routerState,(err)->
+        console.log "fetchData done"
+
+        if err
+          return cb(err)
+
+        dehydratedState = "window.App=#{serialize(app.dehydrate(context))};"
+        appMarkup = React.renderToString(React.createElement(
+          FluxibleComponent,
+          {context: context.getComponentContext()},
+          React.createElement(Handler)
+        ))
+
+        console.log "dehydratedState"
+        console.log dehydratedState
+
+        ele = React.createElement(HtmlComponent,{
+          state: dehydratedState,
+          markup: appMarkup
+          })
+
+        console.log "ele"
+        console.log JSON.stringify(ele,null,2)
+        html = React.renderToStaticMarkup(ele)
+
+        cb(null, html)
+
+
+
 
   start: ()->
     server = express()
@@ -30,7 +82,7 @@ class Server
     server.use('/build', express.static(staticPath))
 
     # serve api
-    server.use('/api',apiRouter)
+    # server.use('/api',apiRouter)
 
 
 
@@ -39,51 +91,30 @@ class Server
     server.use(fetchrPlugin.getXhrPath(),fetchrPlugin.getMiddleware)
 
     # serve main
-    server.use (req, res, next) ->
+
+    server.use (req, res, next) =>
       context = app.createContext({
         req:req
         xhrContext:{
           # _csrf:req.csrfToken()
         }
       })
-      # bind context to miki
-      # miki.context=context
-      # console.log "bind miki with context"
-      # console.log context
 
-      debug 'Executing navigate action'
-      Router.run app.getComponent(), req.path, (Handler, state) ->
-        # console.log("handler:")
-        # console.log Handler
+      @renderApp context,req.url,(err,html)->
+        console.log "render app done"
 
-        context.executeAction navigateAction, state, (err)->
-          if err
-            if err.statusCode and err.statusCode is 404
-              next()
-            else
-              next(err)
-            return
+        if err && err.notFound
+          return res.status(404).send(html)
 
-          # console.log "navigate state"
-          # console.log state
+        if err && err.redirect
+          return res.redirect(303,err.redirect.to)
+
+        if err
+          return next(err)
+
+        res.send(html)
 
 
-          if state.path is '/manage'
-            context.executeAction showSchedule,{},(err)->
-              console.log "show executeAction done"
-
-          debug 'Exposing context state'
-          exposed = 'window.App=' + serialize(app.dehydrate(context)) + ';'
-          debug 'Rendering Application component into html'
-          Component = React.createFactory(Handler)
-          html = React.renderToStaticMarkup(HtmlComponent(
-            state: exposed
-            markup: React.renderToString(React.createElement(FluxibleComponent, { context: context.getComponentContext() }, Component()))))
-          debug 'Sending markup'
-          res.send html
-          return
-        return
-      return
 
 
     server.listen miki.config.port

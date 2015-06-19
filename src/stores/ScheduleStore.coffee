@@ -9,6 +9,7 @@ ScheduleStore = createStore({
     'RECEIVE_SCHEDULE': 'getSchedule'
 
   initialize: ()->
+    console.log "ScheduleStore initialize"
     @schedule = []
 
   getSchedule: ()->
