@@ -2,6 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 var config = {
+  devtool: "source-map",
   entry: './src/client/client.js',
   output: {
     path: path.join(__dirname, 'build'),

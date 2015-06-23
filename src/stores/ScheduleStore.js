@@ -7,7 +7,8 @@ ScheduleStore = createStore({
   storeName: 'ScheduleStore',
   handlers: {
     'UPDATE_SCHEDULE': 'updateSchedule',
-    'RECEIVE_SCHEDULE': 'getSchedule'
+    'RECEIVE_SCHEDULE': 'getSchedule',
+    'ADD_PROGRAME': 'addProgramme'
   },
   initialize: function() {
     console.log("ScheduleStore initialize");
@@ -21,7 +22,18 @@ ScheduleStore = createStore({
   updateSchedule: function(schedule) {
     console.log("ScheduleStore: updateSchedule()");
     this.schedule = schedule;
+    this.emitChange();
     return console.log(this.schedule.length);
+  },
+  addProgramme: function(programme) {
+    this.schedule.push(programme);
+    return this.emitChange();
+  },
+  removeProgramme: function(programme) {
+    return this.emitChange();
+  },
+  updateProgramme: function(programme) {
+    return this.emitChange;
   },
   dehydrate: function() {
     console.log("ScheduleStore: dehydrate");
@@ -29,7 +41,7 @@ ScheduleStore = createStore({
       schedule: this.schedule
     };
   },
-  redydrate: function(state) {
+  rehydrate: function(state) {
     console.log("ScheduleStore: redydrate");
     return this.schedule = state.schedule;
   }

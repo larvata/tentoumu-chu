@@ -9,5 +9,10 @@ module.exports = {
     var schedule;
     schedule = miki.getSchedule();
     return callback(null, schedule);
+  },
+  create: function(req, resource, params, config, callback) {
+    console.log("try create programme");
+    console.log(resource);
+    return callback(null, schedule);
   }
 };

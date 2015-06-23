@@ -4,6 +4,7 @@ fetchrPlugin = require('fluxible-plugin-fetchr')
 
 app = new Fluxible()
 
+# TODO api path load from config
 app.plug(fetchrPlugin({xhrPath: '/api'}))
 
 app.registerStore(require('../stores/ApplicationStore'))

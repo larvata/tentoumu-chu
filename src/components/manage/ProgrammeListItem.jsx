@@ -21,7 +21,7 @@ var ProgrammeListItem = React.createClass({
         </li>
       );
     }
-    else if (programme === 'programme-custom'){
+    else if (programme.type === 'programme-custom'){
       // from user input
       return (
         <li>

@@ -5,9 +5,9 @@ ScheduleStore = require('../stores/ScheduleStore');
 
 module.exports = function(context, payload, done) {
   console.log("add programme");
-  return context.service.add('schedule', {}, {}, function(err, schedule) {
-    console.log("try dispatch");
-    context.dispatch('UPDATE_SCHEDULE', schedule);
+  return context.service.create('schedule', payload, {}, function(err, schedule) {
+    console.log("call api done try dispatch ADD_PROGRAME");
+    context.dispatch('ADD_PROGRAME', schedule);
     return done();
   });
 };

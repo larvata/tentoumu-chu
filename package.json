@@ -34,6 +34,7 @@
     "koa-route": "^2.4.1",
     "moment": "^2.10.3",
     "node-jsx": "^0.13.3",
+    "node-uuid": "^1.4.3",
     "phantom": "^0.7.2",
     "react": "^0.13.3",
     "react-router": "^0.13.3",

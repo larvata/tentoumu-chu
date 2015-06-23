@@ -19,54 +19,30 @@ routes = require('../components/Routes.jsx')
 
 fetchData = require '../utils/fetchData'
 
+renderApp= (context,Handler,cb)->
+  console.log "start renderapp"
+  dehydratedState = "window.App=#{serialize(app.dehydrate(context))};"
+  Component = React.createElement(Handler)
+  appMarkup = React.renderToString(
+    React.createElement(
+      FluxibleComponent,
+      {context: context.getComponentContext()},
+      Component
+      )
+    )
+  html = React.renderToStaticMarkup(HtmlComponent({
+    state: dehydratedState
+    markup: appMarkup
+  }))
+
+
+  cb(null, html)
+
+
 class Server
   constructor: () ->
 
 
-  renderApp: (context,location,cb)->
-    console.log "start renderapp"
-    router = Router.create(
-      routes: routes
-      location: location
-      transitionContext: context
-      onAbort:(redirect)->
-        cb({redirect:redirect})
-      onError: (err)->
-        cb(err)
-      )
-
-    router.run (Handler,routerState)->
-      if routerState.routes[0].name is 'not-found'
-        html = React.renderToStaticMarkup(React.createElement(Handler))
-        cb({notFound: true}, html)
-        return
-
-      fetchData context,routerState,(err)->
-        console.log "fetchData done"
-
-        if err
-          return cb(err)
-
-        dehydratedState = "window.App=#{serialize(app.dehydrate(context))};"
-        appMarkup = React.renderToString(React.createElement(
-          FluxibleComponent,
-          {context: context.getComponentContext()},
-          React.createElement(Handler)
-        ))
-
-        console.log "dehydratedState"
-        console.log dehydratedState
-
-        ele = React.createElement(HtmlComponent,{
-          state: dehydratedState,
-          markup: appMarkup
-          })
-
-        console.log "ele"
-        console.log JSON.stringify(ele,null,2)
-        html = React.renderToStaticMarkup(ele)
-
-        cb(null, html)
 
 
 
@@ -82,13 +58,16 @@ class Server
     server.use('/build', express.static(staticPath))
 
     # serve api
-    # server.use('/api',apiRouter)
+    # TODO load api address from config
+    # server.use('/api/v1',apiRouter)
 
 
 
     fetchrPlugin = app.getPlugin('FetchrPlugin')
     fetchrPlugin.registerService(require('../services/schedule'))
-    server.use(fetchrPlugin.getXhrPath(),fetchrPlugin.getMiddleware)
+
+    console.log "fetchrPlugin.getXhrPath: #{fetchrPlugin.getXhrPath()}"
+    server.use(fetchrPlugin.getXhrPath(),fetchrPlugin.getMiddleware())
 
     # serve main
 
@@ -100,19 +79,47 @@ class Server
         }
       })
 
-      @renderApp context,req.url,(err,html)->
-        console.log "render app done"
 
-        if err && err.notFound
-          return res.status(404).send(html)
 
-        if err && err.redirect
-          return res.redirect(303,err.redirect.to)
+      router = Router.create(
+        routes: routes
+        location: req.url
+        transitionContext: context
+        onAbort:(redirect)->
+          cb({redirect:redirect})
+        onError: (err)->
+          cb(err)
+        )
 
-        if err
-          return next(err)
+      router.run (Handler,routerState)->
+        if routerState.routes[0].name is 'not-found'
+          html = React.renderToStaticMarkup(React.createElement(Handler))
+          cb({notFound: true}, html)
+          return
 
-        res.send(html)
+        fetchData context,routerState,(err)->
+          console.log "fetchData done"
+
+          if err
+            return cb(err)
+
+
+
+
+          renderApp context,Handler,(err,html)->
+            console.log "render app done"
+
+            if err && err.notFound
+              console.log "notfound: #{req.url}"
+              return res.status(404).send(html)
+
+            if err && err.redirect
+              return res.redirect(303,err.redirect.to)
+
+            if err
+              return next(err)
+
+            res.send(html)
 
 
 

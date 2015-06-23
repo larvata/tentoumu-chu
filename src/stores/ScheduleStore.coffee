@@ -7,10 +7,15 @@ ScheduleStore = createStore({
   handlers:
     'UPDATE_SCHEDULE': 'updateSchedule'
     'RECEIVE_SCHEDULE': 'getSchedule'
+    'ADD_PROGRAME': 'addProgramme'
 
   initialize: ()->
     console.log "ScheduleStore initialize"
     @schedule = []
+
+    # console.log "try rehydrate in ScheduleStore initialize()"
+    # console.log @state
+    # @rehydrate(state)
 
   getSchedule: ()->
     console.log "ScheduleStore: getSchedule()"
@@ -20,7 +25,19 @@ ScheduleStore = createStore({
   updateSchedule: (schedule)->
     console.log "ScheduleStore: updateSchedule()"
     @schedule = schedule
+    @emitChange()
     console.log @schedule.length
+
+  addProgramme: (programme)->
+    @schedule.push(programme)
+    @emitChange()
+
+  removeProgramme:(programme)->
+
+    @emitChange()
+
+  updateProgramme:(programme)->
+    @emitChange
 
   dehydrate:()->
     console.log "ScheduleStore: dehydrate"
@@ -28,10 +45,13 @@ ScheduleStore = createStore({
       schedule: @schedule
     }
 
-  redydrate:(state)->
+  rehydrate:(state)->
     console.log "ScheduleStore: redydrate"
     @schedule=state.schedule
 
+
+  # shouldDehydrate:()->
+  #   return true
 
 })
 
