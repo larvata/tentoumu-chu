@@ -1,8 +1,9 @@
 express = require 'express'
-apiRouter = require './apiRouter'
+# apiRouter = require './apiRouter'
 React = require 'react'
 Router = require 'react-router'
-navigateAction = require '../actions/navigate'
+# navigateAction = require '../actions/navigate'
+bodyParser = require('body-parser')
 showSchedule =require '../actions/showSchedule'
 require('node-jsx').install({extension:'.jsx'})
 app = require './app'
@@ -49,6 +50,8 @@ class Server
 
   start: ()->
     server = express()
+
+    server.use(bodyParser.json())
 
     # server.use(csrf({cookie: true}))
     # server.use(cookieParser())
