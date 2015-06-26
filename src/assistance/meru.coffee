@@ -29,6 +29,7 @@ class Tashima
     'nhk-variety':'NHK総合'
     'nhk-e-1':'NHK Eテレ1'
     'nhk-bs-perm':'NHK BSプレミアム'
+    'nhk-edu':'NHK Eテレ'
 
     'asashi':'テレビ朝日'
     'asashi-bs':'BS朝日'
