@@ -1,7 +1,7 @@
-miki = require './services/miki'
+miki = require './assistance/miki'
 server = require './server/server'
 
-Tashima = require './services/meru'
+Tashima = require './assistance/meru'
 
 
 # fetch schedule from rss feed

@@ -15,7 +15,7 @@ cookieParser = require('cookie-parser')
 csrf = require('csurf')
 HtmlComponent = React.createFactory(require('../components/Html.jsx'))
 
-miki = require '../services/miki'
+miki = require '../assistance/miki'
 routes = require('../components/Routes.jsx')
 
 fetchData = require '../utils/fetchData'

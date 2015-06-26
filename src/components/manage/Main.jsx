@@ -7,7 +7,7 @@ var ProgrammeNewListItem = require('./ProgrammeNewListItem.jsx');
 var FluxibleMixin = require('fluxible/addons/FluxibleMixin');
 var fetchSchedule = require('../../actions/fetchSchedule')
 
-Main = React.createClass({
+var Main = React.createClass({
 
   contextTypes: {
     executeAction: React.PropTypes.func.isRequired

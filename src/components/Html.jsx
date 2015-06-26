@@ -4,6 +4,8 @@
  */
 'use strict';
 var React = require('react');
+var env = require('../configs/environment');
+
 
 /**
  * React class to handle the rendering of the HTML head section
@@ -12,29 +14,41 @@ var React = require('react');
  * @constructor
  */
 var Html = React.createClass({
-    /**
-     * Refer to React documentation render
-     *
-     * @method render
-     * @return {Object} HTML head section
-     */
-    render: function() {
-        return (
-            <html>
-            <head>
-                <meta charSet="utf-8" />
-                <title>{this.props.title}</title>
-                <meta name="viewport" content="width=device-width, user-scalable=no" />
-                <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" />
-            </head>
-            <body>
-                <div id="app" dangerouslySetInnerHTML={{__html: this.props.markup}}></div>
-            </body>
-            <script dangerouslySetInnerHTML={{__html: this.props.state}}></script>
-            <script src="/build/client.js" defer></script>
-            </html>
-        );
-    }
+
+  getScriptPath:function(){
+    var result = '/build/client.js';
+    console.log("env")
+    console.log(env.node_env);
+    if (env.node_env === 'development') {
+      console.log("ddddddddddddddddddddddddddddddd");
+      result= 'http://localhost:'+env.hot_server_port+result;
+    } 
+    return result;
+  },
+
+  /**
+   * Refer to React documentation render
+   *
+   * @method render
+   * @return {Object} HTML head section
+   */
+  render: function() {
+    return (
+      <html>
+      <head>
+        <meta charSet="utf-8" />
+        <title>{this.props.title}</title>
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css" />
+      </head>
+      <body>
+        <div id="app" dangerouslySetInnerHTML={{__html: this.props.markup}}></div>
+      </body>
+      <script dangerouslySetInnerHTML={{__html: this.props.state}}></script>
+      <script src={this.getScriptPath()} defer></script>
+      </html>
+    );
+  }
 });
 
 module.exports = Html;

@@ -5,7 +5,7 @@ app = require '../server/app'
 Router = require('react-router')
 
 HistoryLocation = Router.HistoryLocation
-navigateAction = require('../actions/navigate')
+# navigateAction = require('../actions/navigate')
 FluxibleComponent = require 'fluxible/addons/FluxibleComponent'
 
 

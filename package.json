@@ -19,10 +19,12 @@
   "dependencies": {
     "body-parser": "^1.13.1",
     "cheerio": "^0.19.0",
+    "cookie-parser": "^1.3.5",
     "cson": "^3.0.1",
     "csurf": "^1.8.3",
     "debug": "^2.2.0",
     "express": "^4.12.4",
+    "feedparser": "^1.1.3",
     "fluxible": "^0.4.10",
     "fluxible-plugin-fetchr": "^0.3.1",
     "jade": "^1.11.0",
@@ -32,6 +34,7 @@
     "phantom": "^0.7.2",
     "react": "^0.13.3",
     "react-router": "^0.13.3",
+    "redis": "^0.12.1",
     "request": "^2.57.0",
     "season": "^5.3.0",
     "serialize-javascript": "^1.0.0",
@@ -39,11 +42,15 @@
     "webpack": "^1.9.11"
   },
   "devDependencies": {
+    "babel-core": "^5.6.11",
+    "babel-loader": "^5.2.2",
+    "coffee-loader": "^0.7.2",
     "del": "^1.2.0",
     "envify": "^3.4.0",
     "gulp": "^3.9.0",
     "gulp-connect": "^2.2.0",
     "gulp-webpack": "^1.5.0",
-    "webpack": "^1.9.11"
+    "react-hot-loader": "^1.2.7",
+    "webpack-dev-server": "^1.9.0"
   }
 }

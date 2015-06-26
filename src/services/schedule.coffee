@@ -1,4 +1,4 @@
-miki = require './miki'
+miki = require '../assistance/miki'
 
 module.exports = {
   name: 'schedule'
