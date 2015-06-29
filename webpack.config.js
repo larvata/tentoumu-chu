@@ -5,7 +5,7 @@ var env = require('./src/configs/environment.json');
 
 var config = {
   
-  devtool: "source-map",
+  devtool: "eval",
   cache: true,
   resolve:{
     extensions: ['','.js']

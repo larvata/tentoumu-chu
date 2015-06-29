@@ -16,22 +16,22 @@ var ProgrammeNewListItem = React.createClass({
   },
 
   handleAddProgramme:function(e){
-    date= React.findDOMNode(this.refs.date).value;
-    time=  React.findDOMNode(this.refs.time).value;
-    title =  React.findDOMNode(this.refs.title).value;
-    members=  React.findDOMNode(this.refs.members).value;
+    var date= React.findDOMNode(this.refs.date).value;
+    var time=  React.findDOMNode(this.refs.time).value;
+    var title =  React.findDOMNode(this.refs.title).value;
+    var members=  React.findDOMNode(this.refs.members).value;
 
 
     // TODO move progamme create to addProgrammeAction
-    month = date.split('/')[0];
-    day = date.split('/')[1];
-    start = time.split('~')[0];
-    end = time.split('~')[1];
-    type="programme-custom";
+    var month = date.split('/')[0];
+    var day = date.split('/')[1];
+    var start = time.split('~')[0];
+    var end = time.split('~')[1];
+    var type="programme-custom";
     // key = type+":"+start+":"+end
-    key = type+":"+uuid.v1();
+    var key = type+":"+uuid.v1();
 
-    programme= {
+    var programme= {
       day: day,
       end: end,
       key: key,
