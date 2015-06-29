@@ -6,6 +6,7 @@ module.exports = {
     console.log "+try fetch schedule"
     console.log callback
     schedule = miki.getSchedule()
+    # console.log schedule
     callback(null,schedule)
 
   create: (req,resource,params,body,config,callback)->

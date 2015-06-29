@@ -38,6 +38,7 @@ Tashima = (function() {
     'tokyo-mx-1': 'TOKYO MX1',
     'fuji': 'フジテレビ',
     'fuji-one': 'フジテレビONE',
+    'fuji-next': 'フジテレビNEXT',
     'j-sports-3': 'J SPORTS 3',
     'fami-geki': 'ファミリー劇場',
     'chiba': 'チバテレ',

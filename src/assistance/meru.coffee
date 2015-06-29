@@ -39,6 +39,7 @@ class Tashima
 
     'fuji':'フジテレビ'
     'fuji-one':'フジテレビONE'
+    'fuji-next':'フジテレビNEXT'
 
     'j-sports-3':'J SPORTS 3'
 

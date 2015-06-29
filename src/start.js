@@ -1,10 +1,12 @@
 require('babel/register');
 
-import miki from './assistance/miki';
-import server from './server/server';
-import Tashima from './assistance/meru';
-meru = new Tashima(miki);
+module.exports = require('./server/server');
 
-meru.startService();
+// import miki from './assistance/miki';
+// // import server from './server/server';
+// import Tashima from './assistance/meru';
+// meru = new Tashima(miki);
 
-server.start();
+// meru.startService();
+
+// server.start();

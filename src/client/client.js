@@ -35,6 +35,7 @@ console.log("try app.rehydrate");
 app.rehydrate(dehydratedState, function(err, context) {
   var firstRender, router;
   console.log("in app.rehydrate");
+  console.log(dehydratedState);
   if (err) {
     throw err;
   }

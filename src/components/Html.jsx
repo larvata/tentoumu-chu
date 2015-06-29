@@ -17,10 +17,8 @@ var Html = React.createClass({
 
   getScriptPath:function(){
     var result = '/build/client.js';
-    console.log("env")
     console.log(env.node_env);
     if (env.node_env === 'development') {
-      console.log("ddddddddddddddddddddddddddddddd");
       result= 'http://localhost:'+env.hot_server_port+result;
     } 
     return result;

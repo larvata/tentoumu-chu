@@ -16,7 +16,7 @@ function getProgrammeListItem(programme){
 
 var ProgrammeList = React.createClass({
   render: function(){
-    programmeListItems=this.props.schedule.map(getProgrammeListItem);
+    var programmeListItems=this.props.schedule.map(getProgrammeListItem);
     return (
       <div>
         {programmeListItems}

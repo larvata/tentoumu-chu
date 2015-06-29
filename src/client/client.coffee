@@ -31,6 +31,7 @@ renderApp = (context,Handler)->
 console.log "try app.rehydrate"
 app.rehydrate dehydratedState,(err,context)->
   console.log "in app.rehydrate"
+  console.log dehydratedState
   if err
     throw err
 
@@ -42,6 +43,8 @@ app.rehydrate dehydratedState,(err,context)->
     routes:routes
     location: Router.HistoryLocation
     transitionContext: context)
+
+
 
   router.run (Handler,routerState)->
     if firstRender
