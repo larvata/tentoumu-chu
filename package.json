@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "supervisor --harmony --ignore build/ -e js src/start",
-    "hot": "node hotLoaderServer.js"
+    "hot": "babel-node hotLoaderServer.js"
   },
   "repository": {
     "type": "git",
