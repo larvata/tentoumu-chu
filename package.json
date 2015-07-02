@@ -4,7 +4,9 @@
   "description": "A website for checkout/manage 48-group TV programme schedule.An online version you can found on [http://douyu.sashi-con.info/](http://douyu.sashi-con.info/). And also there is a browser extension  [miichan](https://github.com/larvata/miichan) powered by this service.",
   "main": "src/start.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "supervisor --harmony --ignore build/ -e js src/start",
+    "hot": "node hotLoaderServer.js"
   },
   "repository": {
     "type": "git",
