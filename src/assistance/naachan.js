@@ -1,6 +1,14 @@
-import request from 'request';
+import requestBase from 'request';
 // import fs from 'fs';
 import moment from 'moment';
+
+
+
+const request = requestBase.defaults({
+  options:{
+    timeout:7000
+  }
+});
 
 // var roomsData=[];
 
@@ -91,6 +99,8 @@ class Okada{
 
   startMonitor(){
 
+    console.log(`Interval: ${this.miki.config.roomCheckInterval}`);
+
     var checker=(room)=>{
       var hostname='';
       switch(room.live_provider){
@@ -102,9 +112,9 @@ class Okada{
           break;
       }
 
-      var options=this.miki.createRequestOptions(room.url,hostname);
+      // var options=this.miki.createRequestOptions(room.url,hostname);
 
-      request(options,(err,res,body)=>{
+      request(room.url,(err,res,body)=>{
         if (err) {
           console.log(room.url);
           console.log(err);
@@ -115,8 +125,8 @@ class Okada{
             parseDouyuRoomInfo(body,room);
             if (room.live_snapshot) {
               room.live_snapshot = room.live_snapshot.replace(this.miki.config.douyuWebPicUrl,'');
-              room.owner_avatar = room.owner_avatar.replace(this.miki.confi.douyuAvatarAPI,'\/');
-              this.miki.updateRoom(room);
+              room.owner_avatar = room.owner_avatar.replace(this.miki.config.douyuAvatarAPI,'\/');
+              this.miki.updateRoomInfo(room);
             }
             else{
               console.log("douyu live_snapshot empty, dont save");
@@ -127,7 +137,7 @@ class Okada{
             parseZhanqiRoomInfo(body,room);
             room.live_snapshot = room.live_snapshot.replace(this.miki.config.zhanqiWebPicUrl,'');
             room.owner_avatar = room.owner_avatar.replace(this.miki.config.zhanqiAvatarAPI,'');
-            this.miki.updateRoom(room);
+            this.miki.updateRoomInfo(room);
             break;
           default:
             console.error("ERROR: cant parse live_provider");
@@ -142,8 +152,10 @@ class Okada{
 
     };
 
-    for(var r of this.miki.config.roomInfo){
-      if (r.disabled) {continue;}
+
+    this.miki.config.roomInfo.forEach((r)=>{
+      // console.log(r);
+      if (r.disabled) {return;}
 
       var url='';
       switch(r.live_provider){
@@ -154,9 +166,14 @@ class Okada{
           url = this.miki.config.zhanqiRoomAPI+r.room_id+".json";
           break;
       }
+
       var room = new Room(r,url);
+
+      // console.log(room);
       checker(room);
-    }
+    });
+
+
   }
 }
 

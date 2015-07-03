@@ -14,7 +14,8 @@ class Miki{
 
   // todo
   updateRoomInfo(roomInfo){
-
+    console.log("in updateRoomInfo");
+    console.log(roomInfo);
   }
 
   // todo
@@ -80,7 +81,6 @@ class Miki{
 
     Object.assign(this.config,userConfig);
 
-    console.log(this.config);
   }
 }
 
