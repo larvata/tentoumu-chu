@@ -1,7 +1,7 @@
 
 import CSON from 'season';
 import userConfig from '../configs/tentoumu-chu';
-
+import _ from 'underscore';
 
 
 
@@ -10,17 +10,34 @@ class Miki{
     this.assignConfigs();
 
     this.ScheduleData={};
+
+    this.roomInfos=[];
   }
 
   // todo
   updateRoomInfo(roomInfo){
     console.log("in updateRoomInfo");
-    console.log(roomInfo);
+    // console.log(roomInfo);
+
+    var roomExisted = _.find(this.roomInfoes,(r)=>{
+      return (r.room_id === roomInfo.room_id);
+    });
+
+    console.log(roomExisted);
+    if (roomExisted !==null) {
+      console.log("exist");
+
+      Object.assign(roomExisted,roomInfo);
+    }
+    else{
+      console.log("not exist");
+      this.roomInfoes.push(roomInfo);
+    }
   }
 
   // todo
-  getRoomInfo(){
-
+  getRoomInfoes(){
+    return this.roomInfoes;
   }
 
   updateSchedule(schedule){
