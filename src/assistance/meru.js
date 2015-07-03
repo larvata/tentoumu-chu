@@ -16,7 +16,7 @@ var channels = {
   'ntv-plus':'日テレプラス',
 
   'nhk-variety':'NHK総合',
-  'nhk-e-1':'NHK Eテレ1',
+  'nhk-edu-1':'NHK Eテレ1',
   'nhk-bs-perm':'NHK BSプレミアム',
   'nhk-edu':'NHK Eテレ',
 
@@ -44,7 +44,13 @@ var channels = {
 
   'musicontv':'MUSIC ON! TV',
 
-  'tvk':'tvk'
+  'tvk':'tvk',
+
+  'dhc':'DHCシアター',
+
+  'sp-4k':'スカパー!4K'
+
+
 };
 
 
