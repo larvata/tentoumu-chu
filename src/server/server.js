@@ -10,7 +10,7 @@ import FluxibleComponent from 'fluxible/addons/FluxibleComponent';
 import serialize from 'serialize-javascript';
 
 const HtmlComponent = React.createFactory(require('../components/Html.jsx'));
-import showSchedule from '../actions/showSchedule';
+// import showSchedule from '../actions/showSchedule';
 import routes from '../components/Routes.jsx';
 import fetchData from '../utils/fetchData';
 
@@ -20,16 +20,12 @@ import app from './app';
 import miki from '../assistance/miki';
 import Tashima from '../assistance/meru';
 
-
 const meru = new Tashima(miki);
-console.log("meru start service");
 meru.startService();
 
 
-console.log("define renderApp");
 function renderApp(context,Handler,cb)
 {
-  console.log("start renderapp");
   const dehydratedState = `window.App=${serialize(app.dehydrate(context))};`;
   const Component = React.createElement(Handler);
   const appMarkup = React.renderToString(
@@ -39,7 +35,6 @@ function renderApp(context,Handler,cb)
       Component
       )
     );
-  console.log("server write state");
   
   const html = React.renderToStaticMarkup(HtmlComponent({
     state: dehydratedState,
@@ -50,7 +45,9 @@ function renderApp(context,Handler,cb)
 }
 
 
-console.log("define express server");
+
+
+// TODO fix bug: cb() not exists in context
 
 // main part of serve config
 const server = express();
@@ -63,14 +60,11 @@ server.use('/build', express.static(staticPath));
 // setup data service
 const fetchrPlugin = app.getPlugin('FetchrPlugin');
 fetchrPlugin.registerService(require('../services/schedule'));
+fetchrPlugin.registerService(require('../services/roomMeta'));
 server.use(fetchrPlugin.getXhrPath(),fetchrPlugin.getMiddleware());
 
-console.log("start server use");
 server.use((req, res, next) =>
 {
-
-  console.log("msg");
-
   const context = app.createContext({
     req:req,
     xhrContext:{
@@ -96,16 +90,12 @@ server.use((req, res, next) =>
 
     fetchData(context,routerState,(err)=>
     {
-      console.log("fetchData done");
-
       if (err) {
         return cb(err);
       }
 
       renderApp(context,Handler,(err,html)=>
       {
-        console.log("render app done");
-
         if (err && err.notFound) {
           console.log(`notFound: ${req.url}`);
           return res.status(404).send(html);

@@ -1,5 +1,4 @@
-
-import CSON from 'season';
+// import CSON from 'season';
 import userConfig from '../configs/tentoumu-chu';
 import _ from 'underscore';
 
@@ -11,26 +10,26 @@ class Miki{
 
     this.ScheduleData={};
 
-    this.roomInfos=[];
+    this.roomInfoes=[];
+
+    this.handlerProgrammeChanged=null;
+    this.handlerRoomInfoChanged=null;
+
   }
 
-  // todo
+  // todo move update to naachan
   updateRoomInfo(roomInfo){
     console.log("in updateRoomInfo");
     // console.log(roomInfo);
 
-    var roomExisted = _.find(this.roomInfoes,(r)=>{
+    var roomExisted = _.find(this.roomInfoes,r=>{
       return (r.room_id === roomInfo.room_id);
     });
 
-    console.log(roomExisted);
-    if (roomExisted !==null) {
-      console.log("exist");
-
+    if (roomExisted !== undefined){
       Object.assign(roomExisted,roomInfo);
     }
     else{
-      console.log("not exist");
       this.roomInfoes.push(roomInfo);
     }
   }
@@ -40,18 +39,47 @@ class Miki{
     return this.roomInfoes;
   }
 
+  // update schedule list , ONLY call by meru
   updateSchedule(schedule){
     console.log("miki: updateSchedule");
     this.ScheduleData=schedule;
+  }
+
+  updateProgramme(programme){
+    // console.log("miki: update programme");
+    // var found=_.find(this.scheduleData,p=>{
+    //   return programme.key === p.key;
+    // });
+    // console.log(found);
+    // Object.assign(found,programme);
+
+    // return found;
+    console.log("miki: updateProgramme");
+    this.handlerProgrammeChanged(programme);
   }
 
   getSchedule(){
     return this.ScheduleData;
   }
 
-  // todo
-  // onScheduleChanged(cb){}
-  // onRoomInfoChanged(cb){}
+  getRoomMeta(){
+
+    var ret = _.chain(this.config.roomMeta).filter(r=>{
+      return !r.disabled && r.assignable;
+    }).map(r=>{
+      r.key=`${r.live_provider}_${r.room_id}`;
+      return r;
+    }).value();
+    return ret;
+  }
+
+  // register event callback 
+  onProgrammeChanged(cb){
+    this.handlerProgrammeChanged=cb;
+  }
+  onRoomInfoChanged(cb){
+    this.handlerRoomInfoChanged=cb;
+  }
 
   assignConfigs(){
     this.config={

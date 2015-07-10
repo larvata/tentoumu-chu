@@ -153,7 +153,7 @@ class Okada{
     };
 
 
-    this.miki.config.roomInfo.forEach((r)=>{
+    this.miki.config.roomMeta.forEach((r)=>{
       // console.log(r);
       if (r.disabled) {return;}
 

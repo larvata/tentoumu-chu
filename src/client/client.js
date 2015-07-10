@@ -2,7 +2,7 @@ import React from 'react';
 import app from '../server/app';
 
 import Router from 'react-router';
-const HistoryLocation = Router.HistoryLocation;
+// const HistoryLocation = Router.HistoryLocation;
 
 import FluxibleComponent from 'fluxible/addons/FluxibleComponent';
 

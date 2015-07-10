@@ -5,7 +5,8 @@ var Toolbar = require('./Toolbar.jsx');
 var ProgrammeList = require('./ProgrammeList.jsx');
 var ProgrammeNewListItem = require('./ProgrammeNewListItem.jsx');
 var FluxibleMixin = require('fluxible/addons/FluxibleMixin');
-var fetchSchedule = require('../../actions/fetchSchedule')
+// var fetchSchedule = require('../../actions/fetchSchedule')
+var initManage = require('../../actions/initManage');
 
 var Main = React.createClass({
 
@@ -17,7 +18,7 @@ var Main = React.createClass({
 
   statics:{
     fetchData:function(context,params,query,done){
-      context.executeAction(fetchSchedule,{},done)
+      context.executeAction(initManage,{},done)
     }
   },
 

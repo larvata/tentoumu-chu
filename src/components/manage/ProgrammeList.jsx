@@ -3,7 +3,7 @@ var ScheduleStore = require('../../stores/ScheduleStore')
 var connectToStores = require('fluxible/addons/connectToStores');
 var ProgrammeListItem = require('./ProgrammeListItem.jsx')
 
-var FluxibleMixin = require('fluxible/addons/FluxibleMixin');
+// var FluxibleMixin = require('fluxible/addons/FluxibleMixin');
 
 function getProgrammeListItem(programme){
   return (

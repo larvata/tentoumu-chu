@@ -17,5 +17,10 @@ export default {
     console.log(body);
     console.log(callback);
     return callback(null, params);
+  },
+  update: function(req, resource, params, body, config, callback) {
+    console.log("+try update programme");
+    miki.updateProgramme(params);
+    return callback(null,params);
   }
 };

@@ -48,7 +48,9 @@ var channels = {
 
   'dhc':'DHCシアター',
 
-  'sp-4k':'スカパー!4K'
+  'sp-4k':'スカパー!4K',
+
+  'wowow-cinema':'WOWOWシネマ'
 
 
 };
@@ -68,6 +70,26 @@ class Tashima{
 
     //warmup
     this.loadSchedule();
+
+
+    // register callback
+    // update programme by key
+    this.miki.onProgrammeChanged(programme=>{
+      console.log("meru: updateProgramme");
+      // console.log(this.schedule);
+      var found=_.find(this.schedule,p=>{
+        return programme.key === p.key;
+      });
+      
+      Object.assign(found,programme);
+
+      console.log(found);
+
+      this.saveProgramme(found);
+      this.loadSchedule();
+    });
+
+
   }
 
   parseSchedule(article){
