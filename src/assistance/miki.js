@@ -1,4 +1,3 @@
-// import CSON from 'season';
 import userConfig from '../configs/tentoumu-chu';
 import _ from 'underscore';
 
@@ -12,8 +11,10 @@ class Miki{
 
     this.roomInfoes=[];
 
-    this.handlerProgrammeChanged=null;
-    this.handlerRoomInfoChanged=null;
+
+    this.handleProgrammeAdded=null;
+    this.handleProgrammeChanged=null;
+    this.handleRoomInfoChanged=null;
 
   }
 
@@ -39,10 +40,28 @@ class Miki{
     return this.roomInfoes;
   }
 
+  getRoomMeta(){
+
+    var ret = _.chain(this.config.roomMeta).filter(r=>{
+      return !r.disabled && r.assignable;
+    }).map(r=>{
+      r.key=`${r.live_provider}_${r.room_id}`;
+      return r;
+    }).value();
+    return ret;
+  }
+
+
   // update schedule list , ONLY call by meru
   updateSchedule(schedule){
     console.log("miki: updateSchedule");
     this.ScheduleData=schedule;
+  }
+
+
+  addProgramme(programme){
+    console.log("miki: addProgramme");
+    this.handleProgrammeAdded(programme);
   }
 
   updateProgramme(programme){
@@ -55,31 +74,25 @@ class Miki{
 
     // return found;
     console.log("miki: updateProgramme");
-    this.handlerProgrammeChanged(programme);
+    this.handleProgrammeChanged(programme);
   }
 
   getSchedule(){
     return this.ScheduleData;
   }
 
-  getRoomMeta(){
-
-    var ret = _.chain(this.config.roomMeta).filter(r=>{
-      return !r.disabled && r.assignable;
-    }).map(r=>{
-      r.key=`${r.live_provider}_${r.room_id}`;
-      return r;
-    }).value();
-    return ret;
-  }
-
   // register event callback 
+  onProgrammeAdded(cb){
+    this.handleProgrammeAdded=cb;
+  }
   onProgrammeChanged(cb){
-    this.handlerProgrammeChanged=cb;
+    this.handleProgrammeChanged=cb;
   }
   onRoomInfoChanged(cb){
-    this.handlerRoomInfoChanged=cb;
+    this.handleRoomInfoChanged=cb;
   }
+
+
 
   assignConfigs(){
     this.config={

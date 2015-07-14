@@ -1,11 +1,8 @@
 var React = require('react');
 var RoomMetaStore = require('../../stores/RoomMetaStore')
 var connectToStores = require('fluxible/addons/connectToStores');
-// var ProgrammeListItem = require('./ProgrammeListItem.jsx')
 var {updateProgramme} = require('../../actions/programme')
-// var FluxibleMixin = require('fluxible/addons/FluxibleMixin');
 
-console.log("roommetalist.jsx loaded");
 
 function getRoomListItem(room){
 
@@ -26,34 +23,61 @@ var RoomMetaList=React.createClass({
       programme:this.props.programme
     }
   },
-  componentWillReceiveProps:function(nextProps){
+
+  componentWillReceiveProps: function(nextProps){
     return{
       programme:nextProps.programme
     }
   },
 
+  componentWillMount: function(){
+    this.setState({lastRoomId:this.props.programme.roomId});
+  },
+
   updateProgrammeRoom: function(e){
-    var roomKey = React.findDOMNode(this.refs.room).value;
-    var room = this.state.programme;
-    room.roomId=roomKey;
+    var programme = this.state.programme;
 
-    this.setState(room);
-
-    if (roomKey!='') {
-      console.log("roommetalist: try execute updateProgramme");
-      console.log(this.state.programme);
-      context.executeAction(updateProgramme,this.state.programme,function(){
-        console.log("execute action updateProgramme done");
-      })
+    if (this.state.lastRoomId !== programme.roomId) {
+      if (programme.roomId != '') {
+        // update programme data
+        console.log("roommetalist: try execute updateProgramme");
+        console.log(this.state.programme);
+        context.executeAction(updateProgramme,this.state.programme,()=>{
+          this.setState({lastRoomId:programme.roomId});
+          console.log("execute action updateProgramme done");
+        })
+      }
     }
+  },
+
+  changeProgrammeRoom: function(e){
+    var roomKey = React.findDOMNode(this.refs.room).value;
+    var programme = this.state.programme;
+    programme.roomId=roomKey;
+    this.setState(programme);
+
     console.log("room changed");
+  },
+
+  getRoomClass: function(){
+    if (this.state.programme.roomId !== this.state.lastRoomId) {
+      return {backgroundColor:"yellow"};
+    }
+
+    return {};
   },
 
   render: function(){
     var RoomMetaList=this.props.rooms.map(getRoomListItem);
 
     return (
-      <select ref='room' value ={this.state.programme.roomId} onChange={this.updateProgrammeRoom}>
+      <select 
+      ref='room' 
+      value={this.state.programme.roomId} 
+      onChange={this.changeProgrammeRoom} 
+      onBlur={this.updateProgrammeRoom} 
+      style={this.getRoomClass()}>
+      
         <option value="" key="">None</option>
         {RoomMetaList}
       </select>

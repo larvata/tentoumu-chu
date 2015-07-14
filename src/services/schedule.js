@@ -16,6 +16,7 @@ export default {
     console.log("body");
     console.log(body);
     console.log(callback);
+    miki.addProgramme(params);
     return callback(null, params);
   },
   update: function(req, resource, params, body, config, callback) {

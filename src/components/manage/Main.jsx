@@ -22,6 +22,19 @@ var Main = React.createClass({
     }
   },
 
+  newProgramme:{
+    day: '',
+    end: '',
+    key: '',
+    members: '',
+    month: '',
+    start: '',
+    title: '',
+    type: 'programme-custom',
+    year: 2015,
+    roomId: ''
+  },
+
   render: function(){
 
 
@@ -37,7 +50,7 @@ var Main = React.createClass({
         <div>
           <div>
             <ProgrammeList />
-            <ProgrammeNewListItem />
+            <ProgrammeNewListItem programme={this.newProgramme}/>
           </div>
           <div>
             <PreviewPanel />

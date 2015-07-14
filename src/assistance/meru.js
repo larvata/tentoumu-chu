@@ -17,6 +17,7 @@ var channels = {
 
   'nhk-variety':'NHK総合',
   'nhk-edu-1':'NHK Eテレ1',
+  'nhk-bs-1':'NHK BS1',
   'nhk-bs-perm':'NHK BSプレミアム',
   'nhk-edu':'NHK Eテレ',
 
@@ -50,7 +51,9 @@ var channels = {
 
   'sp-4k':'スカパー!4K',
 
-  'wowow-cinema':'WOWOWシネマ'
+  'wowow-cinema':'WOWOWシネマ',
+
+  'space-shower':'スペースシャワーTV'
 
 
 };
@@ -76,17 +79,39 @@ class Tashima{
     // update programme by key
     this.miki.onProgrammeChanged(programme=>{
       console.log("meru: updateProgramme");
-      // console.log(this.schedule);
+      // console.log(programme);
       var found=_.find(this.schedule,p=>{
         return programme.key === p.key;
       });
+
+      // console.log("programme found?");
+      // console.log(found);
+      // console.log(this.schedule);
       
       Object.assign(found,programme);
 
-      console.log(found);
+      // console.log("programme is found: " + found);
 
       this.saveProgramme(found);
       this.loadSchedule();
+    });
+
+
+    this.miki.onProgrammeAdded(programme=>{
+      console.log("meru: addProgramme");
+
+      var found=_.find(this.schedule,p=>{
+        return programme.key === p.key;
+      });
+
+      if (found !== undefined) {
+        console.log("duplicated key,programme already added.");
+        return;
+      }
+
+      this.saveProgramme(programme);
+      this.loadSchedule();
+
     });
 
 
@@ -114,7 +139,7 @@ class Tashima{
         dayCount++;
         lastTemplate = ret;
       }
-      else if (ret.type === 'programme'){
+      else if (ret.type === 'programme-auto'){
         this.assertOrderKey(ret);
         this.assertProgrammeKey(ret);
         programmeList.push(ret);
@@ -165,7 +190,7 @@ class Tashima{
     if (match !== null) {
       ret.month = template.month;
       ret.day = template.day;
-      ret.type = 'programme';
+      ret.type = 'programme-auto';
       ret.start = match[1];
       ret.end = match[2];
       ret.channel = match[3];
@@ -203,7 +228,7 @@ class Tashima{
   }
 
   assertProgrammeKey(programme){
-    var key = 'Programme:';
+    var key = 'Programme:auto:';
     key += programme.month;
     key += ":";
     key += programme.day;
@@ -248,6 +273,8 @@ class Tashima{
 
   // save programme to db
   saveProgramme(programme){
+    console.log("meru: saveProgramme()");
+    // console.log(programme);
     var countdown = this.getExpireSeconds(programme);
     var action = countdown>0? 'SAVE':'SKIP';
     console.log(`${action}: ${programme.key}`);

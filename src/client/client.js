@@ -1,3 +1,5 @@
+require("babel/polyfill");
+
 import React from 'react';
 import app from '../server/app';
 

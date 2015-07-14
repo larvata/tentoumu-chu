@@ -1,37 +1,39 @@
-var React = require('react')
+var React = require('react');
 var ReactPropTypes = React.PropTypes;
-var {addProgramme} = require('../../actions/programme')
+var {addProgramme} = require('../../actions/programme');
 var ScheduleStore = require('../../stores/ScheduleStore');
 var FluxibleMixin = require('fluxible/addons/FluxibleMixin');
 
-var helper = require('../../utils/scheduleHelper');
+var programmeInputCheckMixin = require('../../mixins/programmeInputCheck');
 
 var uuid = require('node-uuid');
 
 var RoomMetaList = require('./RoomMetaList.jsx');
 
-
+function dummy(){
+  var a=1;
+}
 
 var ProgrammeNewListItem = React.createClass({
 
-  mixins: [FluxibleMixin],
+  mixins: [FluxibleMixin,programmeInputCheckMixin],
 
   propTypes: {
     programme: React.PropTypes.object
   },
 
-  getInitialState:function(){
-    return {
-      dateIllegal:true,
-      timeIllegal:true
-    }
-  },
+  // getInitialState:function(){
+  //   return {
+  //     dateIllegal:true,
+  //     timeIllegal:true
+  //   }
+  // },
 
   handleAddProgramme:function(e){
-    var date = React.findDOMNode(this.refs.date).value;
-    var time = React.findDOMNode(this.refs.time).value;
-    var title = React.findDOMNode(this.refs.title).value;
-    var members= React.findDOMNode(this.refs.members).value;
+    var date = this.refs.date.getDOMNode().value;
+    var time = this.refs.time.getDOMNode().value;
+    var title = this.refs.title.getDOMNode().value;
+    var members= this.refs.members.getDOMNode().value;
 
 
     // TODO move progamme create to addProgrammeAction
@@ -41,7 +43,7 @@ var ProgrammeNewListItem = React.createClass({
     var end = time.split('~')[1];
     var type="programme-custom";
     // key = type+":"+start+":"+end
-    var key = type+":"+uuid.v1();
+    var key = "Programme:custom:"+uuid.v1();
 
     var programme= {
       day: day,
@@ -59,56 +61,22 @@ var ProgrammeNewListItem = React.createClass({
       console.log("execute action addProgramme done");
     })
 
-    // this.getStore(ScheduleStore).addProgramme()
-
     React.findDOMNode(this.refs.date).value='';
     React.findDOMNode(this.refs.time).value='';
     React.findDOMNode(this.refs.title).value='';
     React.findDOMNode(this.refs.members).value='';
   },
 
-  handleDateChange:function(e){
-    var date = React.findDOMNode(this.refs.date).value;
-
-    if (/\d+\/\d+/.test(date)) {
-      this.setState({"dateIllegal":false});
-    }
-    else{
-      this.setState({"dateIllegal":true});
-    }
-
-  },
-
-  handleTimeChange:function(e){
-    var time = React.findDOMNode(this.refs.time).value;
-
-    // var timeParts = date.split('~');
-    if (/\d+:\d+~\d+:\d+/.test(time)) {
-      this.setState({"timeIllegal":false});
-    }
-    else{
-      this.setState({"timeIllegal":true});
-    }
-  },
-
   render: function(){
-    var programme = this.props.programme;
-    programme={
-      roomId: ''
-    }
-
-    console.log(programme)
-    var dateVaildateStyle = this.state.dateIllegal?{backgroundColor:"red",color:"white"}:{}
-    var timeVaildateStyle = this.state.timeIllegal?{backgroundColor:"red",color:"white"}:{}
 
     // from user input
     return (
       <li>
-        <RoomMetaList programme={programme} />
-        <input ref='date' size='5' onChange={this.handleDateChange} style={dateVaildateStyle}/>
-        <input ref='time' size='12' onChange={this.handleTimeChange} style={timeVaildateStyle}/>
-        <input ref='title' size='48' />
-        <input ref='members' size='24' />
+        <RoomMetaList programme={this.state.programme} />
+        <input ref='date' size='5' value={this.state.dateText} onChange={this.setDateState} style={this.getDateClass()}/>
+        <input ref='time' size='12' value={this.state.timeText}  onChange={this.setTimeState} style={this.getTimeClass()}/>
+        <input ref='title' size='48'value={this.state.programme.title} />
+        <input ref='members' size='24' value={this.state.programme.members} />
         <button ref="btnAdd" onClick={this.handleAddProgramme} disabled={this.state.dateIllegal || this.state.timeIllegal}>add</button>
       </li>
     );
