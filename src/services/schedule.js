@@ -3,10 +3,9 @@ import miki from '../assistance/miki';
 export default {
   name: 'schedule',
   read: function(req, resource, params, config, callback) {
-    var schedule;
     console.log("+try fetch schedule");
     console.log(callback);
-    schedule = miki.getSchedule();
+    var schedule = miki.getSchedule();
     return callback(null, schedule);
   },
   create: function(req, resource, params, body, config, callback) {

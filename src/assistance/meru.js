@@ -53,7 +53,9 @@ var channels = {
 
   'wowow-cinema':'WOWOWシネマ',
 
-  'space-shower':'スペースシャワーTV'
+  'space-shower':'スペースシャワーTV',
+
+  'bs-japan':'BSジャパン'
 
 
 };
@@ -84,8 +86,8 @@ class Tashima{
         return programme.key === p.key;
       });
 
-      // console.log("programme found?");
-      // console.log(found);
+      console.log("programme found?");
+      console.log(found);
       // console.log(this.schedule);
       
       Object.assign(found,programme);

@@ -5,6 +5,7 @@ var ScheduleStore = require('../../stores/ScheduleStore');
 var FluxibleMixin = require('fluxible/addons/FluxibleMixin');
 
 var programmeInputCheckMixin = require('../../mixins/programmeInputCheck');
+var programmeChangeMixin = require('../../mixins/programmeChange');
 
 var uuid = require('node-uuid');
 
@@ -16,7 +17,7 @@ function dummy(){
 
 var ProgrammeNewListItem = React.createClass({
 
-  mixins: [FluxibleMixin,programmeInputCheckMixin],
+  mixins: [FluxibleMixin,programmeInputCheckMixin,programmeChangeMixin],
 
   propTypes: {
     programme: React.PropTypes.object
@@ -33,7 +34,8 @@ var ProgrammeNewListItem = React.createClass({
     var date = this.refs.date.getDOMNode().value;
     var time = this.refs.time.getDOMNode().value;
     var title = this.refs.title.getDOMNode().value;
-    var members= this.refs.members.getDOMNode().value;
+    // var members= this.refs.members.getDOMNode().value;
+    var members=''
 
 
     // TODO move progamme create to addProgrammeAction
@@ -64,19 +66,30 @@ var ProgrammeNewListItem = React.createClass({
     React.findDOMNode(this.refs.date).value='';
     React.findDOMNode(this.refs.time).value='';
     React.findDOMNode(this.refs.title).value='';
-    React.findDOMNode(this.refs.members).value='';
+    // React.findDOMNode(this.refs.members).value='';
   },
 
   render: function(){
-
     // from user input
     return (
       <li>
         <RoomMetaList programme={this.state.programme} />
-        <input ref='date' size='5' value={this.state.dateText} onChange={this.setDateState} style={this.getDateClass()}/>
-        <input ref='time' size='12' value={this.state.timeText}  onChange={this.setTimeState} style={this.getTimeClass()}/>
-        <input ref='title' size='48'value={this.state.programme.title} />
-        <input ref='members' size='24' value={this.state.programme.members} />
+
+        <input ref='date' size='5' 
+        value={this.state.dateText} 
+        onChange={this.setDateState} 
+        style={this.getDateClass()}/>
+
+        <input ref='time' size='12' 
+        value={this.state.timeText} 
+        onChange={this.setTimeState} 
+        style={this.getTimeClass()}/>
+
+        <input ref='title' size='48'
+        value={this.state.programme.title} 
+        onChange={this.changeProgrammeInfo.bind(null,'title','title')}
+        />
+
         <button ref="btnAdd" onClick={this.handleAddProgramme} disabled={this.state.dateIllegal || this.state.timeIllegal}>add</button>
       </li>
     );
@@ -84,3 +97,7 @@ var ProgrammeNewListItem = React.createClass({
 })
 
 module.exports = ProgrammeNewListItem;
+
+/*
+        <input ref='members' size='24' value={this.state.programme.members} />
+*/

@@ -1,8 +1,9 @@
 var React = require('react');
-var RoomMetaStore = require('../../stores/RoomMetaStore')
+var RoomMetaStore = require('../../stores/RoomMetaStore');
 var connectToStores = require('fluxible/addons/connectToStores');
-var {updateProgramme} = require('../../actions/programme')
 
+var programmeUpdateMixin = require('../../mixins/programmeUpdate');
+var programmeChangeMixin = require('../../mixins/programmeChange');
 
 function getRoomListItem(room){
 
@@ -18,49 +19,62 @@ function getRoomListItem(room){
 
 var RoomMetaList=React.createClass({
 
+  mixins: [programmeUpdateMixin,programmeChangeMixin],
+
   getInitialState: function(e){
     return{
       programme:this.props.programme
     }
   },
 
+
   componentWillReceiveProps: function(nextProps){
+
+    console.log('componentWillReceiveProps');
+
+    this.setState({programmeOrigin:Object.assign({},nextProps.programme)});
+
     return{
       programme:nextProps.programme
     }
   },
 
+
+
+
+
   componentWillMount: function(){
-    this.setState({lastRoomId:this.props.programme.roomId});
+    // this.setState({lastRoomId:this.props.programme.roomId});
+    // console.log("componentWillMount: --");
+    this.setState({programmeOrigin:Object.assign({},this.state.programme)});
   },
 
-  updateProgrammeRoom: function(e){
-    var programme = this.state.programme;
+  // updateProgrammeRoom: function(e){
+  //   var {programme,programmeOrigin} = this.state;
 
-    if (this.state.lastRoomId !== programme.roomId) {
-      if (programme.roomId != '') {
-        // update programme data
-        console.log("roommetalist: try execute updateProgramme");
-        console.log(this.state.programme);
-        context.executeAction(updateProgramme,this.state.programme,()=>{
-          this.setState({lastRoomId:programme.roomId});
-          console.log("execute action updateProgramme done");
-        })
-      }
-    }
-  },
+  //   if (programmeOrigin.roomId !== programme.roomId) {
 
-  changeProgrammeRoom: function(e){
-    var roomKey = React.findDOMNode(this.refs.room).value;
-    var programme = this.state.programme;
-    programme.roomId=roomKey;
-    this.setState(programme);
+  //     // update programme data
+  //     console.log("roommetalist: try execute updateProgramme");
+  //     context.executeAction(updateProgramme,this.state.programme,()=>{
+  //       this.setState({programmeOrigin: Object.assign({},programme)});
+  //       console.log("execute action updateProgramme done");
+  //     })
 
-    console.log("room changed");
-  },
+  //   }
+  // },
+
+  // changeProgrammeRoom: function(e){
+  //   var roomKey = React.findDOMNode(this.refs.room).value;
+  //   var programme = this.state.programme;
+  //   programme.roomId=roomKey;
+  //   this.setState({programme});
+
+  //   console.log("room changed");
+  // },
 
   getRoomClass: function(){
-    if (this.state.programme.roomId !== this.state.lastRoomId) {
+    if (this.state.programme.roomId !== this.state.programmeOrigin.roomId) {
       return {backgroundColor:"yellow"};
     }
 
@@ -74,10 +88,10 @@ var RoomMetaList=React.createClass({
       <select 
       ref='room' 
       value={this.state.programme.roomId} 
-      onChange={this.changeProgrammeRoom} 
-      onBlur={this.updateProgrammeRoom} 
+      onChange={this.changeProgrammeInfo.bind(null,'room','roomId')} 
+      onBlur={this.updateProgrammeInfo.bind(null,'roomId')} 
       style={this.getRoomClass()}>
-      
+
         <option value="" key="">None</option>
         {RoomMetaList}
       </select>

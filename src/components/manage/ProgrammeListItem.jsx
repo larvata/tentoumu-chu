@@ -5,9 +5,12 @@ var RoomMetaList = require('./RoomMetaList.jsx');
 var FluxibleMixin = require('fluxible/addons/FluxibleMixin');
 var programmeInputCheckMixin = require('../../mixins/programmeInputCheck');
 
+var programmeUpdateMixin = require('../../mixins/programmeUpdate');
+var programmeChangeMixin = require('../../mixins/programmeChange');
+
 var ProgrammeListItem = React.createClass({
 
-   mixins: [FluxibleMixin,programmeInputCheckMixin],
+   mixins: [FluxibleMixin,programmeInputCheckMixin,programmeUpdateMixin,programmeChangeMixin],
 
   propTypes: {
     programme: React.PropTypes.object
@@ -17,7 +20,7 @@ var ProgrammeListItem = React.createClass({
     var programme = this.state.programme;
 
     var readOnlyItem=(programme.type === 'programme-auto')?true:"";
-    readOnlyItem="";
+    // readOnlyItem="";
 
 
 
@@ -26,18 +29,47 @@ var ProgrammeListItem = React.createClass({
     return (
       <li>
         <RoomMetaList programme={this.state.programme}/>
-        <input ref='date' size='5' readOnly={readOnlyItem} onChange={this.setDateState} value={this.state.dateText} style={this.getDateClass()}/>
-        <input ref='time' size='12' readOnly={readOnlyItem} onChange={this.setTimeState} value={this.state.timeText} style={this.getTimeClass()} />
+
+        <input ref='date' size='5' 
+        readOnly={readOnlyItem} 
+        onChange={this.setDateState} 
+        onBlur={this.updateProgrammeInfo.bind(null,'date')}
+        value={this.state.dateText} 
+        style={this.getDateClass()} />
+
+        <input ref='time' size='12' 
+        readOnly={readOnlyItem} 
+        onChange={this.setTimeState} 
+        onBlur={this.updateProgrammeInfo.bind(null,'time')}
+        value={this.state.timeText} 
+        style={this.getTimeClass()} />
+
+        <input ref='title' size='48' 
+        readOnly={readOnlyItem} 
+        onChange={this.changeProgrammeInfo.bind(null,'title','title')}
+        onBlur={this.updateProgrammeInfo.bind(null,'title')}
+        value={programme.title} />
+
+        <input ret='members' size='24'
+        readOnly={readOnlyItem} 
+        onChange={this.changeProgrammeInfo.bind(null,'members','members')} 
+        onBlur={this.updateProgrammeInfo.bind(null,'members')}
+        value={programme.members} />
+
       </li>
     );
 
   }
 })
 
-        // <input ref='title' readOnly={readOnlyItem} size='48' onChange={this.handleProgrammeUpdate} value={programme.title} />
-        // <input ret='members' readOnly={readOnlyItem} size='24' onChange={this.handleProgrammeUpdate} value={programme.members} />
 
 module.exports = ProgrammeListItem;
 
 
- /*  */
+
+        /*
+        
+
+
+
+    */

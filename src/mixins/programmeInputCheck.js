@@ -36,7 +36,7 @@ export default{
 
     this.setState({programme: this.state.programme});
     this.setState({dateText:date});
-    this.setState({dateIllegal:!!parts});
+    this.setState({dateIllegal:!parts}); 
   },
 
   validateDate: function(date){
@@ -94,7 +94,7 @@ export default{
 
     this.setState({programme: this.state.programme});
     this.setState({timeText:time});
-    this.setState({timeIllegal:!!parts});
+    this.setState({timeIllegal:!parts});
   },
 
   validateTime: function(time){
@@ -122,5 +122,12 @@ export default{
 
     return {};
   },
+
+  canAddNew: function(){
+    if (true) {}
+  }
+
+
+
 
 };
