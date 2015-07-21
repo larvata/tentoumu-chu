@@ -1,0 +1,8 @@
+{
+  "ignore":["build",".git","node_modules","./*.json"],
+  "ext": "js jsx jade json",
+  "verbose": true,
+  "exeMap": {
+    "js":"node --harmony"
+  }
+}

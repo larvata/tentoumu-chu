@@ -5,7 +5,8 @@
   "main": "src/start.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "supervisor --harmony --ignore build/ -e js src/start",
+    "dev-old": "supervisor --harmony --ignore build/ -e js src/start",
+    "dev":"nodemon src/start",
     "hot": "babel-node hotLoaderServer.js"
   },
   "repository": {

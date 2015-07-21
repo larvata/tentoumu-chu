@@ -1,0 +1,19 @@
+{
+  "name": "schedule",
+  "version": "0.0.0",
+  "authors": [
+    "Larvata <alzzlnewtype@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "backbone": "~1.1.2"
+  }
+}

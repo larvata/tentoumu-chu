@@ -1,0 +1,10 @@
+ ☐ new bangumi schedule manager
+ ☐ add browser extension download url to schedule list page
+ ☐ integrate node-gen to miki
+   ??
+
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ ✔ project name: schedule -> sanjuushi -> tentoumu-chu @done (15-02-27 15:55)
+ ✔ extract config(manage-page-url, token, redis-keys,etc) to seperate json file @done (15-02-27 15:56)

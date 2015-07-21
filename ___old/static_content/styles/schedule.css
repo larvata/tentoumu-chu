@@ -1,0 +1,190 @@
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+}
+body.bg-hkt48 {
+  background-image: url("../images/bg-tiles/hkt48.jpg");
+}
+body.bg-miki01 {
+  background-image: url("../images/bg-tiles/miki01.jpg");
+}
+body.bg-haruppi01 {
+  background-image: url("../images/bg-tiles/haruppi01.jpg");
+}
+body.bg-haruppi02 {
+  background-image: url("../images/bg-tiles/haruppi02.jpg");
+}
+body.bg-haruppi03 {
+  background-image: url("../images/bg-tiles/haruppi03.jpg");
+}
+body.bg-haruppi04 {
+  background-image: url("../images/bg-tiles/haruppi04.jpg");
+}
+body.bg-haruppi05 {
+  background-image: url("../images/bg-tiles/haruppi05.jpg");
+}
+body.bg-haruppi06 {
+  background-image: url("../images/bg-tiles/haruppi06.jpg");
+}
+body.bg-meru01 {
+  background-image: url("../images/bg-tiles/meru01.jpg");
+}
+body.bg-meru02 {
+  background-image: url("../images/bg-tiles/meru02.jpg");
+}
+body.bg-mio01 {
+  background-image: url("../images/bg-tiles/mio01.jpg");
+}
+body.bg-nako01 {
+  background-image: url("../images/bg-tiles/nako01.jpg");
+}
+body.bg-nako02 {
+  background-image: url("../images/bg-tiles/nako02.jpg");
+}
+body.bg-sakura01 {
+  background-image: url("../images/bg-tiles/sakura01.jpg");
+}
+body.bg-sakura02 {
+  background-image: url("../images/bg-tiles/sakura02.jpg");
+}
+body.bg-sakura03 {
+  background-image: url("../images/bg-tiles/sakura03.jpg");
+}
+body.bg-sashi01 {
+  background-image: url("../images/bg-tiles/sashi01.jpg");
+}
+body.bg-sashi02 {
+  background-image: url("../images/bg-tiles/sashi02.jpg");
+}
+body.bg-sashi03 {
+  background-image: url("../images/bg-tiles/sashi03.jpg");
+}
+body.bg-sashi04 {
+  background-image: url("../images/bg-tiles/sashi04.jpg");
+}
+body.bg-sashi05 {
+  background-image: url("../images/bg-tiles/sashi05.jpg");
+}
+body.bg-sashi06 {
+  background-image: url("../images/bg-tiles/sashi06.jpg");
+}
+body.bg-sashi07 {
+  background-image: url("../images/bg-tiles/sashi07.jpg");
+}
+table .time {
+  width: 150px;
+}
+table .time.small {
+  width: 100px;
+}
+.jumbotron {
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  padding-top: 200px;
+  padding-bottom: 100px;
+}
+.jumbotron h1 a {
+  color: white;
+  text-shadow: 1px 3px 5px #969696;
+  font-size: 56px;
+}
+.jumbotron h1 a:hover {
+  text-decoration: none;
+}
+.jumbotron.haruppi {
+  background-image: url(../images/top-banners/haruppi.jpg);
+  background-color: #88fec1;
+}
+.jumbotron.haruppi2 {
+  background-image: url(../images/top-banners/haruppi2.jpg);
+  background-color: #f3eadf;
+}
+.jumbotron.mio {
+  background-image: url(../images/top-banners/mio.jpg);
+  background-color: #ff7cbe;
+}
+.jumbotron.sakura {
+  background-image: url(../images/top-banners/sakura.jpg);
+  background-color: #f6cfe0;
+}
+.jumbotron.single4th {
+  background-image: url(../images/top-banners/single4th.jpg);
+  background-color: #fbf652;
+  background-position: top right;
+}
+.jumbotron.single5th {
+  background-image: url(../images/top-banners/single5th.jpg);
+  background-color: #fbf652;
+  background-position: right;
+}
+.container {
+  height: 100%;
+  min-height: 1050px;
+  position: relative;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: rgba(255, 255, 255, 0.3);
+}
+.inner {
+  padding: 10px;
+  background: white;
+  height: 100%;
+  border-radius: 5px;
+}
+.inner > .row {
+  padding: 30px;
+  margin-top: -170px;
+}
+.contact {
+  position: absolute;
+  right: 30px;
+  bottom: 0;
+}
+.table {
+  text-shadow: 1px 3px 5px #969696;
+}
+.app-box {
+  position: absolute;
+  bottom: 0;
+  background-color: white;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  margin: 150px 100px 20px 100px;
+  padding-left: 10px;
+  padding-top: 20px;
+  padding-bottom: 15px;
+}
+.app-box > .item {
+  display: block;
+  float: left;
+  padding: 20px 0px;
+  margin: 0px 30px;
+  height: 160px;
+  width: 120px;
+  font-size: 18px;
+  color: #232a2a;
+  text-decoration: none;
+  text-align: center;
+  opacity: .75;
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  -webkit-backface-visibility: hidden;
+  position: relative;
+}
+.app-box > .item > p {
+  padding-top: 10px;
+}
+.app-box .badget {
+  position: absolute;
+  right: 0;
+  top: 14px;
+  background-color: #00b5ad;
+  color: white;
+  border-radius: 3px;
+  font-size: 12px;
+  padding: 1px 5px;
+}
