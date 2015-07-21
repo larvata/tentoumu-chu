@@ -27,11 +27,8 @@ var RoomMetaList=React.createClass({
     }
   },
 
-
   componentWillReceiveProps: function(nextProps){
-
     console.log('componentWillReceiveProps');
-
     this.setState({programmeOrigin:Object.assign({},nextProps.programme)});
 
     return{
@@ -40,38 +37,10 @@ var RoomMetaList=React.createClass({
   },
 
 
-
-
-
   componentWillMount: function(){
-    // this.setState({lastRoomId:this.props.programme.roomId});
-    // console.log("componentWillMount: --");
     this.setState({programmeOrigin:Object.assign({},this.state.programme)});
   },
 
-  // updateProgrammeRoom: function(e){
-  //   var {programme,programmeOrigin} = this.state;
-
-  //   if (programmeOrigin.roomId !== programme.roomId) {
-
-  //     // update programme data
-  //     console.log("roommetalist: try execute updateProgramme");
-  //     context.executeAction(updateProgramme,this.state.programme,()=>{
-  //       this.setState({programmeOrigin: Object.assign({},programme)});
-  //       console.log("execute action updateProgramme done");
-  //     })
-
-  //   }
-  // },
-
-  // changeProgrammeRoom: function(e){
-  //   var roomKey = React.findDOMNode(this.refs.room).value;
-  //   var programme = this.state.programme;
-  //   programme.roomId=roomKey;
-  //   this.setState({programme});
-
-  //   console.log("room changed");
-  // },
 
   getRoomClass: function(){
     if (this.state.programme.roomId !== this.state.programmeOrigin.roomId) {

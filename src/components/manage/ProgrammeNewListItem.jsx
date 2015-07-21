@@ -46,33 +46,38 @@ var ProgrammeNewListItem = React.createClass({
   },
 
   handleAddProgramme:function(e){
-    var date = this.refs.date.getDOMNode().value;
-    var time = this.refs.time.getDOMNode().value;
-    var title = this.refs.title.getDOMNode().value;
-    // var members= this.refs.members.getDOMNode().value;
-    var members=''
+    // var date = this.refs.date.getDOMNode().value;
+    // var time = this.refs.time.getDOMNode().value;
+    // var title = this.refs.title.getDOMNode().value;
+    // // var members= this.refs.members.getDOMNode().value;
+    // var members=''
 
 
     // TODO move programme create to addProgrammeAction
-    var month = date.split('/')[0];
-    var day = date.split('/')[1];
-    var start = time.split('~')[0];
-    var end = time.split('~')[1];
-    var type="programme-custom";
-    // key = type+":"+start+":"+end
-    var key = "Programme:custom:"+uuid.v1();
+    // var month = date.split('/')[0];
+    // var day = date.split('/')[1];
+    // var start = time.split('~')[0];
+    // var end = time.split('~')[1];
+    // var type="programme-custom";
+    // // key = type+":"+start+":"+end
+    // var key = "Programme:custom:"+uuid.v1();
 
-    var programme= {
-      day: day,
-      end: end,
-      key: key,
-      members: members,
-      month: month,
-      start: start,
-      title: title,
-      type: type,
-      year: 2015
-    }
+
+    var programme = this.state.programme;
+    programme.key =  "Programme:custom:"+uuid.v1();
+
+
+    // programme= {
+    //   day: day,
+    //   end: end,
+    //   key: key,
+    //   members: members,
+    //   month: month,
+    //   start: start,
+    //   title: title,
+    //   type: type,
+    //   year: 2015
+    // }
 
     context.executeAction(addProgramme,programme,()=>{
       console.log("execute action addProgramme done");

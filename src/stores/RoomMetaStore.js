@@ -7,7 +7,6 @@ export default createStore({
   },
 
   initialize: function(){
-    console.log("RoomStore initialize");
     this.roomMeta=[];
   },
   updateRoomMeta: function(roomMeta){

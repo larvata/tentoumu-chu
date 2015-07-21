@@ -28,27 +28,41 @@ var Main = React.createClass({
 
 
 
-
-
     return (
       <div>
-        <div>
-          <Toolbar />
-        </div>
+
 
         <div>
           <div>
             <ProgrammeList />
             <ProgrammeNewListItem/>
           </div>
-          <div>
-            <PreviewPanel />
-          </div>
         </div>
       </div>
 
 
     )
+
+
+    // return (
+    //   <div>
+    //     <div>
+    //       <Toolbar />
+    //     </div>
+
+    //     <div>
+    //       <div>
+    //         <ProgrammeList />
+    //         <ProgrammeNewListItem/>
+    //       </div>
+    //       <div>
+    //         <PreviewPanel />
+    //       </div>
+    //     </div>
+    //   </div>
+
+
+    // )
 
 
   }

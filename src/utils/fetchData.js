@@ -9,7 +9,6 @@ var parallels = (dataRouters, context, routerState, cb)=>{
       if (--count){
         console.log(`task last: ${count}`);
       }else{
-        console.log("all done. call callback");
         return cb();
       }
     });

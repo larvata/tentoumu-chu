@@ -11,16 +11,12 @@ var ScheduleStore = createStore({
     // 'UPDATE_PROGRAME': 'updateProgramme'
   },
   initialize: function() {
-    console.log("ScheduleStore initialize");
     this.schedule = [];
   },
   getSchedule: function() {
-    console.log("ScheduleStore: getSchedule()");
-    console.log(this.schedule.length);
     return this.schedule;
   },
   updateSchedule: function(schedule) {
-    console.log("ScheduleStore: updateSchedule()");
     this.schedule = schedule;
     this.emitChange();
     // console.log(this.schedule.length);
@@ -44,13 +40,11 @@ var ScheduleStore = createStore({
   //   this.emitChange();
   // },
   dehydrate: function() {
-    console.log("ScheduleStore: dehydrate");
     return {
       schedule: this.schedule
     };
   },
   rehydrate: function(state) {
-    console.log("ScheduleStore: redydrate");
     this.schedule = state.schedule;
   }
 });

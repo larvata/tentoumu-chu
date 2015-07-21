@@ -21,7 +21,7 @@ export default{
   getDateString: function(){
     var source = this.state || this.props;
     if (source.programme === undefined) {
-      console.log("programme not found in both state and props");
+      // programme not found in both state and props
       return "";
     }
 
@@ -86,7 +86,7 @@ export default{
     var source = this.state || this.props;
 
     if (source.programme === undefined) {
-      console.log("[time]programme not found in both state and props");
+      // rogramme not found in both state and props
       return "";
     }
 

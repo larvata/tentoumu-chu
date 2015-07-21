@@ -11,10 +11,17 @@ export default{
       roomId
     */
 
-
     if (!['roomId','date','time','title','members'].includes(type)) {
       console.log(`updateProgrammeInfo: illegal field type: ${type}`);
       return;
+    }
+
+
+    if (type === 'roomId') {
+      if (this.state.programme.key === "") {
+        console.log("in new programmeList");
+        return;
+      }
     }
 
     var fields=[];

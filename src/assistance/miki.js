@@ -56,24 +56,18 @@ class Miki{
 
   // update schedule list , ONLY call by meru
   updateSchedule(schedule){
-    console.log("miki: updateSchedule");
     this.ScheduleData=schedule;
   }
 
-
   addProgramme(programme,callback){
-    console.log("miki: addProgramme");
     this.handleProgrammeAdded(programme,callback);
   }
 
   deleteProgramme(programme,callback){
-    console.log("miki: deleteProgramme");
     this.handleProgrammeDelete(programme,callback);
   }
 
   updateProgramme(programme,callback){
-    console.log("miki: updateProgramme");
-    console.log(this.handleProgrammeChanged)
     this.handleProgrammeChanged(programme,callback);
   }
 

@@ -80,7 +80,6 @@ class Tashima{
     // register callback
     // update programme by key
     this.miki.onProgrammeChanged((programme,callback)=>{
-      console.log("meru: updateProgramme");
       
       var found=_.find(this.schedule,p=>{
         return programme.key === p.key;
@@ -99,7 +98,6 @@ class Tashima{
 
 
     this.miki.onProgrammeAdded((programme,callback)=>{
-      console.log("meru: addProgramme");
 
       var found=_.find(this.schedule,p=>{
         return programme.key === p.key;
@@ -119,7 +117,6 @@ class Tashima{
     });
 
     this.miki.onProgrammeDeleted((programme,callback)=>{
-      console.log("meru: deleteProgramme");
 
       var found = _.find(this.schedule, p=>{
         return programme.key === p.key;
@@ -133,8 +130,6 @@ class Tashima{
       // set expired year, 
       // redis will remove this record automatically
       programme.year=2012;
-      console.log("programme to be deleted");
-      console.log(programme);
       this.saveProgramme(programme);
       this.loadSchedule(callback);
 
@@ -324,16 +319,10 @@ class Tashima{
 
           if (--remains === 0) {
             // all done
-            console.log("[miki] finish load schedule");
             this.schedule = _.sortBy(this.schedule,'orderKey');
             this.miki.updateSchedule(this.schedule);
 
-            console.log("try call callback");
             callback = callback || function(){};
-
-            console.log(callback);
-            console.log(this.schedule);
-
             callback(null,this.schedule);
 
           }
