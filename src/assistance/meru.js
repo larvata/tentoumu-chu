@@ -79,27 +79,26 @@ class Tashima{
 
     // register callback
     // update programme by key
-    this.miki.onProgrammeChanged(programme=>{
+    this.miki.onProgrammeChanged((programme,callback)=>{
       console.log("meru: updateProgramme");
-      // console.log(programme);
+      
       var found=_.find(this.schedule,p=>{
         return programme.key === p.key;
       });
 
-      console.log("programme found?");
-      console.log(found);
-      // console.log(this.schedule);
       
       Object.assign(found,programme);
 
-      // console.log("programme is found: " + found);
-
       this.saveProgramme(found);
-      this.loadSchedule();
+      this.loadSchedule(callback);
+
+
+      // callback(null,this.miki.getSchedule());
+
     });
 
 
-    this.miki.onProgrammeAdded(programme=>{
+    this.miki.onProgrammeAdded((programme,callback)=>{
       console.log("meru: addProgramme");
 
       var found=_.find(this.schedule,p=>{
@@ -112,7 +111,34 @@ class Tashima{
       }
 
       this.saveProgramme(programme);
-      this.loadSchedule();
+      this.loadSchedule(callback);
+
+      // console.log("try start callback onProgrammeChanged");
+      // callback(null,this.miki.getSchedule());
+
+    });
+
+    this.miki.onProgrammeDeleted((programme,callback)=>{
+      console.log("meru: deleteProgramme");
+
+      var found = _.find(this.schedule, p=>{
+        return programme.key === p.key;
+      });
+
+      if (found === undefined) {
+        console.log("not found programme to be deleted");
+        return;
+      }
+
+      // set expired year, 
+      // redis will remove this record automatically
+      programme.year=2012;
+      console.log("programme to be deleted");
+      console.log(programme);
+      this.saveProgramme(programme);
+      this.loadSchedule(callback);
+
+      
 
     });
 
@@ -275,7 +301,7 @@ class Tashima{
 
   // save programme to db
   saveProgramme(programme){
-    console.log("meru: saveProgramme()");
+    // console.log("meru: saveProgramme()");
     // console.log(programme);
     var countdown = this.getExpireSeconds(programme);
     var action = countdown>0? 'SAVE':'SKIP';
@@ -285,7 +311,7 @@ class Tashima{
     this.redis.expire(programme.key,countdown);
   }
 
-  loadSchedule(){
+  loadSchedule(callback){
     this.schedule = [];
 
     this.redis.keys('Programme:*',(err,replies)=>{
@@ -301,6 +327,15 @@ class Tashima{
             console.log("[miki] finish load schedule");
             this.schedule = _.sortBy(this.schedule,'orderKey');
             this.miki.updateSchedule(this.schedule);
+
+            console.log("try call callback");
+            callback = callback || function(){};
+
+            console.log(callback);
+            console.log(this.schedule);
+
+            callback(null,this.schedule);
+
           }
         });
       });

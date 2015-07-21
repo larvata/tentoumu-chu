@@ -24,19 +24,19 @@ var ProgrammeList = React.createClass({
     console.log('componentDidMount');
   },
 
-  componentWillReceiveProps: function(nextProps){
-    console.log('componentWillReceiveProps');
+  // componentWillReceiveProps: function(nextProps){
+  //   console.log('componentWillReceiveProps');
 
-    return{
-      schedule:nextProps.schedule
-    }
-  },
+  //   return{
+  //     schedule:nextProps.schedule
+  //   }
+  // },
 
-  shouldComponentUpdate: function(nextProps,nextState){
-    console.log('shouldComponentUpdate');
-    var ret= (this.props.schedule.length !== nextProps.schedule.length);
-    return ret;
-  },
+  // shouldComponentUpdate: function(nextProps,nextState){
+  //   console.log('shouldComponentUpdate');
+  //   var ret= (this.props.schedule.length !== nextProps.schedule.length);
+  //   return ret;
+  // },
 
   componentWillUpdate: function(){
     console.log('componentWillUpdate');

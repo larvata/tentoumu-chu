@@ -8,22 +8,32 @@ var programmeInputCheckMixin = require('../../mixins/programmeInputCheck');
 var programmeUpdateMixin = require('../../mixins/programmeUpdate');
 var programmeChangeMixin = require('../../mixins/programmeChange');
 
+var {deletePrgramme} = require('../../actions/programme');
+
 var ProgrammeListItem = React.createClass({
 
-   mixins: [FluxibleMixin,programmeInputCheckMixin,programmeUpdateMixin,programmeChangeMixin],
+mixins: [FluxibleMixin,programmeInputCheckMixin,programmeUpdateMixin,programmeChangeMixin],
 
   propTypes: {
     programme: React.PropTypes.object
+  },
+
+  getInitialState: function(){
+    return {programme: this.props.programme}
+  },
+
+  handleDeleteProgramme: function(){
+    console.log("delete clicked");
+
+    context.executeAction(deletePrgramme,this.state.programme,()=>{
+        console.log("handleDelProgramme done");
+    });
   },
 
   render: function(){
     var programme = this.state.programme;
 
     var readOnlyItem=(programme.type === 'programme-auto')?true:"";
-    // readOnlyItem="";
-
-
-
 
     // item from rss feed parse shouldn't be edit
     return (
@@ -50,11 +60,14 @@ var ProgrammeListItem = React.createClass({
         onBlur={this.updateProgrammeInfo.bind(null,'title')}
         value={programme.title} />
 
-        <input ret='members' size='24'
-        readOnly={readOnlyItem} 
-        onChange={this.changeProgrammeInfo.bind(null,'members','members')} 
-        onBlur={this.updateProgrammeInfo.bind(null,'members')}
-        value={programme.members} />
+        {
+            // render delete button when custom programme
+            programme.type === 'programme-auto'?
+            <component /> :
+            <button ref="btnDel" 
+            programme={this.state.programme} 
+            onClick={this.handleDeleteProgramme}>del</button>
+        }
 
       </li>
     );
@@ -70,6 +83,10 @@ module.exports = ProgrammeListItem;
         /*
         
 
-
+        <input ret='members' size='24'
+        readOnly={readOnlyItem} 
+        onChange={this.changeProgrammeInfo.bind(null,'members','members')} 
+        onBlur={this.updateProgrammeInfo.bind(null,'members')}
+        value={programme.members} />
 
     */

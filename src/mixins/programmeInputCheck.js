@@ -1,7 +1,11 @@
 export default{
   getInitialState: function(){
+    return this.getInputCheckInitialState();
+  },
+
+  getInputCheckInitialState: function(){
     return {
-      programme: this.props.programme,
+      // programme: this.props.programme,
       dateIllegal:true,
       timeIllegal:true,
       dateText:this.getDateString(),
@@ -16,6 +20,11 @@ export default{
   // date
   getDateString: function(){
     var source = this.state || this.props;
+    if (source.programme === undefined) {
+      console.log("programme not found in both state and props");
+      return "";
+    }
+
 
     var date = source.programme.month +"/" + source.programme.day;
     var ret= this.validateDate(date)?date:'';
@@ -61,6 +70,7 @@ export default{
   },
 
   getDateClass: function(){
+
     if (!this.validateDate(this.state.dateText)) {
       return {backgroundColor:"red",color:"white"};
     }
@@ -74,6 +84,12 @@ export default{
   // time
   getTimeString:function(){
     var source = this.state || this.props;
+
+    if (source.programme === undefined) {
+      console.log("[time]programme not found in both state and props");
+      return "";
+    }
+
 
     var time = source.programme.start + "~" + source.programme.end;
     var ret = this.validateTime(time)?time:'';

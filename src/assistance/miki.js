@@ -14,7 +14,9 @@ class Miki{
 
     this.handleProgrammeAdded=null;
     this.handleProgrammeChanged=null;
+    this.handleProgrammeDelete=null;
     this.handleRoomInfoChanged=null;
+
 
   }
 
@@ -59,22 +61,20 @@ class Miki{
   }
 
 
-  addProgramme(programme){
+  addProgramme(programme,callback){
     console.log("miki: addProgramme");
-    this.handleProgrammeAdded(programme);
+    this.handleProgrammeAdded(programme,callback);
   }
 
-  updateProgramme(programme){
-    // console.log("miki: update programme");
-    // var found=_.find(this.scheduleData,p=>{
-    //   return programme.key === p.key;
-    // });
-    // console.log(found);
-    // Object.assign(found,programme);
+  deleteProgramme(programme,callback){
+    console.log("miki: deleteProgramme");
+    this.handleProgrammeDelete(programme,callback);
+  }
 
-    // return found;
+  updateProgramme(programme,callback){
     console.log("miki: updateProgramme");
-    this.handleProgrammeChanged(programme);
+    console.log(this.handleProgrammeChanged)
+    this.handleProgrammeChanged(programme,callback);
   }
 
   getSchedule(){
@@ -87,6 +87,9 @@ class Miki{
   }
   onProgrammeChanged(cb){
     this.handleProgrammeChanged=cb;
+  }
+  onProgrammeDeleted(cb){
+    this.handleProgrammeDelete=cb;
   }
   onRoomInfoChanged(cb){
     this.handleRoomInfoChanged=cb;

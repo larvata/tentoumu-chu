@@ -1,10 +1,13 @@
 // import ScheduleStore from '../stores/ScheduleStore';
 
+// todo rewrite addProgramme
+// 
 var addProgramme=(context, payload, done)=>{
   console.log("add programme");
   context.service.create('schedule', payload, {}, (err, schedule)=>{
-    console.log("call api done try dispatch ADD_PROGRAME");
-    context.dispatch('ADD_PROGRAME', schedule);
+    console.log("++++++++++++++++");
+    console.log(schedule);
+    context.dispatch('UPDATE_SCHEDULE',schedule);
     done();
   });
 };
@@ -12,6 +15,16 @@ var addProgramme=(context, payload, done)=>{
 var updateProgramme=(context, payload, done)=>{
   console.log("update programme");
   context.service.update('schedule', payload, {}, (err, schedule)=>{
+    context.dispatch('UPDATE_SCHEDULE',schedule);
+    done();
+  });
+};
+
+var deletePrgramme=(context, payload, done)=>{
+  console.log("delete programme");
+  context.service.delete('schedule', payload,{},(err, schedule)=>{
+
+    context.dispatch('UPDATE_SCHEDULE',schedule);
     done();
   });
 };
@@ -26,4 +39,4 @@ var getSchedule=(context,payload,done)=>{
   });
 };
 
-export {addProgramme,updateProgramme,getSchedule};
+export {addProgramme,updateProgramme,deletePrgramme,getSchedule};

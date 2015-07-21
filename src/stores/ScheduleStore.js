@@ -1,13 +1,13 @@
-var ScheduleStore, createStore;
+import _ from 'underscore';
+import {createStore} from 'fluxible/addons';
 
-createStore = require('fluxible/addons').createStore;
-
-ScheduleStore = createStore({
+var ScheduleStore = createStore({
   storeName: 'ScheduleStore',
   handlers: {
     'UPDATE_SCHEDULE': 'updateSchedule',
-    'RECEIVE_SCHEDULE': 'getSchedule',
-    'ADD_PROGRAME': 'addProgramme'
+    // 'RECEIVE_SCHEDULE': 'getSchedule',
+    'ADD_PROGRAMME': 'addProgramme',
+    // 'DELETE_PROGRAMME': 'deleteProgramme'
     // 'UPDATE_PROGRAME': 'updateProgramme'
   },
   initialize: function() {
@@ -25,15 +25,20 @@ ScheduleStore = createStore({
     this.emitChange();
     // console.log(this.schedule.length);
   },
-  addProgramme: function(programme) {
-    this.schedule.push(programme);
+  // addProgramme: function(schedule) {
+  //   // this.schedule.push(programme);
 
-    console.log("progamme added, emit()");
-    this.emitChange();
-  },
-  removeProgramme: function(programme) {
-    this.emitChange();
-  },
+  //   console.log("programme added, emit()");
+  //   this.emitChange();
+  // },
+  // deleteProgramme: function(schedule) {
+  //   // this.schedule = _.filter(this.schedule,function(p){
+  //   //   return p.key !== programme.key;
+  //   // });
+
+  //   // delete logic is in miki and meru
+  //   this.emitChange();
+  // },
   // updateProgramme: function(programme) {
   //   console.log("scheudle emit changes");
   //   this.emitChange();

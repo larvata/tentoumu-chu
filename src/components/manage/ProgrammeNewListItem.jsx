@@ -23,12 +23,27 @@ var ProgrammeNewListItem = React.createClass({
     programme: React.PropTypes.object
   },
 
-  // getInitialState:function(){
-  //   return {
-  //     dateIllegal:true,
-  //     timeIllegal:true
-  //   }
-  // },
+  getNewProgramme: function(){
+    return {
+      programme:{
+        day: '',
+        end: '',
+        key: '',
+        members: '',
+        month: '',
+        start: '',
+        title: '',
+        type: 'programme-custom',
+        year: 2015,
+        roomId: ''
+      }
+    }
+  },
+
+  getInitialState: function(){
+
+    return this.getNewProgramme();
+  },
 
   handleAddProgramme:function(e){
     var date = this.refs.date.getDOMNode().value;
@@ -38,7 +53,7 @@ var ProgrammeNewListItem = React.createClass({
     var members=''
 
 
-    // TODO move progamme create to addProgrammeAction
+    // TODO move programme create to addProgrammeAction
     var month = date.split('/')[0];
     var day = date.split('/')[1];
     var start = time.split('~')[0];
@@ -59,13 +74,17 @@ var ProgrammeNewListItem = React.createClass({
       year: 2015
     }
 
-    context.executeAction(addProgramme,programme,function(){
+    context.executeAction(addProgramme,programme,()=>{
       console.log("execute action addProgramme done");
+      // React.findDOMNode(this.refs.date).value='';
+      // React.findDOMNode(this.refs.time).value='';
+      // React.findDOMNode(this.refs.title).value='';
+
+      this.setState(this.getInitialState());
+      this.setState(this.getInputCheckInitialState());
     })
 
-    React.findDOMNode(this.refs.date).value='';
-    React.findDOMNode(this.refs.time).value='';
-    React.findDOMNode(this.refs.title).value='';
+
     // React.findDOMNode(this.refs.members).value='';
   },
 
