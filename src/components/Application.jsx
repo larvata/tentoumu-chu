@@ -19,6 +19,7 @@ module.exports = React.createClass({
   },
 
   render: function(){
+    console.log("application.jsx")
     return (
       <div>
         <Nav />

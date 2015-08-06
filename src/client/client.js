@@ -57,7 +57,8 @@ app.rehydrate(dehydratedState,(err,context)=>{
   router.run((Handler,routerState)=>{
     if(firstRender){
       console.log("frist render");
-      renderApp(context,Handler);
+      fetchData(context,routerState,()=>renderApp(context,Handler));
+      // renderApp(context,Handler);
       firstRender = false;
     }
     else{

@@ -10,5 +10,7 @@ app.registerStore(require('../stores/ApplicationStore'));
 app.registerStore(require('../stores/ScheduleStore'));
 app.registerStore(require('../stores/RoomMetaStore'));
 
+app.registerStore(require('../stores/___DemoButtonStore'));
+app.registerStore(require('../stores/___DemoViewStore'));
 
 export default app;

@@ -15,7 +15,8 @@ var Nav = React.createClass({
             <ul className="pure-menu pure-menu-open pure-menu-horizontal">
                 <li className={this.context.router.isActive('/') ? 'pure-menu-selected' : ''}><Link to='/'>Index</Link></li>
                 <li className={this.context.router.isActive('/manage') ? 'pure-menu-selected' : ''}><Link to='/manage'>Manage</Link></li>
-            </ul>
+                <li className={this.context.router.isActive('/demo') ? 'pure-menu-selected' : ''}><Link to='/demo'>Demo</Link></li>
+           </ul>
         );
     }
 });

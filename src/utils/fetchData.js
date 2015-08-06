@@ -2,6 +2,7 @@ import _ from 'underscore';
 
 var parallels = (dataRouters, context, routerState, cb)=>{
   var count = dataRouters.length;
+  cb = cb || function(){};
 
   for(var i in dataRouters){
     var router = dataRouters[i];

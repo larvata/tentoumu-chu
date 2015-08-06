@@ -50,9 +50,14 @@ function renderApp(context,Handler,cb)
 
 // TODO fix bug: cb() not exists in context
 
+// setup route getMiddleware
+const csrfProtection = csrf({cookie:true});
+
+
 // main part of serve config
 const server = express();
 server.use(bodyParser.json());
+server.use(cookieParser());
 
 // serve static files
 const staticPath= __dirname+"/../../build";
@@ -73,9 +78,13 @@ server.use((req, res, next) =>
     }
   });
 
+
+  console.log("create route");
+  console.log(req.url);
   const router = Router.create({
     routes: routes,
     location: req.url,
+    // location: Router.HistoryLocation,
     transitionContext: context,
     onAbort:(redirect)=>cb({redirect:redirect}),
     onError: (err)=> cb(err)

@@ -60,6 +60,12 @@ mixins: [FluxibleMixin,programmeInputCheckMixin,programmeUpdateMixin,programmeCh
         onBlur={this.updateProgrammeInfo.bind(null,'title')}
         value={programme.title} />
 
+        <input ret='members' size='24'
+        readOnly={readOnlyItem} 
+        onChange={this.changeProgrammeInfo.bind(null,'members','members')} 
+        onBlur={this.updateProgrammeInfo.bind(null,'members')}
+        value={programme.members} />
+
         {
             // render delete button when custom programme
             programme.type === 'programme-auto'?
