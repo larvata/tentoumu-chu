@@ -1,5 +1,5 @@
 #tentoumu-chu
-A website for checkout/manage 48-group TV programme schedule.An online version you can found on [http://douyu.sashi-con.info/](http://douyu.sashi-con.info/). And also there is a browser extension  [miichan](https://github.com/larvata/miichan) powered by this service.
+A website for checkout/manage 48-group TV programme schedule.An online version you can found on [live.sashi.co](http://live.sashi.co). And also there is a browser extension  [miichan](https://github.com/larvata/miichan) powered by this service.
 
 
 ## requirements
