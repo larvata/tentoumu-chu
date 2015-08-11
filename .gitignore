@@ -1,6 +1,7 @@
 tentoumu-chu.cson
 *.rdb
 tentoumu-chu.js
+tentoumu-chu.example.js
 static_content/*.html
 tmp/
 
