@@ -42,6 +42,8 @@ var channels = {
   'lala':'LaLa TV',
 
   'wowow-prime':'WOWOWプライム',
+  'wowow-live':'WOWOWライブ',
+  'wowow-cinema':'WOWOWシネマ',
 
   'musicontv':'MUSIC ON! TV',
 
@@ -50,8 +52,6 @@ var channels = {
   'dhc':'DHCシアター',
 
   'sp-4k':'スカパー!4K',
-
-  'wowow-cinema':'WOWOWシネマ',
 
   'space-shower':'スペースシャワーTV',
 
