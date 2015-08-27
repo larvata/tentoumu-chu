@@ -16,16 +16,15 @@ var Demo=require('./demo/Main.jsx');
 
 var routes = (
   <Route name="app" path="/" handler={Application}>
+    <DefaultRoute name="index" handler={Index}/>    
     <Route name="manage" handler={Manage}/>
     <Route name="headless" handler={Headless}/>
     <Route name="selector" path="demo/:content" handler={Demo}/>
-    <Redirect from="demo" to="demo/abc"/>
 
-   
-
+    <NotFoundRoute name="not-found" handler={Index}/>
     <Redirect from="hehe" to="manage?userid=:userId" params={{userId:'larvata'}}/>
-    <DefaultRoute name="index" handler={Index}/>
-    <NotFoundRoute name="not-found" handler={NotFound}/>
+    <Redirect from="demo" to="demo/abc"/>
+    
   </Route>
 );
 

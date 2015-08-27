@@ -8,7 +8,7 @@ var Index = React.createClass({
   render: function(){
     return (
       <div>
-        hello index changed
+        index
       </div>
     );
   }
