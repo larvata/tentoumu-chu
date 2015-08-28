@@ -50,12 +50,17 @@ var channels = {
   'tvk':'tvk',
 
   'dhc':'DHCシアター',
+  'dhc-theater':'DHCシアター カルチャー＆エンターテインメント',
 
   'sp-4k':'スカパー!4K',
 
   'space-shower':'スペースシャワーTV',
 
-  'bs-japan':'BSジャパン'
+  'bs-japan':'BSジャパン',
+
+  'teletama': 'テレ玉',
+
+  'kayopops': '歌謡ポップスch'
 
 
 };
