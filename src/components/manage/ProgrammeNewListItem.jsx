@@ -94,6 +94,10 @@ var ProgrammeNewListItem = React.createClass({
   },
 
   render: function(){
+
+    console.log("start render new RoomMetaList")
+    console.log(this.state.programme)
+
     // from user input
     return (
       <li>
@@ -112,6 +116,11 @@ var ProgrammeNewListItem = React.createClass({
         <input ref='title' size='48'
         value={this.state.programme.title} 
         onChange={this.changeProgrammeInfo.bind(null,'title','title')}
+        />
+
+        <input ref='members' size='24'
+        value={this.state.programme.members}
+        onChange={this.changeProgrammeInfo.bind(null,'members','members')}
         />
 
         <button ref="btnAdd" onClick={this.handleAddProgramme} disabled={this.state.dateIllegal || this.state.timeIllegal}>add</button>

@@ -60,7 +60,7 @@ mixins: [FluxibleMixin,programmeInputCheckMixin,programmeUpdateMixin,programmeCh
         onBlur={this.updateProgrammeInfo.bind(null,'title')}
         value={programme.title} />
 
-        <input ret='members' size='24'
+        <input ref='members' size='24'
         readOnly={readOnlyItem} 
         onChange={this.changeProgrammeInfo.bind(null,'members','members')} 
         onBlur={this.updateProgrammeInfo.bind(null,'members')}

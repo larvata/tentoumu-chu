@@ -29,11 +29,16 @@ var RoomMetaList=React.createClass({
 
   componentWillReceiveProps: function(nextProps){
     console.log('componentWillReceiveProps');
-    this.setState({programmeOrigin:Object.assign({},nextProps.programme)});
+    // this.setState({programmeOrigin:Object.assign({},nextProps.programme)});
 
-    return{
-      programme:nextProps.programme
-    }
+    // return{
+    //   programme:nextProps.programme
+    // }
+
+    this.setState({
+      programme: nextProps.programme,
+      programmeOrigin: Object.assign({},nextProps.programme)
+    });
   },
 
 
@@ -57,6 +62,7 @@ var RoomMetaList=React.createClass({
       <select 
       ref='room' 
       value={this.state.programme.roomId} 
+      className={this.state.programme.roomId}
       onChange={this.changeProgrammeInfo.bind(null,'room','roomId')} 
       onBlur={this.updateProgrammeInfo.bind(null,'roomId')} 
       style={this.getRoomClass()}>
