@@ -5,8 +5,12 @@ import express from 'express';
 import React from 'react';
 import Router from 'react-router';
 import bodyParser from 'body-parser';
+
+import session from 'express-session';
+var RedisStore =require('connect-redis')(session);
+
 import csrf from 'csurf';
-import cookieParser from'cookie-parser';
+// import cookieParser from'cookie-parser';
 import FluxibleComponent from 'fluxible/addons/FluxibleComponent';
 import serialize from 'serialize-javascript';
 
@@ -16,7 +20,7 @@ import routes from '../components/Routes.jsx';
 import fetchData from '../utils/fetchData';
 
 // fluxible app
-import app from './app';
+import app from '../app';
 
 import miki from '../assistance/miki';
 import Tashima from '../assistance/meru';
@@ -29,14 +33,38 @@ meru.startService();
 // TODO fix bug: cb() not exists in context,
 // fixed. remove by next commit
 
+// TODO remove cookieParse from package.json 
+// cookieParse removed duel to the new express-session removed requirement of it
+
 // setup route getMiddleware
 const csrfProtection = csrf({cookie:true});
 
 
 // main part of serve config
 const server = express();
+
+
+
+// session setting
+server.use(session({
+  store: new RedisStore({
+    // redisStore options
+    host: '127.0.0.1',
+    port: 6379,
+    db: 2
+  }),
+  secret:'hey-this-is-secret-key',
+  resave:false,
+  saveUninitialized:false,
+  cookie:{
+    // secure:true,
+    // cookies will expired 8 days
+    maxAge: 8*24*3600*1000
+  }
+}))
+
 server.use(bodyParser.json());
-server.use(cookieParser());
+// server.use(cookieParser());
 
 // serve static files
 const staticPath= __dirname+"/../../build";

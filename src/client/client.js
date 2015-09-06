@@ -1,7 +1,7 @@
 require("babel/polyfill");
 
 import React from 'react';
-import app from '../server/app';
+import app from '../app';
 
 import Router from 'react-router';
 // const HistoryLocation = Router.HistoryLocation;

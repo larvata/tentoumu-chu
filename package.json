@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-old": "supervisor --harmony --ignore build/ -e js src/start",
-    "dev":"nodemon src/start",
+    "dev": "nodemon src/start",
     "hot": "babel-node hotLoaderServer.js"
   },
   "repository": {
@@ -23,12 +23,14 @@
     "babel": "^5.6.14",
     "body-parser": "^1.13.1",
     "cheerio": "^0.19.0",
+    "connect-redis": "^2.5.0",
     "cookie-parser": "^1.3.5",
     "core-js": "^0.9.18",
     "cson": "^3.0.1",
     "csurf": "^1.8.3",
     "debug": "^2.2.0",
     "express": "^4.12.4",
+    "express-session": "^1.11.3",
     "feedparser": "^1.1.3",
     "fluxible": "^0.4.10",
     "fluxible-plugin-fetchr": "^0.3.1",
