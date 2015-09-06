@@ -258,11 +258,11 @@ class Tashima{
   assertProgrammeKey(programme){
     var key = 'Programme:auto:';
     key += programme.month;
-    key += ":";
-    key += programme.day;
-    key += ":";
-    key += programme.start;
-    key += ":";
+    key += "-";
+    key += programme.day.replace(/:/g,'-');
+    key += "-";
+    key += programme.start.replace(/:/g,'-');
+    key += "=";
     key += programme.channelId;
 
     programme.key = key;
