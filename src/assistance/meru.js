@@ -311,8 +311,11 @@ class Tashima{
     this.redis.expire(programme.key,countdown);
   }
 
+
+  // load schedule from redis
   loadSchedule(callback){
     this.schedule = [];
+    callback = callback || function(){};
 
     this.redis.keys('Programme:*',(err,replies)=>{
       var remains = replies.length;
@@ -327,7 +330,6 @@ class Tashima{
             this.schedule = _.sortBy(this.schedule,'orderKey');
             this.miki.updateSchedule(this.schedule);
 
-            callback = callback || function(){};
             callback(null,this.schedule);
 
           }
@@ -336,7 +338,7 @@ class Tashima{
     });
   }
 
-  startService(){
+  checker(done){
 
     var url = this.miki.config.scheduleFetchRssUrl;
     var req =request(url);
@@ -360,13 +362,16 @@ class Tashima{
 
     feedparser.on('readable',getTopArticle);
 
-    var checker=(rss)=>{
-      // todo
 
-      setTimeout(checker,this.miki.config.scheduleCheckInterval);
-    };
 
   }
+
+  startService(rss){
+      // todo
+    this.checker()
+
+    // setTimeout(checker,this.miki.config.scheduleCheckInterval);
+  };
 
 }
 
