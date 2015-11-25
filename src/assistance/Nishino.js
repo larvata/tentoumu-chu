@@ -6,8 +6,14 @@ import _ from 'lodash';
 
 class Nishino{
     constructor(){
-        this.userSchedule = [];
-        this.autoSchedule = [];
+        this.userSchedule = {
+            data: [],
+            dirty: false
+        };
+        this.autoSchedule = {
+            data: [],
+            dirty: false
+        };
         this.roomData = {};
         this.configs = configs;
 
@@ -28,7 +34,7 @@ class Nishino{
     getSchedule(){
         console.log('call loadSchedule')
         return new Promise((resolve, reject)=>{
-            this.schedule = [];
+            // this.schedule = [];
 
             redis.keys('Programme:*', (err, replies)=>{
                 console.log('in redis keys')
@@ -45,7 +51,9 @@ class Nishino{
                             reject(err);
                         }
 
-                        this.schedule.push(replies);
+
+
+                        // this.schedule.push(replies);
 
                         if (--remains === 0) {
                             console.log("try resolve ")
