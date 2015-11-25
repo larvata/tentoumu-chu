@@ -1,61 +1,45 @@
 {
   "name": "tentoumu-chu",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "A website for checkout/manage 48-group TV programme schedule.An online version you can found on [http://douyu.sashi-con.info/](http://douyu.sashi-con.info/). And also there is a browser extension  [miichan](https://github.com/larvata/miichan) powered by this service.",
-  "main": "src/start.js",
+  "main": "tentoumu-chu.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-old": "supervisor --harmony --ignore build/ -e js src/start",
-    "dev":"nodemon src/start",
-    "hot": "babel-node hotLoaderServer.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/larvata/tentoumu-chu.git"
+    "url": "git+https://github.com/larvata/tentoumu-chu.git"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/larvata/tentoumu-chu/issues"
   },
-  "homepage": "https://github.com/larvata/tentoumu-chu",
-  "dependencies": {
-    "babel": "^5.6.14",
-    "body-parser": "^1.13.1",
-    "cheerio": "^0.19.0",
-    "cookie-parser": "^1.3.5",
-    "core-js": "^0.9.18",
-    "cson": "^3.0.1",
-    "csurf": "^1.8.3",
-    "debug": "^2.2.0",
-    "express": "^4.12.4",
-    "feedparser": "^1.1.3",
-    "fluxible": "^0.4.10",
-    "fluxible-plugin-fetchr": "^0.3.1",
-    "jade": "^1.11.0",
-    "moment": "^2.10.3",
-    "node-jsx": "^0.13.3",
-    "node-uuid": "^1.4.3",
-    "phantom": "^0.7.2",
-    "react": "^0.13.3",
-    "react-router": "^0.13.3",
-    "redis": "^0.12.1",
-    "request": "^2.57.0",
-    "season": "^5.3.0",
-    "serialize-javascript": "^1.0.0",
-    "underscore": "^1.8.3",
-    "webpack": "^1.9.11"
-  },
+  "homepage": "https://github.com/larvata/tentoumu-chu#readme",
   "devDependencies": {
-    "babel-core": "^5.6.11",
-    "babel-loader": "^5.2.2",
-    "coffee-loader": "^0.7.2",
-    "del": "^1.2.0",
-    "envify": "^3.4.0",
-    "gulp": "^3.9.0",
-    "gulp-connect": "^2.2.0",
-    "gulp-webpack": "^1.5.0",
-    "react-hot-loader": "^1.2.7",
-    "webpack-dev-server": "^1.9.0"
+    "babel-eslint": "^4.1.6",
+    "babel-plugin-syntax-export-extensions": "^6.1.18",
+    "babel-plugin-transform-export-extensions": "^6.1.18",
+    "babel-preset-es2015": "^6.1.18",
+    "eslint": "^1.10.1",
+    "eslint-plugin-react": "^3.10.0",
+    "socks5-http-client": "^1.0.2"
+  },
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "feedparser": "^1.1.4",
+    "ioredis": "^1.11.0",
+    "jade": "^1.11.0",
+    "koa": "^1.1.2",
+    "koa-compress": "^1.0.8",
+    "koa-route": "^2.4.2",
+    "koa-static": "^1.5.2",
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
+    "request": "^2.67.0"
   }
 }
