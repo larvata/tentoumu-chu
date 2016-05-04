@@ -28,6 +28,9 @@ body.bg-haruppi05 {
 body.bg-haruppi06 {
   background-image: url("../images/bg-tiles/haruppi06.jpg");
 }
+body.bg-haruppi07 {
+  background-image: url("../images/bg-tiles/haruppi07.jpg");
+}
 body.bg-meru01 {
   background-image: url("../images/bg-tiles/meru01.jpg");
 }
@@ -51,6 +54,9 @@ body.bg-sakura02 {
 }
 body.bg-sakura03 {
   background-image: url("../images/bg-tiles/sakura03.jpg");
+}
+body.bg-sakura04 {
+  background-image: url("../images/bg-tiles/sakura04.jpg");
 }
 body.bg-sashi01 {
   background-image: url("../images/bg-tiles/sashi01.jpg");
